@@ -1,19 +1,19 @@
-package com.example.taurusgamevault.database
+package com.example.taurusgamevault.Model.room
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.taurusgamevault.database.dao.GameDao
-import com.example.taurusgamevault.database.dao.ListDao
-import com.example.taurusgamevault.database.dao.PlataformDao
-import com.example.taurusgamevault.database.dao.ScreenshotDao
-import com.example.taurusgamevault.database.entities.Game
-import com.example.taurusgamevault.database.entities.GameList
-import com.example.taurusgamevault.database.entities.List_game
-import com.example.taurusgamevault.database.entities.Plataform
-import com.example.taurusgamevault.database.entities.Plataform_game
-import com.example.taurusgamevault.database.entities.Screenshot
+import com.example.taurusgamevault.Model.room.dao.GameDao
+import com.example.taurusgamevault.Model.room.dao.ListDao
+import com.example.taurusgamevault.Model.room.dao.PlataformDao
+import com.example.taurusgamevault.Model.room.dao.ScreenshotDao
+import com.example.taurusgamevault.Model.room.entities.Game
+import com.example.taurusgamevault.Model.room.entities.GameList
+import com.example.taurusgamevault.Model.room.entities.List_game
+import com.example.taurusgamevault.Model.room.entities.Plataform
+import com.example.taurusgamevault.Model.room.entities.Plataform_game
+import com.example.taurusgamevault.Model.room.entities.Screenshot
 
 @Database(
     entities = [
@@ -24,7 +24,7 @@ import com.example.taurusgamevault.database.entities.Screenshot
         Plataform_game::class,
         Screenshot::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = true
 )
 abstract class DataBase : RoomDatabase() {
@@ -42,14 +42,14 @@ abstract class DataBase : RoomDatabase() {
         fun getDatabase(context: Context): DataBase {
             // if the INSTANCE is not null, then return it,
             // if it is, then create the database
-            if (DataBase.Companion.INSTANCE == null) {
+            if (INSTANCE == null) {
                 synchronized(this) {
                     // Pass the database to the INSTANCE
-                    DataBase.Companion.INSTANCE = DataBase.Companion.buildDatabase(context)
+                    INSTANCE = buildDatabase(context)
                 }
             }
             // Return database.
-            return DataBase.Companion.INSTANCE!!
+            return INSTANCE!!
         }
 
         private fun buildDatabase(context: Context): DataBase {
@@ -61,6 +61,7 @@ abstract class DataBase : RoomDatabase() {
                 "taurus_game_vault"
             )
                 .createFromAsset("database/taurus_game_vault.db")
+                .fallbackToDestructiveMigration()
                 .build()
         }
     }

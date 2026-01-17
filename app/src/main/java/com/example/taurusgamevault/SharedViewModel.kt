@@ -3,11 +3,9 @@ package com.example.taurusgamevault
 import android.app.Application
 import android.content.Context
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.taurusgamevault.database.Repository
-import com.example.taurusgamevault.database.entities.Game
-import com.example.taurusgamevault.database.entities.Plataform
+import com.example.taurusgamevault.Model.Repository.Repository
+import com.example.taurusgamevault.Model.room.entities.Game
 import kotlinx.coroutines.launch
 
 class SharedViewModel(application: Application) : AndroidViewModel(application) {
@@ -17,16 +15,17 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
             Repository.addGame(
                 context,
                 Game(
-                    name = "The Legend of Kotlin",
-                    description = "Juego de aventuras",
-                    release_date = "2023",
-                    playtime = 0,
+                    name = "Fallout: New vegas",
+                    description = "RPG",
+                    release_date = "2010",
+                    playtime = 75,
                     personal_rating = 0,
                     game_state = "0",
                     start_date = null,
                     end_date = null,
                     priority = 2,
-                    deadline = null
+                    deadline = null,
+                    game_image = "https://swsawzjvsxtesdhbsuxn.supabase.co/storage/v1/object/public/filesdatabase/gameImages/test.jpg"
                 )
             )
 
@@ -34,7 +33,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                 context,
                 Game(
                     name = "Room Saga",
-                    description = "RPG basado en Room",
+                    description = "RPG based on Room",
                     release_date = "2021",
                     playtime = 15,
                     personal_rating = 8,
@@ -42,7 +41,8 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
                     start_date = System.currentTimeMillis(),
                     end_date = null,
                     priority = 1,
-                    deadline = null
+                    deadline = null,
+                    game_image = null
                 )
             )
         }

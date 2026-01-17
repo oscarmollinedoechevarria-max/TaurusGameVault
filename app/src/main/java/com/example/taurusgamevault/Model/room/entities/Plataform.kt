@@ -1,4 +1,4 @@
-package com.example.taurusgamevault.database.entities
+package com.example.taurusgamevault.Model.room.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

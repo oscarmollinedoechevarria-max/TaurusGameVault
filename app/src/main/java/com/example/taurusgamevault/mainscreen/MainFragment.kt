@@ -36,7 +36,7 @@ class MainFragment : Fragment() {
         recyclerview.layoutManager = LinearLayoutManager(requireContext())
 
         viewModel.games?.observe(viewLifecycleOwner, Observer { llistat ->
-            recyclerview.adapter = GameAdapter(llistat)
+            recyclerview.adapter = GameAdapter(llistat, requireContext())
         })
 
         return binding.root

@@ -3,8 +3,8 @@ package com.example.taurusgamevault.mainscreen
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.example.taurusgamevault.database.Repository
-import com.example.taurusgamevault.database.entities.Game
+import com.example.taurusgamevault.Model.Repository.Repository
+import com.example.taurusgamevault.Model.room.entities.Game
 
 class MainViewModel : ViewModel() {
     private var _games: LiveData<List<Game>>? = null

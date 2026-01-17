@@ -17,6 +17,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
     }
 
     buildTypes {
@@ -68,13 +69,14 @@ dependencies {
 
     implementation("androidx.fragment:fragment-ktx:1.3.2")
 
-// ViewModel
+    // ViewModel
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1")
-// LiveData
+
+    // LiveData
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.3.1")
     implementation("androidx.cardview:cardview:1.0.0")
 
-// Room
+    // Room
     val roomVersion = "2.8.4"
     implementation("androidx.room:room-runtime:$roomVersion")
     kapt("androidx.room:room-compiler:$roomVersion")
@@ -84,5 +86,26 @@ dependencies {
     implementation("androidx.room:room-guava:$roomVersion")
     testImplementation("androidx.room:room-testing:$roomVersion")
     implementation("androidx.room:room-paging:$roomVersion")
+
+    // Supabase client
+    implementation("io.github.jan-tennert.supabase:postgrest-kt:2.0.0")
+    implementation("io.github.jan-tennert.supabase:storage-kt:2.0.0")
+
+    // Ktor client
+    implementation("io.ktor:ktor-client-android:2.3.7")
+    implementation("io.ktor:ktor-client-core:2.3.7")
+    implementation("io.ktor:ktor-utils:2.3.7")
+
+
+    // retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+
+    // gson converter
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
+
+    //Coil
+    implementation("io.coil-kt:coil:2.5.0")
 
 }

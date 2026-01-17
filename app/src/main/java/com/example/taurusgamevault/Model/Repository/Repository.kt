@@ -1,16 +1,22 @@
-package com.example.taurusgamevault.database
+package com.example.taurusgamevault.Model.Repository
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
-import com.example.taurusgamevault.database.entities.Game
-import com.example.taurusgamevault.database.entities.GameList
-import com.example.taurusgamevault.database.entities.Plataform
-import com.example.taurusgamevault.database.entities.Screenshot
+import com.example.taurusgamevault.Model.room.DataBase
+import com.example.taurusgamevault.Model.room.entities.Game
+import com.example.taurusgamevault.Model.room.entities.GameList
+import com.example.taurusgamevault.Model.room.entities.Plataform
+import com.example.taurusgamevault.Model.room.entities.Screenshot
+import com.example.taurusgamevault.Model.supabase.SupabaseClientManager
+import io.github.jan.supabase.storage.storage
+import io.github.jan.supabase.storage.upload
+import java.io.File
 
 class Repository {
     companion object {
         fun initializeDB(context: Context): DataBase {
-            return DataBase.getDatabase(context)
+            return DataBase.Companion.getDatabase(context)
         }
 
         // TODO: Game CRUD
@@ -26,7 +32,7 @@ class Repository {
             return db.gameDAO().addGame(game)
         }
 
-        suspend fun updateGame(context: Context, game: Game){
+        suspend fun updateGame(context: Context, game: Game) {
             val db = initializeDB(context)
 
             return db.gameDAO().updateGame(
@@ -44,7 +50,7 @@ class Repository {
             )
         }
 
-        suspend fun deleteGame(context: Context, game: Game){
+        suspend fun deleteGame(context: Context, game: Game) {
             val db = initializeDB(context)
 
             return db.gameDAO().deleteGame(game)
@@ -63,7 +69,7 @@ class Repository {
             return db.listDAO().addList(list)
         }
 
-        suspend fun updateList(context: Context, list: GameList){
+        suspend fun updateList(context: Context, list: GameList) {
             val db = initializeDB(context)
 
             return db.listDAO().updateList(
@@ -74,7 +80,7 @@ class Repository {
             )
         }
 
-        suspend fun deleteList(context: Context, list: GameList){
+        suspend fun deleteList(context: Context, list: GameList) {
             val db = initializeDB(context)
 
             return db.listDAO().deleteList(list)
@@ -93,7 +99,7 @@ class Repository {
             return db.plataformDAO().addPlataform(plataform)
         }
 
-        suspend fun updatePlataform(context: Context, plataform: Plataform){
+        suspend fun updatePlataform(context: Context, plataform: Plataform) {
             val db = initializeDB(context)
 
             return db.plataformDAO().updatePlataform(
@@ -102,7 +108,7 @@ class Repository {
             )
         }
 
-        suspend fun deletePlataform(context: Context, plataform: Plataform){
+        suspend fun deletePlataform(context: Context, plataform: Plataform) {
             val db = initializeDB(context)
 
             return db.plataformDAO().deletePlataform(plataform)
@@ -121,7 +127,7 @@ class Repository {
             return db.screenshotDAO().addScreenshot(screenshot)
         }
 
-        suspend fun updateScreenshot(context: Context, screenshot: Screenshot){
+        suspend fun updateScreenshot(context: Context, screenshot: Screenshot) {
             val db = initializeDB(context)
 
             return db.screenshotDAO().updateScreenshot(
@@ -130,11 +136,30 @@ class Repository {
             )
         }
 
-        suspend fun deleteScreenshot(context: Context, screenshot: Screenshot){
+        suspend fun deleteScreenshot(context: Context, screenshot: Screenshot) {
             val db = initializeDB(context)
 
             return db.screenshotDAO().deleteScreenshot(screenshot)
         }
 
+        suspend fun uploadImageAndGetPublicUrl(localFile: File): String? {
+            val storage = SupabaseClientManager.supabase.storage.from("filesdatabase")
+
+            val pathInBucket = "gameImages/${localFile.name}"
+
+            val result = storage.upload(
+                path = pathInBucket,
+                file = localFile
+            )
+
+            if (result.isEmpty()) {
+                return null
+            }
+
+            return storage.publicUrl(pathInBucket)
+        }
+
+
     }
+
 }

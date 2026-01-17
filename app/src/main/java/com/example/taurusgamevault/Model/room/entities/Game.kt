@@ -1,6 +1,5 @@
-package com.example.taurusgamevault.database.entities
+package com.example.taurusgamevault.Model.room.entities
 
-import android.accessibilityservice.GestureDescription
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -39,4 +38,7 @@ data class Game(
 
     @ColumnInfo(name = "deadline")
     var deadline: Long?,
+
+    @ColumnInfo(name = "game_image")
+    var game_image: String?,
 )

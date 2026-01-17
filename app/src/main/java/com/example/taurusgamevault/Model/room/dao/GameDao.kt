@@ -1,4 +1,4 @@
-package com.example.taurusgamevault.database.dao
+package com.example.taurusgamevault.Model.room.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
@@ -6,7 +6,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.taurusgamevault.database.entities.Game
+import com.example.taurusgamevault.Model.room.entities.Game
 
 @Dao
 interface GameDao {
