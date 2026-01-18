@@ -15,6 +15,9 @@ import com.example.taurusgamevault.adapters.GameAdapter
 import com.example.taurusgamevault.databinding.FragmentMainBinding
 
 class MainFragment : Fragment() {
+    //TODO: FIX IMAGE REFRESHMENT AND CACHE
+    //TODO: add screenshots scroll view in xml game create view
+    //TODO: add more data to game cards
     private val viewModel: MainViewModel by viewModels()
 
     lateinit var binding: FragmentMainBinding
@@ -38,6 +41,10 @@ class MainFragment : Fragment() {
         viewModel.games?.observe(viewLifecycleOwner, Observer { llistat ->
             recyclerview.adapter = GameAdapter(llistat, requireContext())
         })
+
+        binding.fabAdd.setOnClickListener {
+            findNavController().navigate(R.id.action_mainFragment_to_createGameFragment)
+        }
 
         return binding.root
     }

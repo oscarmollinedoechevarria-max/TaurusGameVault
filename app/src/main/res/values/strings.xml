@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">TaurusGameVault</string>
+    <string name="add">Add Game</string>
 </resources>

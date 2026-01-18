@@ -1,11 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
     app:startDestination="@id/mainFragment">
 
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.example.taurusgamevault.mainscreen.MainFragment"
-        android:label="MainFragment" />
+        android:label="MainFragment" >
+        <action
+            android:id="@+id/action_mainFragment_to_createGameFragment"
+            app:destination="@id/createGameFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createGameFragment"
+        android:name="com.example.taurusgamevault.creategame.CreateGameFragment"
+        android:label="fragment_create_game"
+        tools:layout="@layout/fragment_create_game" >
+        <action
+            android:id="@+id/action_createGameFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
 </navigation>

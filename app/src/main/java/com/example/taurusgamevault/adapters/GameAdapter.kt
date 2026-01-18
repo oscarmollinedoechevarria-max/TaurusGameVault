@@ -36,6 +36,8 @@ class GameAdapter(private var list: List<Game>, context: Context): RecyclerView.
 
         holder.descriptionTextView.text = item.description
 
+        //TODO: implement image cache locally
+        //TODO: implement image cache locally
         holder.productImageView.load(item.game_image) {
             crossfade(true)
             placeholder(R.drawable.ic_launcher_background)

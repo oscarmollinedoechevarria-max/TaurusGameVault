@@ -32,13 +32,13 @@ interface GameDao {
         name: String?,
         description: String?,
         releaseDate: String?,
-        playtime: Long?,
-        personalRating: Int?,
+        playtime: Int?,
+        personalRating: Double?,
         gameState: String?,
-        startDate: Long?,
-        endDate: Long?,
+        startDate: String?,
+        endDate: String?,
         priority: Int?,
-        deadline: Long?
+        deadline: String?
     )
 
     @Delete

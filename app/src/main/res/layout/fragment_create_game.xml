@@ -1,13 +1,711 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".creategame.CreateGameFragment">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello" />
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-</FrameLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <!-- ========================================== -->
+            <!-- SECTION: IMAGE -->
+            <!-- ========================================== -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/sectionImage"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:background="#F5F5F5"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <!-- Section Title -->
+                <TextView
+                    android:id="@+id/sectionImageTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="image"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:textColor="#333333"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <View
+                    android:id="@+id/dividerImage"
+                    android:layout_width="0dp"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="8dp"
+                    android:background="#E0E0E0"
+                    app:layout_constraintTop_toBottomOf="@id/sectionImageTitle"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <!-- Image Container -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/imageContainer"
+                    android:layout_width="0dp"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="12dp"
+                    app:layout_constraintTop_toBottomOf="@id/dividerImage"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <ImageView
+                        android:id="@+id/selectedImageView"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        tools:srcCompat="@tools:sample/avatars" />
+
+                    <Button
+                        android:id="@+id/selectImageButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- ========================================== -->
+            <!-- SECTION: SCREENSHOT -->
+            <!-- ========================================== -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/sectionScreenshot"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:layout_marginTop="16dp"
+                android:background="#F5F5F5"
+                app:layout_constraintTop_toBottomOf="@id/sectionImage"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <!-- Section Title -->
+                <TextView
+                    android:id="@+id/sectionScreenshotTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Screenshot"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:textColor="#333333"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <!-- Divider -->
+                <View
+                    android:id="@+id/dividerScreenshot"
+                    android:layout_width="0dp"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="8dp"
+                    android:background="#E0E0E0"
+                    app:layout_constraintTop_toBottomOf="@id/sectionScreenshotTitle"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <!-- Screenshot Container -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/screenshotContainer"
+                    android:layout_width="0dp"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="12dp"
+                    app:layout_constraintTop_toBottomOf="@id/dividerScreenshot"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <ImageView
+                        android:id="@+id/selectedScreenshotView"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        tools:srcCompat="@tools:sample/avatars" />
+
+                    <Button
+                        android:id="@+id/selectScreenshotButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <!-- ========================================== -->
+            <!-- SECTION: BASE INFO -->
+            <!-- ========================================== -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/sectionBasicInfo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:layout_marginTop="16dp"
+                android:background="#F5F5F5"
+                app:layout_constraintTop_toBottomOf="@id/sectionScreenshot"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <!-- Section Title -->
+                <TextView
+                    android:id="@+id/sectionBasicInfoTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Basic info"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:textColor="#333333"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <View
+                    android:id="@+id/dividerBasicInfo"
+                    android:layout_width="0dp"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="8dp"
+                    android:background="#E0E0E0"
+                    app:layout_constraintTop_toBottomOf="@id/sectionBasicInfoTitle"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <!-- SUBSECTION: Name -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/subsectionName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:padding="12dp"
+                    android:background="#FFFFFF"
+                    app:layout_constraintTop_toBottomOf="@id/dividerBasicInfo"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <TextView
+                        android:id="@+id/labelName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Name*"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                    <EditText
+                        android:id="@+id/editName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:hint="Ex: The Legend of Zelda"
+                        app:layout_constraintTop_toBottomOf="@id/labelName"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- SUBSECTION: description -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/subsectionDescription"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:padding="12dp"
+                    android:background="#FFFFFF"
+                    app:layout_constraintTop_toBottomOf="@id/subsectionName"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <TextView
+                        android:id="@+id/labelDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Description"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                    <EditText
+                        android:id="@+id/editDescription"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:minLines="3"
+                        android:gravity="top"
+                        android:hint="description about the game..."
+                        app:layout_constraintTop_toBottomOf="@id/labelDescription"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- SUBSECTION: Release date-->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/subsectionReleaseDate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:padding="12dp"
+                    android:background="#FFFFFF"
+                    app:layout_constraintTop_toBottomOf="@id/subsectionDescription"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <TextView
+                        android:id="@+id/labelReleaseDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Release date"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                    <EditText
+                        android:id="@+id/editReleaseDate"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:hint="DD/MM/YYYY"
+                        app:layout_constraintTop_toBottomOf="@id/labelReleaseDate"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- ========================================== -->
+            <!-- SECTION: Game progress -->
+            <!-- ========================================== -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/sectionGameProgress"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:layout_marginTop="16dp"
+                android:background="#F5F5F5"
+                app:layout_constraintTop_toBottomOf="@id/sectionBasicInfo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <!-- Section Title -->
+                <TextView
+                    android:id="@+id/sectionProgressTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Progress of the game"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:textColor="#333333"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <View
+                    android:id="@+id/dividerProgress"
+                    android:layout_width="0dp"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="8dp"
+                    android:background="#E0E0E0"
+                    app:layout_constraintTop_toBottomOf="@id/sectionProgressTitle"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <!-- SUBSECTION: playtime -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/subsectionPlaytime"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:padding="12dp"
+                    android:background="#FFFFFF"
+                    app:layout_constraintTop_toBottomOf="@id/dividerProgress"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <TextView
+                        android:id="@+id/labelPlaytime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Time played (Hours)"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                    <EditText
+                        android:id="@+id/editPlaytime"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:inputType="number"
+                        android:hint="Ex: 45"
+                        app:layout_constraintTop_toBottomOf="@id/labelPlaytime"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- SUBSECTION: personal rating -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/subsectionRating"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:padding="12dp"
+                    android:background="#FFFFFF"
+                    app:layout_constraintTop_toBottomOf="@id/subsectionPlaytime"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <TextView
+                        android:id="@+id/labelPersonalRating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Personal raiting"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/ratingHint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="(0 - 10)"
+                        android:textSize="12sp"
+                        android:textColor="#666666"
+                        android:layout_marginStart="8dp"
+                        app:layout_constraintTop_toTopOf="@id/labelPersonalRating"
+                        app:layout_constraintBottom_toBottomOf="@id/labelPersonalRating"
+                        app:layout_constraintStart_toEndOf="@id/labelPersonalRating"/>
+
+                    <EditText
+                        android:id="@+id/editPersonalRating"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:inputType="numberDecimal"
+                        android:hint="Ex: 8.5"
+                        app:layout_constraintTop_toBottomOf="@id/labelPersonalRating"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- SUBSECTION: game state -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/subsectionGameState"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:padding="12dp"
+                    android:background="#FFFFFF"
+                    app:layout_constraintTop_toBottomOf="@id/subsectionRating"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <TextView
+                        android:id="@+id/labelGameState"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Game state"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/stateHint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="(Not started, Playing, Completed, etc.)"
+                        android:textSize="12sp"
+                        android:textColor="#666666"
+                        android:layout_marginTop="2dp"
+                        app:layout_constraintTop_toBottomOf="@id/labelGameState"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                    <EditText
+                        android:id="@+id/editGameState"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:hint="Ex: Completed"
+                        app:layout_constraintTop_toBottomOf="@id/stateHint"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- ========================================== -->
+            <!-- SECTION: Dates -->
+            <!-- ========================================== -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/sectionDates"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:layout_marginTop="16dp"
+                android:background="#F5F5F5"
+                app:layout_constraintTop_toBottomOf="@id/sectionGameProgress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <!-- Section Title -->
+                <TextView
+                    android:id="@+id/sectionDatesTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dates"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:textColor="#333333"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <View
+                    android:id="@+id/dividerDates"
+                    android:layout_width="0dp"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="8dp"
+                    android:background="#E0E0E0"
+                    app:layout_constraintTop_toBottomOf="@id/sectionDatesTitle"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <!-- SUBSECTION: Start date -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/subsectionStartDate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:padding="12dp"
+                    android:background="#FFFFFF"
+                    app:layout_constraintTop_toBottomOf="@id/dividerDates"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <TextView
+                        android:id="@+id/labelStartDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Start date"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                    <EditText
+                        android:id="@+id/editStartDate"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:hint="DD/MM/YYYY"
+                        app:layout_constraintTop_toBottomOf="@id/labelStartDate"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- SUBSECTION: End date -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/subsectionEndDate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:padding="12dp"
+                    android:background="#FFFFFF"
+                    app:layout_constraintTop_toBottomOf="@id/subsectionStartDate"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <TextView
+                        android:id="@+id/labelEndDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="End date"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                    <EditText
+                        android:id="@+id/editEndDate"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:hint="DD/MM/YYYY"
+                        app:layout_constraintTop_toBottomOf="@id/labelEndDate"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- SUBSECTION: Deadline -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/subsectionDeadline"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:padding="12dp"
+                    android:background="#FFFFFF"
+                    app:layout_constraintTop_toBottomOf="@id/subsectionEndDate"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <TextView
+                        android:id="@+id/labelDeadline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="deadline"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/deadlineHint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="(Personal goal to complete)"
+                        android:textSize="12sp"
+                        android:textColor="#666666"
+                        android:layout_marginTop="2dp"
+                        app:layout_constraintTop_toBottomOf="@id/labelDeadline"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                    <EditText
+                        android:id="@+id/editDeadline"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:hint="DD/MM/YYYY"
+                        app:layout_constraintTop_toBottomOf="@id/deadlineHint"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- ========================================== -->
+            <!-- SECTION: PRIORITY -->
+            <!-- ========================================== -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/sectionPriority"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:layout_marginTop="16dp"
+                android:background="#F5F5F5"
+                app:layout_constraintTop_toBottomOf="@id/sectionDates"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <!-- Section Title -->
+                <TextView
+                    android:id="@+id/sectionPriorityTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Piority"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:textColor="#333333"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <View
+                    android:id="@+id/dividerPriority"
+                    android:layout_width="0dp"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="8dp"
+                    android:background="#E0E0E0"
+                    app:layout_constraintTop_toBottomOf="@id/sectionPriorityTitle"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <!-- SUBSECTION: Priority level -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/subsectionPriorityLevel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:padding="12dp"
+                    android:background="#FFFFFF"
+                    app:layout_constraintTop_toBottomOf="@id/dividerPriority"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <TextView
+                        android:id="@+id/labelPriority"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Priority Level"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/priorityHint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="(1 = Low, 5 = High)"
+                        android:textSize="12sp"
+                        android:textColor="#666666"
+                        android:layout_marginTop="2dp"
+                        app:layout_constraintTop_toBottomOf="@id/labelPriority"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                    <EditText
+                        android:id="@+id/editPriority"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:inputType="number"
+                        android:hint="Ex: 3"
+                        app:layout_constraintTop_toBottomOf="@id/priorityHint"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- ========================================== -->
+            <!-- SAVE BUTTON -->
+            <!-- ========================================== -->
+            <Button
+                android:id="@+id/saveGameButton"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:text="Save game +"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginTop="24dp"
+                app:layout_constraintTop_toBottomOf="@id/sectionPriority"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

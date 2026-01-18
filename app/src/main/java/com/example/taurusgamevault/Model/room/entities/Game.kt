@@ -4,41 +4,42 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+//TODO: FIX CAMPS WITH SQLITE
 @Entity(tableName = "game")
 data class Game(
     @PrimaryKey(autoGenerate = true)
-    var game_id: Long = 0L,
+    val game_id: Long = 0L,
 
     @ColumnInfo(name = "name")
-    var name: String,
+    val name: String,
 
     @ColumnInfo(name = "description")
-    var description: String?,
+    val description: String? = null,
 
     @ColumnInfo(name = "release_date")
-    var release_date: String,
+    val release_date: String? = null,
 
     @ColumnInfo(name = "playtime")
-    var playtime : Long?,
+    val playtime: Int? = 0,
 
     @ColumnInfo(name = "personal_rating")
-    var personal_rating: Int?,
+    val personal_rating: Double? = 0.0,
 
     @ColumnInfo(name = "game_state")
-    var game_state : String?,
+    val game_state: String? = null,
 
     @ColumnInfo(name = "start_date")
-    var start_date: Long?,
+    val start_date: String? = null,
 
     @ColumnInfo(name = "end_date")
-    var end_date: Long?,
+    val end_date: String? = null,
 
     @ColumnInfo(name = "priority")
-    var priority: Int?,
+    val priority: Int? = 0,
 
     @ColumnInfo(name = "deadline")
-    var deadline: Long?,
+    val deadline: String? = null,
 
     @ColumnInfo(name = "game_image")
-    var game_image: String?,
+    val game_image: String? = null
 )
