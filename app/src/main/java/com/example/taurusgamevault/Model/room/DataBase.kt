@@ -12,7 +12,7 @@ import com.example.taurusgamevault.Model.room.entities.Game
 import com.example.taurusgamevault.Model.room.entities.GameList
 import com.example.taurusgamevault.Model.room.entities.List_game
 import com.example.taurusgamevault.Model.room.entities.Plataform
-import com.example.taurusgamevault.Model.room.entities.Plataform_game
+import com.example.taurusgamevault.Model.room.entities.PlataformGame
 import com.example.taurusgamevault.Model.room.entities.Screenshot
 
 @Database(
@@ -21,11 +21,11 @@ import com.example.taurusgamevault.Model.room.entities.Screenshot
         GameList::class,
         List_game::class,
         Plataform::class,
-        Plataform_game::class,
+        PlataformGame::class,
         Screenshot::class
     ],
-    version = 2,
-    exportSchema = true
+    version = 1,
+    exportSchema = false
 )
 abstract class DataBase : RoomDatabase() {
 
@@ -60,8 +60,7 @@ abstract class DataBase : RoomDatabase() {
                 DataBase::class.java,
                 "taurus_game_vault"
             )
-                .createFromAsset("database/taurus_game_vault.db")
-                .fallbackToDestructiveMigration()
+//                .createFromAsset("database/taurus_game_vault.db")
                 .build()
         }
     }

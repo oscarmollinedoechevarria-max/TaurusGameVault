@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-//TODO: FIX CAMPS WITH SQLITE
+//TODO: FIX CAMPS WITH SQLITE (fixed?)
 @Entity(tableName = "game")
 data class Game(
     @PrimaryKey(autoGenerate = true)
@@ -23,7 +23,7 @@ data class Game(
     val playtime: Int? = 0,
 
     @ColumnInfo(name = "personal_rating")
-    val personal_rating: Double? = 0.0,
+    val personal_rating: Float? = 0.0f,
 
     @ColumnInfo(name = "game_state")
     val game_state: String? = null,
@@ -35,7 +35,7 @@ data class Game(
     val end_date: String? = null,
 
     @ColumnInfo(name = "priority")
-    val priority: Int? = 0,
+    val priority: String? = "",
 
     @ColumnInfo(name = "deadline")
     val deadline: String? = null,

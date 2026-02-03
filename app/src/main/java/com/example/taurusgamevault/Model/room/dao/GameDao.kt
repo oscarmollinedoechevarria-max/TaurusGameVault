@@ -13,6 +13,9 @@ interface GameDao {
     @Query("SELECT * FROM game")
     fun getGames(): LiveData<List<Game>>
 
+    @Query("SELECT * FROM game WHERE game_id = :gameID")
+    fun getGame(gameID: Long): LiveData<Game>
+
     @Query("""
     UPDATE game 
     SET name = :name,
@@ -33,11 +36,11 @@ interface GameDao {
         description: String?,
         releaseDate: String?,
         playtime: Int?,
-        personalRating: Double?,
+        personalRating: Float?,
         gameState: String?,
         startDate: String?,
         endDate: String?,
-        priority: Int?,
+        priority: String?,
         deadline: String?
     )
 

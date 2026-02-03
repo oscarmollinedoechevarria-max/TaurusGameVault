@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">TaurusGameVault</string>
     <string name="add">Add Game</string>
+    <string name="goBack">Go Back</string>
+    <string name="edit">Edit</string>
+    <string name="fragment_Create_Game_title">Create Game</string>
 </resources>

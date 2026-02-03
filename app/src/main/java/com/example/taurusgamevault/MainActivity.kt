@@ -14,7 +14,11 @@ class MainActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this)[SharedViewModel::class.java]
 
-        viewModel.insertGames(applicationContext)
+//        viewModel.insertGames(applicationContext)
+
+//        viewModel.debugAssets(applicationContext)
+//
+//        viewModel.uploadAllGamesWithMetadata(applicationContext)
 
     }
 }

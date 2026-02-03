@@ -1,12 +1,12 @@
 package com.example.taurusgamevault.Model.Repository
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.taurusgamevault.Model.room.DataBase
 import com.example.taurusgamevault.Model.room.entities.Game
 import com.example.taurusgamevault.Model.room.entities.GameList
 import com.example.taurusgamevault.Model.room.entities.Plataform
+import com.example.taurusgamevault.Model.room.entities.PlataformGame
 import com.example.taurusgamevault.Model.room.entities.Screenshot
 import com.example.taurusgamevault.Model.supabase.SupabaseClientManager
 import io.github.jan.supabase.storage.storage
@@ -20,10 +20,17 @@ class Repository {
         }
 
         // TODO: Game CRUD
+        //TODO: REDO THE IMPORT GAMES SCRIPT
         fun getGames(context: Context): LiveData<List<Game>>? {
             val db = initializeDB(context)
 
             return db.gameDAO().getGames()
+        }
+
+        fun getGame(context: Context, gameID: Long): LiveData<Game>? {
+            val db = initializeDB(context)
+
+            return db.gameDAO().getGame(gameID)
         }
 
         suspend fun addGame(context: Context, game: Game): Long {
@@ -55,6 +62,47 @@ class Repository {
 
             return db.gameDAO().deleteGame(game)
         }
+
+        suspend fun uploadImageAndGetPublicUrl(localFile: File): String? {
+            val storage = SupabaseClientManager.supabase.storage.from("filesdatabase")
+
+            val pathInBucket = "gameImages/${localFile.name}"
+
+            val result = storage.upload(
+                path = pathInBucket,
+                file = localFile
+            )
+
+            if (result.isEmpty()) {
+                return null
+            }
+
+            return storage.publicUrl(pathInBucket)
+        }
+
+        suspend fun uploadScreenshotAndGetPublicUrl(localFile: File): String? {
+            val storage = SupabaseClientManager.supabase.storage.from("filesdatabase")
+
+            val pathInBucket = "gameScreenshot/${localFile.name}"
+
+            val result = storage.upload(
+                path = pathInBucket,
+                file = localFile
+            )
+
+            if (result.isEmpty()) {
+                return null
+            }
+
+            return storage.publicUrl(pathInBucket)
+        }
+
+        suspend fun addGamePlataform(context: Context, gameplataform: PlataformGame): Long {
+            val db = initializeDB(context)
+
+            return db.plataformDAO().addGamePlataform(gameplataform)
+        }
+
 
         // TODO: List CRUD
         fun getList(context: Context): LiveData<List<GameList>>? {
@@ -93,6 +141,12 @@ class Repository {
             return db.plataformDAO().getPlataforms()
         }
 
+        fun getGamePlataforms(context: Context, gameId: Long): LiveData<List<Plataform>>? {
+            val db = initializeDB(context)
+
+            return db.plataformDAO().getGamePlataforms(gameId)
+        }
+
         suspend fun addPlataform(context: Context, plataform: Plataform): Long {
             val db = initializeDB(context)
 
@@ -115,10 +169,10 @@ class Repository {
         }
 
         // TODO: Screenshot CRUD
-        fun getScreenshots(context: Context): LiveData<List<Screenshot>>? {
+        fun getScreenshots(context: Context, gameId: Long): LiveData<List<Screenshot>>? {
             val db = initializeDB(context)
 
-            return db.screenshotDAO().getScreenshots()
+            return db.screenshotDAO().getScreenshots(gameId)
         }
 
         suspend fun addScreenshot(context: Context, screenshot: Screenshot): Long {
@@ -141,24 +195,6 @@ class Repository {
 
             return db.screenshotDAO().deleteScreenshot(screenshot)
         }
-
-        suspend fun uploadImageAndGetPublicUrl(localFile: File): String? {
-            val storage = SupabaseClientManager.supabase.storage.from("filesdatabase")
-
-            val pathInBucket = "gameImages/${localFile.name}"
-
-            val result = storage.upload(
-                path = pathInBucket,
-                file = localFile
-            )
-
-            if (result.isEmpty()) {
-                return null
-            }
-
-            return storage.publicUrl(pathInBucket)
-        }
-
 
     }
 

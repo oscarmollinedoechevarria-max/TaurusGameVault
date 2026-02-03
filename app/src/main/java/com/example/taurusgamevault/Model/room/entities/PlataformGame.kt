@@ -18,7 +18,7 @@ import androidx.room.ForeignKey
             onDelete = ForeignKey.CASCADE)
     ]
 )
-data class Plataform_game (
+data class PlataformGame (
     @ColumnInfo(name = "plataform_id")
     var plataform_id: Long,
 

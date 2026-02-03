@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
 
     kotlin("kapt")
+
+    alias(libs.plugins.navigation.safeargs)
 }
 
 android {
@@ -43,12 +45,6 @@ android {
     buildFeatures {
         dataBinding = true
     }
-
-    kapt {
-        arguments {
-            arg("room.schemaLocation", "$projectDir/schemas")
-        }
-    }
 }
 
 dependencies {
@@ -60,6 +56,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.legacy.support.v4)
     implementation(libs.androidx.recyclerview)
+    implementation(libs.androidx.remote.creation.core)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -107,5 +104,9 @@ dependencies {
 
     //Coil
     implementation("io.coil-kt:coil:2.5.0")
+
+    //Compress
+    implementation("id.zelory:compressor:3.0.1")
+
 
 }

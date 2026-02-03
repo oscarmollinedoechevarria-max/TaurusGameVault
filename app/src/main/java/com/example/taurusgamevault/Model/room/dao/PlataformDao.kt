@@ -7,6 +7,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.taurusgamevault.Model.room.entities.Plataform
+import com.example.taurusgamevault.Model.room.entities.PlataformGame
 
 @Dao
 interface PlataformDao {
@@ -29,5 +30,19 @@ interface PlataformDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addPlataform(plataform: Plataform): Long
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun addGamePlataform(plataformGame: PlataformGame): Long
+
+    @Query("""
+    SELECT *
+    FROM plataform
+    INNER JOIN plataform_game pg
+        ON plataform.plataform_id = pg.plataform_id
+    WHERE pg.game_id = :gameId
+""")
+    fun getGamePlataforms(gameId: Long): LiveData<List<Plataform>>
+
+
 
 }

@@ -22,6 +22,8 @@ class MainFragment : Fragment() {
 
     lateinit var binding: FragmentMainBinding
 
+    private lateinit var adapter: GameAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -39,7 +41,7 @@ class MainFragment : Fragment() {
         recyclerview.layoutManager = LinearLayoutManager(requireContext())
 
         viewModel.games?.observe(viewLifecycleOwner, Observer { llistat ->
-            recyclerview.adapter = GameAdapter(llistat, requireContext())
+            recyclerview.adapter = GameAdapter(llistat, requireContext(), findNavController())
         })
 
         binding.fabAdd.setOnClickListener {
@@ -48,4 +50,6 @@ class MainFragment : Fragment() {
 
         return binding.root
     }
+
+
 }

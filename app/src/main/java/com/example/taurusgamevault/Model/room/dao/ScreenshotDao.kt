@@ -10,8 +10,8 @@ import com.example.taurusgamevault.Model.room.entities.Screenshot
 
 @Dao
 interface ScreenshotDao {
-    @Query("SELECT * FROM screenshot")
-    fun getScreenshots(): LiveData<List<Screenshot>>
+    @Query("SELECT * FROM screenshot WHERE game_id = :gameId")
+    fun getScreenshots(gameId: Long): LiveData<List<Screenshot>>
 
     @Query("""
     UPDATE screenshot

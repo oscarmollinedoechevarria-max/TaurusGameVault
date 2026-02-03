@@ -1,17 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-<androidx.constraintlayout.widget.ConstraintLayout
+<layout xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".creategame.CreateGameFragment">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/headerLayout"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- FAB -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_go_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:contentDescription="@string/goBack"
+            app:srcCompat="@drawable/chevronleft"
+            app:backgroundTint="?attr/colorSecondary"
+            app:tint="@android:color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <!-- FRAGMENT TITLE -->
+        <TextView
+            android:id="@+id/tv_fragment_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/fragment_Create_Game_title"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="?attr/colorOnBackground"
+            android:maxLines="1"
+            android:ellipsize="end"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/headerLayout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -159,6 +198,81 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
+                <androidx.constraintlayout.motion.widget.MotionLayout
+                    android:id="@+id/motionLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="200dp"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@id/dividerScreenshot"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layoutDescription="@xml/fragment_create_game_scene">
+
+                    <ImageView
+                        android:id="@+id/imageView0"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/imageView1"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/imageView2"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/imageView3"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/imageView4"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <androidx.constraintlayout.helper.widget.Carousel
+                        android:id="@+id/carousel"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        app:carousel_infinite="true"
+                        app:carousel_firstView="@+id/imageView2"
+                        app:constraint_referenced_ids="imageView0,imageView1,imageView2,imageView3,imageView4"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+                </androidx.constraintlayout.motion.widget.MotionLayout>
+
+
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -266,7 +380,7 @@
                         app:layout_constraintEnd_toEndOf="parent"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <!-- SUBSECTION: Release date-->
+                <!-- SUBSECTION: Release date -->
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/subsectionReleaseDate"
                     android:layout_width="0dp"
@@ -295,6 +409,46 @@
                         android:layout_marginTop="4dp"
                         android:hint="DD/MM/YYYY"
                         app:layout_constraintTop_toBottomOf="@id/labelReleaseDate"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- SUBSECTION: Plataform -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/subsectionPlataform"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:padding="12dp"
+                    android:background="#FFFFFF"
+                    app:layout_constraintTop_toBottomOf="@id/subsectionReleaseDate"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <TextView
+                        android:id="@+id/labelPlataform"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Plataform"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                    <!-- Este reemplaza el EditText -->
+                    <TextView
+                        android:id="@+id/multiSelectPlataform"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:padding="12dp"
+                        android:text="Select plataforms"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?attr/selectableItemBackground"
+                        android:drawableEnd="@drawable/outline_arrow_drop_down_24"
+                        android:gravity="center_vertical"
+                        app:layout_constraintTop_toBottomOf="@id/labelPlataform"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -670,7 +824,7 @@
                         android:id="@+id/priorityHint"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="(1 = Low, 5 = High)"
+                        android:text="(1 = Back log, 5 = High)"
                         android:textSize="12sp"
                         android:textColor="#666666"
                         android:layout_marginTop="2dp"
