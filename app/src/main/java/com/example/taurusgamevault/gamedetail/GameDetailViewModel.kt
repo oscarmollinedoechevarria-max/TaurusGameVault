@@ -2,6 +2,7 @@ package com.example.taurusgamevault.gamedetail
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.net.Uri
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
@@ -50,25 +51,28 @@ class GameDetailViewModel : ViewModel() {
 
     fun saveGame(context: Context, gameTempData: GameTempData, gameId: Long) {
         viewModelScope.launch {
+
             if (gameTempData.imageUri != null) {
-                val gameImage: String? = gameTempData.imageUri?.let { uri ->
-                    val inputStream = context.contentResolver.openInputStream(uri)
-                    inputStream?.use { input ->
-                        val tempFile = File(context.cacheDir, "${UUID.randomUUID()}.jpg")
-                        tempFile.outputStream().use { output ->
-                            input.copyTo(output)
-                        }
+                val inputStream = context.contentResolver.openInputStream(gameTempData.imageUri)
+                inputStream?.use { input ->
+                    val tempFile = File(context.cacheDir, "${UUID.randomUUID()}.jpg")
+                    tempFile.outputStream().use { output -> input.copyTo(output) }
 
-                        val compressedFile = Compressor.compress(context, tempFile) {
-                            quality(80)
-                            format(Bitmap.CompressFormat.JPEG)
-                        }
+                    val compressedFile = Compressor.compress(context, tempFile) {
+                        quality(80)
+                        format(Bitmap.CompressFormat.JPEG)
+                    }
 
-                        try {
-                            Repository.uploadImageAndGetPublicUrl(compressedFile)
-                        } finally {
-                            tempFile.delete()
-                        }
+                    try {
+                        val oldImageUrl = _game?.value?.game_image
+                        Repository.updateGameImageAndGetPublicUrl(
+                            context,
+                            gameId,
+                            compressedFile,
+                            oldImageUrl
+                        )
+                    } finally {
+                        tempFile.delete()
                     }
                 }
             }
@@ -85,51 +89,62 @@ class GameDetailViewModel : ViewModel() {
                 end_date = gameTempData.endDate,
                 priority = gameTempData.priority,
                 deadline = gameTempData.deadline,
-                game_image = ""
+                game_image = _game?.value?.game_image ?: ""
             )
 
-            val gameID = Repository.updateGame(context, game)
+            Repository.updateGame(context, game)
 
-            if (gameTempData.screenshots != null) {
-                gameTempData.screenshots.forEachIndexed { index, uri ->
-                    val screenshot: String? = gameTempData.screenshots[index].let { uri ->
+            if (!gameTempData.allScreenshots.isNullOrEmpty()) {
+
+                val oldScreenshots = _screenshots?.value?.map { it.image } ?: emptyList()
+
+                Repository.deleteScreenshotsByGameId(context, gameId)
+
+                gameTempData.allScreenshots.forEachIndexed { index, screenshotUrl ->
+
+                    val publicUrl: String? = if (screenshotUrl.startsWith("content://")) {
+                        val uri = Uri.parse(screenshotUrl)
                         val inputStream = context.contentResolver.openInputStream(uri)
                         inputStream?.use { input ->
                             val tempFile = File(context.cacheDir, "${UUID.randomUUID()}.jpg")
-                            tempFile.outputStream().use { output ->
-                                input.copyTo(output)
-                            }
+                            tempFile.outputStream().use { output -> input.copyTo(output) }
+
                             val compressedFile = Compressor.compress(context, tempFile) {
                                 quality(80)
                                 format(Bitmap.CompressFormat.JPEG)
                             }
 
                             try {
-                                Repository.uploadScreenshotAndGetPublicUrl(compressedFile)
+                                val oldUrl = oldScreenshots.getOrNull(index)
+                                Repository.updateScreenshotAndGetPublicUrl(compressedFile, oldUrl)
                             } finally {
                                 tempFile.delete()
                             }
                         }
+                    } else {
+                        screenshotUrl
                     }
 
-
-                    val temp = Screenshot(
-                        gameId = gameId,
-                        image = screenshot ?: ""
+                    Repository.addScreenshot(
+                        context,
+                        Screenshot(
+                            gameId = gameId,
+                            image = publicUrl ?: ""
+                        )
                     )
-
-                    Repository.addScreenshot(context, temp)
                 }
             }
 
-            if (plataforms != null) {
-                gameTempData.plataforms?.forEach { platformID ->
-                    val temp = PlataformGame(
-                        plataform_id = platformID,
-                        game_id = gameId
+            // Update platforms
+            if (!gameTempData.plataforms.isNullOrEmpty()) {
+                gameTempData.plataforms.forEach { platformID ->
+                    Repository.addGamePlataform(
+                        context,
+                        PlataformGame(
+                            plataform_id = platformID,
+                            game_id = gameId
+                        )
                     )
-
-                    Repository.addGamePlataform(context, temp)
                 }
             }
 

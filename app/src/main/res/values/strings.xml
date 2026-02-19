@@ -1,7 +1,22 @@
 <resources>
     <string name="app_name">TaurusGameVault</string>
     <string name="add">Add Game</string>
+    <string name="addList">Add List</string>
     <string name="goBack">Go Back</string>
     <string name="edit">Edit</string>
     <string name="fragment_Create_Game_title">Create Game</string>
+    <plurals name="games_count_label">
+        <item quantity="one">%d game</item>
+        <item quantity="other">%d games</item>
+    </plurals>
+    <string name="list_image">List image</string>
+    <string name="games">Games</string>
+    <string name="no_games_yet">No games yet</string>
+    <string name="add_first_game">Add your first game to this list</string>
+    <string name="add_game">Add game</string>
+    <string name="enter_list_name">Enter list name</string>
+    <string name="enter_list_description">Enter description (optional)</string>
+    <string name="save_list">Save list</string>
+    <string name="game_context_menu_edit">Edit</string>
+    <string name="game_context_menu_delete">Delete</string>
 </resources>

@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/surface"
+        tools:context=".list.gamelistdetail.GameListDetailFragment">
+
+        <!-- HEADER -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/headerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:elevation="4dp"
+            android:background="@color/surface">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_go_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:contentDescription="@string/goBack"
+                app:srcCompat="@drawable/chevronleft"
+                app:backgroundTint="?attr/colorSecondary"
+                app:tint="@android:color/white"
+                app:fabSize="normal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <TextView
+                android:id="@+id/tv_fragment_title_game_detail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="?attr/colorOnBackground"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:gravity="center"
+                app:layout_constraintStart_toEndOf="@id/fab_go_back"
+                app:layout_constraintEnd_toStartOf="@id/fab_edit"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:contentDescription="@string/edit"
+                app:srcCompat="@drawable/editimage"
+                app:backgroundTint="?attr/colorSecondary"
+                app:tint="@android:color/white"
+                app:fabSize="normal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="56dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingBottom="24dp">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/card_background">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="160dp">
+
+                            <ImageView
+                                android:id="@+id/imageView_list_banner"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:scaleType="centerCrop"
+                                android:contentDescription="@string/list_image"
+                                android:src="@drawable/ic_launcher_background" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/gradient_bottom_fade" />
+
+                            <Button
+                                android:id="@+id/button_change_banner"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="+"
+                                android:visibility="gone" />
+
+                        </FrameLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="16dp">
+
+                            <TextView
+                                android:id="@+id/textView_list_name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textSize="24sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/on_surface"
+                                tools:text="My Game List" />
+
+                            <EditText
+                                android:id="@+id/textView_list_name_edit"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textSize="24sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/on_surface"
+                                android:inputType="text"
+                                android:maxLines="2"
+                                android:hint="@string/enter_list_name"
+                                android:textColorHint="@color/on_surface_variant"
+                                android:visibility="gone" />
+
+                            <TextView
+                                android:id="@+id/textView_list_description"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:textSize="14sp"
+                                android:textColor="@color/on_surface_variant"
+                                tools:text="A personal collection of my favorite games" />
+
+                            <EditText
+                                android:id="@+id/textView_list_description_edit"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:textSize="14sp"
+                                android:textColor="@color/on_surface_variant"
+                                android:inputType="textMultiLine"
+                                android:maxLines="4"
+                                android:minHeight="48dp"
+                                android:gravity="top|start"
+                                android:hint="@string/enter_list_description"
+                                android:textColorHint="@color/on_surface_variant"
+                                android:visibility="gone" />
+
+                            <FrameLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="32dp"
+                                android:layout_marginTop="12dp"
+                                android:background="@drawable/chip_background">
+
+                                <TextView
+                                    android:id="@+id/textView_game_count"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:paddingHorizontal="12dp"
+                                    android:textSize="13sp"
+                                    android:textColor="@color/on_secondary_container"
+                                    android:gravity="center"
+                                    tools:text="12 games" />
+                            </FrameLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </FrameLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/games"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/on_surface" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView_games"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:listitem="@layout/item_game_picker"
+                    tools:itemCount="2"/>
+
+                <LinearLayout
+                    android:id="@+id/layout_empty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingTop="48dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/no_games_yet"
+                        android:textSize="16sp"
+                        android:textColor="@color/on_surface_variant" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/add_first_game"
+                        android:textSize="14sp"
+                        android:textColor="@color/on_surface_variant" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+
+        <Button
+            android:id="@+id/add_game_edit"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="92dp"
+            android:text="+ Add Game"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <!-- SAVE BUTTON -->
+        <Button
+            android:id="@+id/savListButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_margin="16dp"
+            android:minHeight="60dp"
+            android:text="@string/save_list"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <!-- FAB to add game -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_add_game"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:contentDescription="@string/add_game"
+            app:srcCompat="@drawable/addimage"
+            app:backgroundTint="?attr/colorSecondary"
+            app:tint="@android:color/white" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

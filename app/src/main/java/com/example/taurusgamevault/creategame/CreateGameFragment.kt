@@ -158,7 +158,8 @@ class CreateGameFragment : Fragment() {
                     deadline = binding.editDeadline.text.toString().trim().ifEmpty { null },
                     priority = Priority.numberToPriority(priority)?.text,
                     screenshots = selectedScreenshotUris.toList(),
-                    plataforms = plataformsSelected.toList()
+                    plataforms = plataformsSelected.toList(),
+                    allScreenshots = null
                 )
 
                 viewModel.saveGame(requireContext(), gameData)

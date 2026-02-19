@@ -5,6 +5,9 @@ plugins {
     kotlin("kapt")
 
     alias(libs.plugins.navigation.safeargs)
+
+    //parcelize
+    id("kotlin-parcelize")
 }
 
 android {
@@ -108,5 +111,7 @@ dependencies {
     //Compress
     implementation("id.zelory:compressor:3.0.1")
 
-
+    // material
+    implementation("com.google.android.material:material:1.12.0")
+    implementation("androidx.core:core:1.13.0")
 }

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -40,8 +41,8 @@ class MainFragment : Fragment() {
 
         recyclerview.layoutManager = LinearLayoutManager(requireContext())
 
-        viewModel.games?.observe(viewLifecycleOwner, Observer { llistat ->
-            recyclerview.adapter = GameAdapter(llistat, requireContext(), findNavController())
+        viewModel.games?.observe(viewLifecycleOwner, Observer { games ->
+            recyclerview.adapter = GameAdapter(games, requireContext(), findNavController(), lifecycleScope)
         })
 
         binding.fabAdd.setOnClickListener {

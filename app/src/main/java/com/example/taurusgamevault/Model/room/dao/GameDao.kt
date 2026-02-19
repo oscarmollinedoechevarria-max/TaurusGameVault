@@ -44,6 +44,9 @@ interface GameDao {
         deadline: String?
     )
 
+    @Query("UPDATE game SET game_image = :newImage WHERE game_id = :id")
+    suspend fun updateGameImage(id: Long, newImage: String?)
+
     @Delete
     suspend fun deleteGame(game: Game)
 

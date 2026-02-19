@@ -1,62 +1,56 @@
 package com.example.taurusgamevault.adapters
 
-import android.R.attr.gravity
-import android.content.Context
-import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.graphics.drawable.Drawable
-import android.util.Log
-import android.view.Gravity
+import android.widget.ImageView
+import coil.load
+import coil.request.CachePolicy
+import com.example.taurusgamevault.Model.room.entities.Game
+import com.example.taurusgamevault.R
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.PopupMenu
+import android.widget.CheckBox
 import android.widget.TextView
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import coil.dispose
-import coil.load
-import coil.request.CachePolicy
-import coil.size.Scale
-import coil.util.CoilUtils.result
-import com.example.taurusgamevault.Model.Repository.Repository
-import com.example.taurusgamevault.R
-import com.example.taurusgamevault.Model.room.entities.Game
-import com.example.taurusgamevault.mainscreen.MainFragmentDirections
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
-class GameAdapter(private var list: List<Game>, private val context: Context, private val navigation: NavController, private val scope: CoroutineScope ): RecyclerView.Adapter<GameAdapter.ViewHolder>() {
+
+class GamePickerAdapter(
+    private var list: List<Game>,
+    private val onGameClick: (Game) -> Unit
+) : RecyclerView.Adapter<GamePickerAdapter.ViewHolder>() {
+
+    private val selectedGames = mutableSetOf<Game>()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.game_card,parent,false)
-
+            .inflate(R.layout.item_game_picker, parent, false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]
 
-        //TODO: fix editmode cache screenshots
-        //tODO: date pickers on detail edit mode
-        //todo: edit mode main screen
-
         holder.gameNameTextView.text = item.name
+        holder.releaseDateTextView.text = item.release_date ?: "Unknown"
+        holder.descriptionTextView.text = item.description ?: "No description available"
 
-        holder.releaseDateTextView.text = item.release_date
+        // Set checkbox state
+        holder.gameCheckBox.isChecked = selectedGames.contains(item)
 
-        holder.descriptionTextView.text = item.description
+        // Set overlay visibility based on selection
+        holder.selectionOverlay.visibility = if (selectedGames.contains(item)) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
 
-        //TODO: implement image cache locally
+        // Load game image
         holder.productImageView.load(item.game_image) {
             crossfade(true)
             placeholder(R.drawable.ic_launcher_background)
             error(R.drawable.ic_launcher_background)
-//            transformations(ImageListCache())*
             memoryCachePolicy(CachePolicy.ENABLED)
             diskCachePolicy(CachePolicy.ENABLED)
             networkCachePolicy(CachePolicy.ENABLED)
@@ -77,46 +71,33 @@ class GameAdapter(private var list: List<Game>, private val context: Context, pr
                 onStart = { _ ->
                     holder.productImageView.scaleType = ImageView.ScaleType.FIT_XY
                 }
-
             )
         }
 
+        // Handle clicks on the entire card
         holder.container.setOnClickListener {
-            navigation.navigate(
-                MainFragmentDirections
-                    .actionMainFragmentToGameDetailFragment(gameId = item.game_id, editMode = false)
-            )
+            onGameClick(item)
         }
 
-        holder.container.setOnLongClickListener { view ->
-            val popup = PopupMenu(view.context, view)
-            popup.inflate(R.menu.game_menu_context)
-
-            popup.setOnMenuItemClickListener { menuItem ->
-                if (menuItem.itemId == R.id.action_edit) {
-                    navigation.navigate(
-                        MainFragmentDirections
-                            .actionMainFragmentToGameDetailFragment(gameId = item.game_id, editMode = true)
-                    )
-                    true
-                } else if (menuItem.itemId == R.id.action_delete) {
-                    scope.launch {
-                        Repository.deleteGame(context, item)
-                    }
-                    Toast.makeText(context, "Game deleted successfully", Toast.LENGTH_SHORT).show()
-                    true
-                } else {
-                    false
-                }
-            }
-            popup.show()
-            true
+        // Handle checkbox clicks
+        holder.gameCheckBox.setOnClickListener {
+            onGameClick(item)
         }
     }
 
-
     override fun getItemCount(): Int {
         return list.size
+    }
+
+    fun updateSelection(selected: Set<Game>) {
+        selectedGames.clear()
+        selectedGames.addAll(selected)
+        notifyDataSetChanged()
+    }
+
+    fun submitList(newList: List<Game>) {
+        list = newList
+        notifyDataSetChanged()
     }
 
     private fun applyImageMatrix(imageView: ImageView, drawable: Drawable) {
@@ -139,13 +120,11 @@ class GameAdapter(private var list: List<Game>, private val context: Context, pr
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val gameNameTextView: TextView = itemView.findViewById(R.id.gameNameTextView)
-
         val releaseDateTextView: TextView = itemView.findViewById(R.id.releaseDateTextView)
-
         val descriptionTextView: TextView = itemView.findViewById(R.id.descriptionTextView)
-
         val productImageView: ImageView = itemView.findViewById(R.id.productImageView)
-
+        val gameCheckBox: CheckBox = itemView.findViewById(R.id.gameCheckBox)
+        val selectionOverlay: View = itemView.findViewById(R.id.selectionOverlay)
         val container: ConstraintLayout = itemView.findViewById(R.id.backgroundView)
     }
 }

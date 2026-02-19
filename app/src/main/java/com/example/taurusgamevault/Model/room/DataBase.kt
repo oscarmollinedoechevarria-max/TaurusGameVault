@@ -53,14 +53,14 @@ abstract class DataBase : RoomDatabase() {
         }
 
         private fun buildDatabase(context: Context): DataBase {
-            context.deleteDatabase("taurus_game_vault")
+//            context.deleteDatabase("taurus_game_vault")
 
             return Room.databaseBuilder(
                 context.applicationContext,
                 DataBase::class.java,
                 "taurus_game_vault"
             )
-//                .createFromAsset("database/taurus_game_vault.db")
+                .createFromAsset("database/taurus_game_vault.db")
                 .build()
         }
     }

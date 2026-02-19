@@ -15,6 +15,9 @@
         <action
             android:id="@+id/action_mainFragment_to_gameDetailFragment"
             app:destination="@id/gameDetailFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_gameListFragment"
+            app:destination="@id/gameListFragment" />
     </fragment>
     <fragment
         android:id="@+id/createGameFragment"
@@ -35,5 +38,50 @@
         <argument
             android:name="gameId"
             app:argType="long" />
+
+        <argument
+            android:name="editMode"
+            app:argType="boolean" />
+    </fragment>
+    <fragment
+        android:id="@+id/createListFragment"
+        android:name="com.example.taurusgamevault.list.createlist.CreateListFragment"
+        android:label="fragment_create_list"
+        tools:layout="@layout/fragment_create_list" >
+        <action
+            android:id="@+id/action_createListFragment_to_gameListFragment"
+            app:destination="@id/gameListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/gameListDetailFragment"
+        android:name="com.example.taurusgamevault.list.gamelistdetail.GameListDetailFragment"
+        android:label="fragment_game_list_detail"
+        tools:layout="@layout/fragment_game_list_detail" >
+         <argument
+            android:name="listId"
+            app:argType="long" />
+
+        <argument
+            android:name="editMode"
+            app:argType="boolean" />
+
+        <action
+            android:id="@+id/action_gameListDetailFragment_to_gameListFragment"
+            app:destination="@id/gameListFragment" />
+        <action
+            android:id="@+id/action_gameListDetailFragment_to_gameDetailFragment"
+            app:destination="@id/gameDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/gameListFragment"
+        android:name="com.example.taurusgamevault.list.gamelist.GameListFragment"
+        android:label="fragment_game_list"
+        tools:layout="@layout/fragment_game_list" >
+        <action
+            android:id="@+id/action_gameListFragment_to_createListFragment"
+            app:destination="@id/createListFragment" />
+        <action
+            android:id="@+id/action_gameListFragment_to_gameListDetailFragment"
+            app:destination="@id/gameListDetailFragment" />
     </fragment>
 </navigation>

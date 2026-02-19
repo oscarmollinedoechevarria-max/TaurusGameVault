@@ -3,6 +3,7 @@ package com.example.taurusgamevault.Model.room.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.taurusgamevault.classes.SimplifiedGame
 
 //TODO: FIX CAMPS WITH SQLITE (fixed?)
 @Entity(tableName = "game")
@@ -43,3 +44,13 @@ data class Game(
     @ColumnInfo(name = "game_image")
     val game_image: String? = null
 )
+
+fun Game.toSimplifiedGame(): SimplifiedGame {
+    return SimplifiedGame(
+        gameId = this.game_id,
+        name = this.name,
+        description = this.description ?: "",
+        releaseDate = this.release_date ?: "",
+        image = this.game_image ?: ""
+    )
+}

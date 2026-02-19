@@ -1,12 +1,8 @@
 package com.example.taurusgamevault.adapters
 
-import android.R.attr.gravity
 import android.content.Context
-import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.graphics.drawable.Drawable
-import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,24 +12,26 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import coil.dispose
-import coil.load
 import coil.request.CachePolicy
-import coil.size.Scale
-import coil.util.CoilUtils.result
-import com.example.taurusgamevault.Model.Repository.Repository
+import com.example.taurusgamevault.Model.room.entities.GameList
 import com.example.taurusgamevault.R
-import com.example.taurusgamevault.Model.room.entities.Game
-import com.example.taurusgamevault.mainscreen.MainFragmentDirections
+import coil.load
+import com.example.taurusgamevault.Model.Repository.Repository
+import com.example.taurusgamevault.list.gamelist.GameListFragmentDirections
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-class GameAdapter(private var list: List<Game>, private val context: Context, private val navigation: NavController, private val scope: CoroutineScope ): RecyclerView.Adapter<GameAdapter.ViewHolder>() {
+class ListGameAdapter(
+    private var list: List<GameList>,
+    private val context: Context,
+    private val navigation: NavController,
+    private val scope: CoroutineScope
+): RecyclerView.Adapter<ListGameAdapter.ViewHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.game_card,parent,false)
+            .inflate(R.layout.list_card, parent, false)
 
         return ViewHolder(view)
     }
@@ -41,50 +39,40 @@ class GameAdapter(private var list: List<Game>, private val context: Context, pr
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]
 
-        //TODO: fix editmode cache screenshots
-        //tODO: date pickers on detail edit mode
-        //todo: edit mode main screen
+        holder.listNameTextView.text = item.name
 
-        holder.gameNameTextView.text = item.name
+        holder.listDescriptionTextView.text = item.description ?: ""
 
-        holder.releaseDateTextView.text = item.release_date
-
-        holder.descriptionTextView.text = item.description
-
-        //TODO: implement image cache locally
-        holder.productImageView.load(item.game_image) {
+        holder.listBannerImageView.load(item.image) {
             crossfade(true)
             placeholder(R.drawable.ic_launcher_background)
             error(R.drawable.ic_launcher_background)
-//            transformations(ImageListCache())*
             memoryCachePolicy(CachePolicy.ENABLED)
             diskCachePolicy(CachePolicy.ENABLED)
             networkCachePolicy(CachePolicy.ENABLED)
 
             listener(
                 onSuccess = { _, result ->
-                    if (holder.productImageView.width > 0 && holder.productImageView.height > 0) {
-                        applyImageMatrix(holder.productImageView, result.drawable)
+                    if (holder.listBannerImageView.width > 0 && holder.listBannerImageView.height > 0) {
+                        applyImageMatrix(holder.listBannerImageView, result.drawable)
                     } else {
-                        holder.productImageView.post {
-                            applyImageMatrix(holder.productImageView, result.drawable)
+                        holder.listBannerImageView.post {
+                            applyImageMatrix(holder.listBannerImageView, result.drawable)
                         }
                     }
                 },
                 onError = { _, _ ->
-                    holder.productImageView.scaleType = ImageView.ScaleType.FIT_XY
+                    holder.listBannerImageView.scaleType = ImageView.ScaleType.FIT_XY
                 },
                 onStart = { _ ->
-                    holder.productImageView.scaleType = ImageView.ScaleType.FIT_XY
+                    holder.listBannerImageView.scaleType = ImageView.ScaleType.FIT_XY
                 }
-
             )
         }
 
         holder.container.setOnClickListener {
             navigation.navigate(
-                MainFragmentDirections
-                    .actionMainFragmentToGameDetailFragment(gameId = item.game_id, editMode = false)
+                GameListFragmentDirections.actionGameListFragmentToGameListDetailFragment(item.list_id, false)
             )
         }
 
@@ -95,15 +83,14 @@ class GameAdapter(private var list: List<Game>, private val context: Context, pr
             popup.setOnMenuItemClickListener { menuItem ->
                 if (menuItem.itemId == R.id.action_edit) {
                     navigation.navigate(
-                        MainFragmentDirections
-                            .actionMainFragmentToGameDetailFragment(gameId = item.game_id, editMode = true)
+                        GameListFragmentDirections.actionGameListFragmentToGameListDetailFragment(item.list_id, true)
                     )
                     true
                 } else if (menuItem.itemId == R.id.action_delete) {
                     scope.launch {
-                        Repository.deleteGame(context, item)
+                        Repository.deleteList(context, item)
                     }
-                    Toast.makeText(context, "Game deleted successfully", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "List deleted successfully", Toast.LENGTH_SHORT).show()
                     true
                 } else {
                     false
@@ -113,7 +100,6 @@ class GameAdapter(private var list: List<Game>, private val context: Context, pr
             true
         }
     }
-
 
     override fun getItemCount(): Int {
         return list.size
@@ -138,13 +124,11 @@ class GameAdapter(private var list: List<Game>, private val context: Context, pr
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val gameNameTextView: TextView = itemView.findViewById(R.id.gameNameTextView)
+        val listNameTextView: TextView = itemView.findViewById(R.id.listNameTextView)
 
-        val releaseDateTextView: TextView = itemView.findViewById(R.id.releaseDateTextView)
+        val listDescriptionTextView: TextView = itemView.findViewById(R.id.listDescriptionTextView)
 
-        val descriptionTextView: TextView = itemView.findViewById(R.id.descriptionTextView)
-
-        val productImageView: ImageView = itemView.findViewById(R.id.productImageView)
+        val listBannerImageView: ImageView = itemView.findViewById(R.id.listBannerImageView)
 
         val container: ConstraintLayout = itemView.findViewById(R.id.backgroundView)
     }

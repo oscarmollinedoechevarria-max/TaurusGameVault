@@ -1,39 +1,36 @@
 package com.example.taurusgamevault.adapters
 
-import android.R.attr.gravity
 import android.content.Context
-import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.graphics.drawable.Drawable
-import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.PopupMenu
 import android.widget.TextView
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isVisible
 import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import coil.dispose
 import coil.load
 import coil.request.CachePolicy
-import coil.size.Scale
-import coil.util.CoilUtils.result
-import com.example.taurusgamevault.Model.Repository.Repository
 import com.example.taurusgamevault.R
-import com.example.taurusgamevault.Model.room.entities.Game
-import com.example.taurusgamevault.mainscreen.MainFragmentDirections
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
+import com.example.taurusgamevault.classes.SimplifiedGame
+import com.example.taurusgamevault.list.gamelistdetail.GameListDetailFragmentDirections
 
-class GameAdapter(private var list: List<Game>, private val context: Context, private val navigation: NavController, private val scope: CoroutineScope ): RecyclerView.Adapter<GameAdapter.ViewHolder>() {
+class SimplifiedGameAdapter(
+    private var list: List<SimplifiedGame>,
+    context: Context,
+    private val navigation: NavController,
+    private val shouldBeClicable: Boolean,
+    private val onRemove: ((SimplifiedGame) -> Unit)? = null
+): RecyclerView.Adapter<SimplifiedGameAdapter.ViewHolder>() {
+
+    private var isEditMode = false
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.game_card,parent,false)
+            .inflate(R.layout.game_card, parent, false)
 
         return ViewHolder(view)
     }
@@ -41,22 +38,21 @@ class GameAdapter(private var list: List<Game>, private val context: Context, pr
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]
 
-        //TODO: fix editmode cache screenshots
-        //tODO: date pickers on detail edit mode
-        //todo: edit mode main screen
-
         holder.gameNameTextView.text = item.name
 
-        holder.releaseDateTextView.text = item.release_date
+        holder.releaseDateTextView.text = item.releaseDate
 
         holder.descriptionTextView.text = item.description
 
-        //TODO: implement image cache locally
-        holder.productImageView.load(item.game_image) {
+        holder.removeButton.isVisible = isEditMode
+        holder.removeButton.setOnClickListener {
+            onRemove?.invoke(item)
+        }
+
+        holder.productImageView.load(item.image) {
             crossfade(true)
             placeholder(R.drawable.ic_launcher_background)
             error(R.drawable.ic_launcher_background)
-//            transformations(ImageListCache())*
             memoryCachePolicy(CachePolicy.ENABLED)
             diskCachePolicy(CachePolicy.ENABLED)
             networkCachePolicy(CachePolicy.ENABLED)
@@ -77,46 +73,31 @@ class GameAdapter(private var list: List<Game>, private val context: Context, pr
                 onStart = { _ ->
                     holder.productImageView.scaleType = ImageView.ScaleType.FIT_XY
                 }
-
             )
         }
 
         holder.container.setOnClickListener {
-            navigation.navigate(
-                MainFragmentDirections
-                    .actionMainFragmentToGameDetailFragment(gameId = item.game_id, editMode = false)
-            )
-        }
-
-        holder.container.setOnLongClickListener { view ->
-            val popup = PopupMenu(view.context, view)
-            popup.inflate(R.menu.game_menu_context)
-
-            popup.setOnMenuItemClickListener { menuItem ->
-                if (menuItem.itemId == R.id.action_edit) {
-                    navigation.navigate(
-                        MainFragmentDirections
-                            .actionMainFragmentToGameDetailFragment(gameId = item.game_id, editMode = true)
-                    )
-                    true
-                } else if (menuItem.itemId == R.id.action_delete) {
-                    scope.launch {
-                        Repository.deleteGame(context, item)
-                    }
-                    Toast.makeText(context, "Game deleted successfully", Toast.LENGTH_SHORT).show()
-                    true
-                } else {
-                    false
-                }
+            if (shouldBeClicable && !isEditMode) {
+                navigation.navigate(
+                    GameListDetailFragmentDirections
+                        .actionGameListDetailFragmentToGameDetailFragment(item.gameId, false)
+                )
             }
-            popup.show()
-            true
         }
     }
 
-
     override fun getItemCount(): Int {
         return list.size
+    }
+
+    fun submitList(newList: List<SimplifiedGame>) {
+        list = newList
+        notifyDataSetChanged()
+    }
+
+    fun toggleEditMode() {
+        isEditMode = !isEditMode
+        notifyDataSetChanged()
     }
 
     private fun applyImageMatrix(imageView: ImageView, drawable: Drawable) {
@@ -139,12 +120,10 @@ class GameAdapter(private var list: List<Game>, private val context: Context, pr
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val gameNameTextView: TextView = itemView.findViewById(R.id.gameNameTextView)
-
         val releaseDateTextView: TextView = itemView.findViewById(R.id.releaseDateTextView)
-
         val descriptionTextView: TextView = itemView.findViewById(R.id.descriptionTextView)
-
         val productImageView: ImageView = itemView.findViewById(R.id.productImageView)
+        val removeButton: ImageView = itemView.findViewById(R.id.removeButton)
 
         val container: ConstraintLayout = itemView.findViewById(R.id.backgroundView)
     }
