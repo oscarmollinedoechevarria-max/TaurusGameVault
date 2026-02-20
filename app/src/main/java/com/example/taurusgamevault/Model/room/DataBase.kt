@@ -8,12 +8,17 @@ import com.example.taurusgamevault.Model.room.dao.GameDao
 import com.example.taurusgamevault.Model.room.dao.ListDao
 import com.example.taurusgamevault.Model.room.dao.PlataformDao
 import com.example.taurusgamevault.Model.room.dao.ScreenshotDao
+import com.example.taurusgamevault.Model.room.entities.Annotation
 import com.example.taurusgamevault.Model.room.entities.Game
 import com.example.taurusgamevault.Model.room.entities.GameList
 import com.example.taurusgamevault.Model.room.entities.List_game
+import com.example.taurusgamevault.Model.room.entities.Objective
 import com.example.taurusgamevault.Model.room.entities.Plataform
 import com.example.taurusgamevault.Model.room.entities.PlataformGame
 import com.example.taurusgamevault.Model.room.entities.Screenshot
+import com.example.taurusgamevault.Model.room.entities.TagGame
+import com.example.taurusgamevault.Model.room.entities.TagList
+import com.example.taurusgamevault.Model.room.entities.Tag
 
 @Database(
     entities = [
@@ -22,7 +27,12 @@ import com.example.taurusgamevault.Model.room.entities.Screenshot
         List_game::class,
         Plataform::class,
         PlataformGame::class,
-        Screenshot::class
+        Screenshot::class,
+        Tag::class,
+        TagGame::class,
+        TagList::class,
+        Annotation::class,
+        Objective::class,
     ],
     version = 1,
     exportSchema = false
@@ -60,7 +70,7 @@ abstract class DataBase : RoomDatabase() {
                 DataBase::class.java,
                 "taurus_game_vault"
             )
-                .createFromAsset("database/taurus_game_vault.db")
+//                .createFromAsset("database/taurus_game_vault.db")
                 .build()
         }
     }
