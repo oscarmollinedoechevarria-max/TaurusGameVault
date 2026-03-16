@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "annotation")
 data class Annotation(
-    @PrimaryKey val annotation_id: Int,
+    @PrimaryKey(autoGenerate = true) val annotation_id: Long = 0L,
     val text: String,
-    val game_id: Int? = null
+    val game_id: Long
 )

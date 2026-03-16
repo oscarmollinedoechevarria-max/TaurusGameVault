@@ -8,9 +8,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.taurusgamevault.Model.Repository.Repository
 import com.example.taurusgamevault.Model.room.entities.Game
-import com.example.taurusgamevault.Model.room.entities.Plataform
-import com.example.taurusgamevault.Model.room.entities.PlataformGame
+import com.example.taurusgamevault.Model.room.entities.TagGame
 import com.example.taurusgamevault.Model.room.entities.Screenshot
+import com.example.taurusgamevault.Model.room.entities.Tag
 import com.example.taurusgamevault.classes.GameTempData
 import id.zelory.compressor.Compressor
 import id.zelory.compressor.constraint.format
@@ -19,21 +19,15 @@ import kotlinx.coroutines.launch
 import java.io.File
 import java.util.UUID
 
-//TODO: FUTURE: IMPLEMENT FIREBASE ADD BACKUP MAYBE ACCOUNT FOR EACH USER
-//TODO: FIX ERROR AND CHARGING IMAGES FOR GAME CARDS
-//TODO: ADD FUNCTION FOR 2 IMAGES FOR GAME: CARD VERSION AND BIG VERSION FOR DETAIL GAME VIEW
-//TODO: ADD SUPERIRO BUTTON INSIDE DRAWER FOR CREATE GAME TOO
-//TODO: REVISE WHY NOT DOING 2 COLUMN GRID
-
 class CreateGameViewModel : ViewModel() {
-    private var _plataforms: LiveData<List<Plataform>>? = null
-    val plataforms: LiveData<List<Plataform>>? get() = _plataforms
+    private var _tags: LiveData<List<Tag>>? = null
+    val tags: LiveData<List<Tag>>? get() = _tags
 
-    fun getPlataforms(context: Context) {
-        _plataforms = Repository.getPlataforms(context)
+    fun getTags(context: Context) {
+        _tags = Repository.getTags(context)
     }
 
-    fun saveGame(context: Context, gameTempData: GameTempData) {
+    fun saveGame(context: Context, gameTempData: GameTempData, tagsSelected: List<Long>?) {
         viewModelScope.launch {
             val gameImage: String? = gameTempData.imageUri?.let { uri ->
                 val inputStream = context.contentResolver.openInputStream(uri)
@@ -101,13 +95,23 @@ class CreateGameViewModel : ViewModel() {
                 Repository.addScreenshot(context, temp)
             }
 
+            // Save platforms
             gameTempData.plataforms?.forEach { platformID ->
-                val temp = PlataformGame(
-                    plataform_id = platformID,
+                val temp = TagGame(
+                    tag_id = platformID,
                     game_id = gameID
                 )
 
-                Repository.addGamePlataform(context,temp)
+                Repository.addTagGame(context, temp)
+            }
+
+            // Save tags
+            tagsSelected?.forEach { tagId ->
+                val temp = TagGame(
+                    tag_id = tagId,
+                    game_id = gameID
+                )
+                Repository.addTagGame(context, temp)
             }
 
             Toast.makeText(context, "Game saved successfully!", Toast.LENGTH_SHORT).show()

@@ -18,6 +18,15 @@
         <action
             android:id="@+id/action_mainFragment_to_gameListFragment"
             app:destination="@id/gameListFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_plataformsImportFragment"
+            app:destination="@id/plataformsImportFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_listTagsFragment"
+            app:destination="@id/listTagsFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_annotationsFragment"
+            app:destination="@id/annotationsFragment" />
     </fragment>
     <fragment
         android:id="@+id/createGameFragment"
@@ -35,6 +44,15 @@
         <action
             android:id="@+id/action_gameDetailFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_gameDetailFragment_to_listByTagFragment"
+            app:destination="@id/listByTagFragment" />
+        <action
+            android:id="@+id/action_gameDetailFragment_to_annotationsFragment"
+            app:destination="@id/annotationsFragment" />
+        <action
+            android:id="@+id/action_gameDetailFragment_to_objectivesFragment"
+            app:destination="@id/objectivesFragment" />
         <argument
             android:name="gameId"
             app:argType="long" />
@@ -83,5 +101,67 @@
         <action
             android:id="@+id/action_gameListFragment_to_gameListDetailFragment"
             app:destination="@id/gameListDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/importGamesNoAccountFragment"
+        android:name="com.example.taurusgamevault.importgamesigdb.ImportGamesNoAccountFragment"
+        android:label="ImportGamesNoAccountFragment" />
+    <fragment
+        android:id="@+id/plataformsImportFragment"
+        android:name="com.example.taurusgamevault.importgamesoptions.PlataformsImportFragment"
+        android:label="PlataformsImportFragment" >
+        <action
+            android:id="@+id/action_plataformsImportFragment_to_importGamesNoAccountFragment"
+            app:destination="@id/importGamesNoAccountFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/listTagsFragment"
+        android:name="com.example.taurusgamevault.tags.listtags.ListTagsFragment"
+        android:label="fragment_list_tags"
+        tools:layout="@layout/fragment_list_tags" >
+        <action
+            android:id="@+id/action_listTagsFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_listTagsFragment_to_createTagsFragment"
+            app:destination="@id/createTagsFragment" />
+        <action
+            android:id="@+id/action_listTagsFragment_to_listByTagFragment"
+            app:destination="@id/listByTagFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createTagsFragment"
+        android:name="com.example.taurusgamevault.tags.createtags.CreateTagsFragment"
+        android:label="CreateTagsFragment" >
+        <action
+            android:id="@+id/action_createTagsFragment_to_listTagsFragment"
+            app:destination="@id/listTagsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/listByTagFragment"
+        android:name="com.example.taurusgamevault.tags.listgamesbytag.ListByTagFragment"
+        android:label="ListByTagFragment" >
+        <argument
+            android:name="tagId"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_listByTagFragment_to_gameDetailFragment"
+            app:destination="@id/gameDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/annotationsFragment"
+        android:name="com.example.taurusgamevault.annotations.AnnotationsFragment"
+        android:label="AnnotationsFragment">
+        <argument
+            android:name="gameId"
+            app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/objectivesFragment"
+        android:name="com.example.taurusgamevault.objectives.ObjectivesFragment"
+        android:label="ObjectivesFragment">
+        <argument
+            android:name="gameId"
+            app:argType="long" />
     </fragment>
 </navigation>

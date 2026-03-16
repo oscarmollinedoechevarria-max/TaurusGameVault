@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".annotations.AnnotationsFragment">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Annotations"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <Button
+                android:id="@+id/btn_save_annotation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Save"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#1a1a1a"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:gravity="center_vertical">
+
+                <!-- Formato -->
+                <ImageButton android:id="@+id/btn_bold"
+                    style="@style/ToolbarButton"
+                    android:src="@drawable/editor_icon_bold"/>
+
+                <ImageButton android:id="@+id/btn_italic"
+                    style="@style/ToolbarButton"
+                    android:src="@drawable/editor_icon_italic"/>
+
+                <ImageButton android:id="@+id/btn_underline"
+                    style="@style/ToolbarButton"
+                    android:src="@drawable/editor_icon_underline"/>
+
+                <ImageButton android:id="@+id/btn_strike"
+                    style="@style/ToolbarButton"
+                    android:src="@drawable/editor_icon_strike1"/>
+
+                <View style="@style/ToolbarDivider"/>
+
+                <!-- Destacar -->
+                <ImageButton android:id="@+id/btn_highlight_yellow"
+                    style="@style/ToolbarButton"
+                    android:src="@drawable/editor_icon_highlight_yellow"/>
+
+                <ImageButton android:id="@+id/btn_highlight_green"
+                    style="@style/ToolbarButton"
+                    android:src="@drawable/editor_icon_highlight_green"/>
+
+                <ImageButton android:id="@+id/btn_text_red"
+                    style="@style/ToolbarButton"
+                    android:src="@drawable/editor_icon_text_red"/>
+
+                <ImageButton android:id="@+id/btn_text_blue"
+                    style="@style/ToolbarButton"
+                    android:src="@drawable/editor_icon_text_blue"/>
+
+                <View style="@style/ToolbarDivider"/>
+
+                <!-- Estructura -->
+                <ImageButton android:id="@+id/btn_h1"
+                    style="@style/ToolbarButton"
+                    android:src="@drawable/editor_icon_h1"/>
+
+                <ImageButton android:id="@+id/btn_h2"
+                    style="@style/ToolbarButton"
+                    android:src="@drawable/editor_icon_h2"/>
+
+                <ImageButton android:id="@+id/btn_blockquote"
+                    style="@style/ToolbarButton"
+                    android:src="@drawable/editor_icon_blockquote"/>
+
+                <ImageButton android:id="@+id/btn_bullets"
+                    style="@style/ToolbarButton"
+                    android:src="@drawable/editor_icon_bullets"/>
+
+                <ImageButton android:id="@+id/btn_checkbox"
+                    style="@style/ToolbarButton"
+                    android:src="@drawable/editor_icon_checkbox"/>
+
+                <View style="@style/ToolbarDivider"/>
+
+                <!-- Insertar -->
+                <ImageButton android:id="@+id/btn_link"
+                    style="@style/ToolbarButton"
+                    android:src="@drawable/editor_icon_link"/>
+
+                <ImageButton android:id="@+id/btn_youtube"
+                    style="@style/ToolbarButton"
+                    android:src="@drawable/appicon"/>
+
+                <View style="@style/ToolbarDivider"/>
+
+                <!-- Acciones -->
+                <ImageButton android:id="@+id/btn_undo"
+                    style="@style/ToolbarButton"
+                    android:src="@drawable/editor_icon_undo"/>
+
+                <ImageButton android:id="@+id/btn_redo"
+                    style="@style/ToolbarButton"
+                    android:src="@drawable/editor_icon_redo"/>
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <jp.wasabeef.richeditor.RichEditor
+            android:id="@+id/editor"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+</layout>

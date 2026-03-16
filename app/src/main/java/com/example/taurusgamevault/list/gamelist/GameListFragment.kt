@@ -6,13 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taurusgamevault.R
-import com.example.taurusgamevault.adapters.GameAdapter
 import com.example.taurusgamevault.adapters.ListGameAdapter
 import com.example.taurusgamevault.databinding.FragmentGameListBinding
 
@@ -34,9 +32,18 @@ class GameListFragment : Fragment() {
 
         viewModel.getList(requireContext())
 
-        viewModel.list?.observe(viewLifecycleOwner, Observer { list ->
-            recyclerview.adapter = ListGameAdapter(list, requireContext(), findNavController(), lifecycleScope)
-        })
+        viewModel.list?.observe(viewLifecycleOwner) { list ->
+            if (list.isNullOrEmpty()) {
+                binding.tvEmptyLists.visibility = View.VISIBLE
+                binding.listsRecyclerView.visibility = View.GONE
+            } else {
+                binding.tvEmptyLists.visibility = View.GONE
+                binding.listsRecyclerView.visibility = View.VISIBLE
+
+                recyclerview.adapter = ListGameAdapter(list, requireContext(), findNavController(), lifecycleScope)
+
+            }
+        }
 
         binding.fabAdd.setOnClickListener {
             findNavController().navigate(R.id.action_gameListFragment_to_createListFragment)

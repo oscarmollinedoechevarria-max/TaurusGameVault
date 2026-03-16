@@ -9,4 +9,9 @@
         android:title="List"
         android:icon="@drawable/dottedlist">
     </item>
+
+    <item
+        android:id="@+id/listTagsFragment"
+        android:title="Tags"
+        android:icon="@drawable/ic_launcher_background" />
 </menu>

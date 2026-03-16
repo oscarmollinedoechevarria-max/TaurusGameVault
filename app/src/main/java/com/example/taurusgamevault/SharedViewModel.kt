@@ -9,7 +9,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.example.taurusgamevault.Model.Repository.Repository
 import com.example.taurusgamevault.Model.room.entities.GameList
-import com.example.taurusgamevault.Model.room.entities.Plataform
+import com.example.taurusgamevault.Model.room.entities.Tag
 import id.zelory.compressor.Compressor
 import id.zelory.compressor.constraint.format
 import id.zelory.compressor.constraint.quality
@@ -21,8 +21,8 @@ import java.util.UUID
 
 class SharedViewModel(application: Application) : AndroidViewModel(application) {
 
-    private var _plataforms: LiveData<List<Plataform>>? = null
-    val plataforms: LiveData<List<Plataform>>? get() = _plataforms
+    private var _plataforms: LiveData<List<Tag>>? = null
+    val plataforms: LiveData<List<Tag>>? get() = _plataforms
 
     fun getPlataforms(context: Context) {
         _plataforms = Repository.getPlataforms(context)

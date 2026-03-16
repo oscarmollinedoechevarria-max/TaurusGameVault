@@ -17,20 +17,16 @@ import androidx.navigation.fragment.findNavController
 import com.example.taurusgamevault.R
 import com.example.taurusgamevault.classes.GameTempData
 import com.example.taurusgamevault.databinding.FragmentCreateGameBinding
-import com.example.taurusgamevault.databinding.FragmentMainBinding
-import java.net.URI
 import androidx.constraintlayout.helper.widget.Carousel
-import androidx.lifecycle.Observer
-import com.example.taurusgamevault.Model.room.entities.Plataform
+import com.example.taurusgamevault.Model.room.entities.Tag
 import com.example.taurusgamevault.SharedViewModel
 import com.example.taurusgamevault.enums.GameStates
 import com.example.taurusgamevault.enums.Priority
-import com.example.taurusgamevault.mainscreen.MainFragmentDirections
-import okhttp3.internal.platform.Platform
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.Calendar
 import java.util.TimeZone
+
 class CreateGameFragment : Fragment() {
     private val viewModel: CreateGameViewModel by viewModels()
 
@@ -42,8 +38,9 @@ class CreateGameFragment : Fragment() {
     private val selectedScreenshotUris: MutableList<Uri> = mutableListOf()
 
     private var plataformsSelected: MutableList<Long> = mutableListOf()
+    private var tagsSelected: MutableList<Long> = mutableListOf()
 
-    private var plataforms: List<Plataform> = listOf()
+    private var allTags: List<Tag> = listOf()
 
     private val MAX_SCREENSHOTS = 5
 
@@ -124,10 +121,10 @@ class CreateGameFragment : Fragment() {
             )
         }
 
-        viewModel.getPlataforms(requireContext())
+        viewModel.getTags(requireContext())
 
-        viewModel.plataforms?.observe(viewLifecycleOwner) { platformList ->
-            plataforms = platformList
+        viewModel.tags?.observe(viewLifecycleOwner) { tagsList ->
+            allTags = tagsList
         }
 
         binding.saveGameButton.setOnClickListener {
@@ -158,11 +155,11 @@ class CreateGameFragment : Fragment() {
                     deadline = binding.editDeadline.text.toString().trim().ifEmpty { null },
                     priority = Priority.numberToPriority(priority)?.text,
                     screenshots = selectedScreenshotUris.toList(),
-                    plataforms = plataformsSelected.toList(),
+                    plataforms = (plataformsSelected + tagsSelected).toList(),
                     allScreenshots = null
                 )
 
-                viewModel.saveGame(requireContext(), gameData)
+                viewModel.saveGame(requireContext(), gameData, (plataformsSelected + tagsSelected).toList())
 
                 findNavController().navigate(R.id.action_createGameFragment_to_mainFragment)
             }
@@ -180,17 +177,18 @@ class CreateGameFragment : Fragment() {
     private fun setupPickers() {
 
         binding.multiSelectPlataform.setOnClickListener {
-            val selectedItems = BooleanArray(plataforms.size) { index ->
-                plataformsSelected.contains(plataforms.get(index).plataform_id)
+            val platformsOnly = allTags.filter { it.isPlataform }
+            val selectedItems = BooleanArray(platformsOnly.size) { index ->
+                plataformsSelected.contains(platformsOnly[index].tag_id)
             }
 
             AlertDialog.Builder(requireContext())
                 .setTitle("Select platforms")
                 .setMultiChoiceItems(
-                    plataforms.map { it.name }.toTypedArray(),
+                    platformsOnly.map { it.name }.toTypedArray(),
                     selectedItems
                 ) { _, which, isChecked ->
-                    val id = plataforms[which].plataform_id
+                    val id = platformsOnly[which].tag_id
                     if (isChecked) {
                         if (!plataformsSelected.contains(id)) plataformsSelected.add(id)
                     } else {
@@ -198,8 +196,35 @@ class CreateGameFragment : Fragment() {
                     }
                 }
                 .setPositiveButton("Accept") { _, _ ->
-                    val selected = plataforms.filter { plataformsSelected.contains(it.plataform_id) }
-                    binding.multiSelectPlataform.text = selected.joinToString(", ") { it.name }
+                    val selected = platformsOnly.filter { plataformsSelected.contains(it.tag_id) }
+                    binding.multiSelectPlataform.text = selected.joinToString(", ") { it.name }.ifEmpty { "Select platforms" }
+                }
+                .setNegativeButton("Cancel", null)
+                .show()
+        }
+
+        binding.multiSelectTags.setOnClickListener {
+            val tagsOnly = allTags.filter { !it.isPlataform }
+            val selectedItems = BooleanArray(tagsOnly.size) { index ->
+                tagsSelected.contains(tagsOnly[index].tag_id)
+            }
+
+            AlertDialog.Builder(requireContext())
+                .setTitle("Select tags")
+                .setMultiChoiceItems(
+                    tagsOnly.map { it.name }.toTypedArray(),
+                    selectedItems
+                ) { _, which, isChecked ->
+                    val id = tagsOnly[which].tag_id
+                    if (isChecked) {
+                        if (!tagsSelected.contains(id)) tagsSelected.add(id)
+                    } else {
+                        tagsSelected.remove(id)
+                    }
+                }
+                .setPositiveButton("Accept") { _, _ ->
+                    val selected = tagsOnly.filter { tagsSelected.contains(it.tag_id) }
+                    binding.multiSelectTags.text = selected.joinToString(", ") { it.name }.ifEmpty { "Select tags" }
                 }
                 .setNegativeButton("Cancel", null)
                 .show()
@@ -322,9 +347,8 @@ class CreateGameFragment : Fragment() {
         return try {
             val parts = dateString.split("/")
             val day = parts[0].toInt()
-            val month = parts[1].toInt() - 1 // Calendar.MONTH empieza en 0
+            val month = parts[1].toInt() - 1
             val year = parts[2].toInt()
-
             val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
             calendar.set(year, month, day, 0, 0, 0)
             calendar.set(Calendar.MILLISECOND, 0)

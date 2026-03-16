@@ -30,7 +30,20 @@ import com.example.taurusgamevault.mainscreen.MainFragmentDirections
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-class GameAdapter(private var list: List<Game>, private val context: Context, private val navigation: NavController, private val scope: CoroutineScope ): RecyclerView.Adapter<GameAdapter.ViewHolder>() {
+class GameAdapter(
+    private var list: List<Game>,
+    private val context: Context,
+    private val navigation: NavController,
+    private val scope: CoroutineScope,
+    private val onItemClick: (Game) -> Unit = { game ->
+        navigation.navigate(
+            MainFragmentDirections.actionMainFragmentToGameDetailFragment(
+                gameId = game.game_id, editMode = false
+            )
+        )
+    },
+    private val showContextMenu: Boolean = true
+) : RecyclerView.Adapter<GameAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.game_card,parent,false)
@@ -82,35 +95,36 @@ class GameAdapter(private var list: List<Game>, private val context: Context, pr
         }
 
         holder.container.setOnClickListener {
-            navigation.navigate(
-                MainFragmentDirections
-                    .actionMainFragmentToGameDetailFragment(gameId = item.game_id, editMode = false)
-            )
+            onItemClick(item)
         }
 
-        holder.container.setOnLongClickListener { view ->
-            val popup = PopupMenu(view.context, view)
-            popup.inflate(R.menu.game_menu_context)
+        if (showContextMenu) {
+            holder.container.setOnLongClickListener { view ->
+                val popup = PopupMenu(view.context, view)
+                popup.inflate(R.menu.game_menu_context)
 
-            popup.setOnMenuItemClickListener { menuItem ->
-                if (menuItem.itemId == R.id.action_edit) {
-                    navigation.navigate(
-                        MainFragmentDirections
-                            .actionMainFragmentToGameDetailFragment(gameId = item.game_id, editMode = true)
-                    )
-                    true
-                } else if (menuItem.itemId == R.id.action_delete) {
-                    scope.launch {
-                        Repository.deleteGame(context, item)
+                popup.setOnMenuItemClickListener { menuItem ->
+                    if (menuItem.itemId == R.id.action_edit) {
+                        navigation.navigate(
+                            MainFragmentDirections
+                                .actionMainFragmentToGameDetailFragment(gameId = item.game_id, editMode = true)
+                        )
+                        true
+                    } else if (menuItem.itemId == R.id.action_delete) {
+                        scope.launch {
+                            Repository.deleteGame(context, item)
+                        }
+                        Toast.makeText(context, "Game deleted successfully", Toast.LENGTH_SHORT).show()
+                        true
+                    } else {
+                        false
                     }
-                    Toast.makeText(context, "Game deleted successfully", Toast.LENGTH_SHORT).show()
-                    true
-                } else {
-                    false
                 }
+                popup.show()
+                true
             }
-            popup.show()
-            true
+        } else {
+            holder.container.setOnLongClickListener(null)
         }
     }
 

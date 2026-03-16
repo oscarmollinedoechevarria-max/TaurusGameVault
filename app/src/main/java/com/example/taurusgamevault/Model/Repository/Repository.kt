@@ -1,20 +1,34 @@
 package com.example.taurusgamevault.Model.Repository
 
 import android.content.Context
+import android.net.http.HttpException
+import android.os.Build
+import android.util.Log
+import androidx.annotation.RequiresExtension
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asFlow
+import com.example.taurusgamevault.Model.retrofit.igdb.IgdbApiService
+import com.example.taurusgamevault.Model.retrofit.igdb.IgdbGame
 import com.example.taurusgamevault.Model.room.DataBase
 import com.example.taurusgamevault.Model.room.entities.Game
 import com.example.taurusgamevault.Model.room.entities.GameList
 import com.example.taurusgamevault.Model.room.entities.List_game
-import com.example.taurusgamevault.Model.room.entities.Plataform
-import com.example.taurusgamevault.Model.room.entities.PlataformGame
+import com.example.taurusgamevault.Model.room.entities.Objective
 import com.example.taurusgamevault.Model.room.entities.Screenshot
+import com.example.taurusgamevault.Model.room.entities.Tag
+import com.example.taurusgamevault.Model.room.entities.TagGame
 import com.example.taurusgamevault.Model.supabase.SupabaseClientManager
 import io.github.jan.supabase.storage.storage
 import io.github.jan.supabase.storage.upload
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.first
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
+import java.io.IOException
 
 class Repository {
     companion object {
@@ -23,7 +37,6 @@ class Repository {
         }
 
         // TODO: Game CRUD
-        //TODO: REDO THE IMPORT GAMES SCRIPT
         fun getGames(context: Context): LiveData<List<Game>>? {
             val db = initializeDB(context)
 
@@ -40,6 +53,74 @@ class Repository {
             val db = initializeDB(context)
 
             return db.gameDAO().addGame(game)
+        }
+
+        @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
+        suspend fun searchGame(api: IgdbApiService, name: String): IgdbGame? {
+            if (name.isBlank()) return null
+
+            return try {
+                val query = "search \"$name\"; fields name, summary, rating, first_release_date, cover.image_id, platforms.name, screenshots.image_id; limit 10;"
+
+                Log.d("IGDB", "Query enviado: $query")
+
+                val body = query.toRequestBody("text/plain".toMediaType())
+
+                val resultsQuery = api.searchGames(body)
+
+                val sorted = resultsQuery
+                    .filter { it.first_release_date != null && it.cover != null }
+                    .sortedBy { it.first_release_date }
+
+                val results = sorted.first()
+
+                Log.d("IGDB", "Nº resultados: ${resultsQuery.size}")
+                Log.d("IGDB", "Resultado: $results")
+
+                if (resultsQuery.isEmpty()) {
+                    Log.w("IGDB", "Juego no encontrado: $name")
+                    null
+                } else {
+                    results
+                }
+
+            } catch (e: HttpException) {
+                val errorBody = e.message
+                Log.e("IGDB", "HTTP ${e.cause} buscando '$name': $errorBody")
+                null
+            } catch (e: IOException) {
+                Log.e("IGDB", "Error de red buscando '$name': ${e.message}")
+                null
+            } catch (e: Exception) {
+                Log.e("IGDB", "Error inesperado buscando '$name': ${e::class.simpleName} - ${e.message}")
+                null
+            }
+        }
+
+        @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
+        suspend fun importGames(
+            api: IgdbApiService,
+            names: List<String>,
+            onProgress: (current: Int, total: Int, gameName: String) -> Unit
+        ): List<IgdbGame?> {
+            Log.d("IGDB", "Iniciando importación de ${names.size} juegos: $names")
+            val total = names.size
+            val counter = java.util.concurrent.atomic.AtomicInteger(0)
+
+            return names.chunked(4).flatMap { batch ->
+                coroutineScope {
+                    batch.map { name ->
+                        async(Dispatchers.IO) {
+                            val current = counter.incrementAndGet()
+                            onProgress(current, total, name)
+                            Log.d("IGDB", "Buscando [$current/$total]: $name")
+                            val result = searchGame(api, name)
+                            Log.d("IGDB", "Resultado para '$name': $result")
+                            result
+                        }
+                    }.awaitAll()
+                }
+            }
         }
 
         suspend fun updateGame(context: Context, game: Game) {
@@ -234,13 +315,6 @@ class Repository {
             }
         }
 
-        suspend fun addGamePlataform(context: Context, gameplataform: PlataformGame): Long {
-            val db = initializeDB(context)
-
-            return db.plataformDAO().addGamePlataform(gameplataform)
-        }
-
-
         // TODO: List CRUD
         fun getLists(context: Context): LiveData<List<GameList>>? {
             val db = initializeDB(context)
@@ -296,41 +370,6 @@ class Repository {
             return db.listDAO().deleteListGame(list)
         }
 
-
-        // TODO: Plataform CRUD
-        fun getPlataforms(context: Context): LiveData<List<Plataform>>? {
-            val db = initializeDB(context)
-
-            return db.plataformDAO().getPlataforms()
-        }
-
-        fun getGamePlataforms(context: Context, gameId: Long): LiveData<List<Plataform>>? {
-            val db = initializeDB(context)
-
-            return db.plataformDAO().getGamePlataforms(gameId)
-        }
-
-        suspend fun addPlataform(context: Context, plataform: Plataform): Long {
-            val db = initializeDB(context)
-
-            return db.plataformDAO().addPlataform(plataform)
-        }
-
-        suspend fun updatePlataform(context: Context, plataform: Plataform) {
-            val db = initializeDB(context)
-
-            return db.plataformDAO().updatePlataform(
-                id = plataform.plataform_id,
-                name = plataform.name
-            )
-        }
-
-        suspend fun deletePlataform(context: Context, plataform: Plataform) {
-            val db = initializeDB(context)
-
-            return db.plataformDAO().deletePlataform(plataform)
-        }
-
         // TODO: Screenshot CRUD
         fun getScreenshots(context: Context, gameId: Long): LiveData<List<Screenshot>>? {
             val db = initializeDB(context)
@@ -357,6 +396,99 @@ class Repository {
             val db = initializeDB(context)
 
             return db.screenshotDAO().deleteScreenshot(screenshot)
+        }
+
+        // TODO: Tag CRUD
+
+        fun getTags(context: Context): LiveData<List<Tag>>? {
+            val db = initializeDB(context)
+
+            return db.tagDao().getTags()
+        }
+
+        fun getPlataforms(context: Context): LiveData<List<Tag>>? {
+            val db = initializeDB(context)
+
+            return db.tagDao().getPlataforms()
+        }
+
+
+        fun getTag(context: Context, tagId: Long): LiveData<List<Tag>>? {
+            val db = initializeDB(context)
+
+            return db.tagDao().getTag(tagId)
+        }
+
+
+        suspend fun addTag(context: Context, tag: Tag): Long {
+            val db = initializeDB(context)
+
+            return db.tagDao().addTag(tag)
+        }
+
+        suspend fun updateTag(context: Context, tag: Tag) {
+            val db = initializeDB(context)
+
+            return db.tagDao().updateTag(
+                id = tag.tag_id,
+                image = tag.image
+            )
+        }
+
+        suspend fun deleteTag(context: Context, tag: Tag) {
+            val db = initializeDB(context)
+
+            return db.tagDao().deleteTag(tag)
+        }
+
+        suspend fun addTagGame(context: Context, tagGame: TagGame): Long {
+            val db = initializeDB(context)
+            return db.tagDao().addTagGame(tagGame)
+        }
+
+        suspend fun deleteTagsByGameId(context: Context, gameId: Long) {
+            val db = initializeDB(context)
+            db.tagDao().deleteTagsByGameId(gameId)
+        }
+
+        fun getGameTags(context: Context, gameId: Long): LiveData<List<Tag>>? {
+            val db = initializeDB(context)
+            return db.tagDao().getGameTags(gameId)
+        }
+
+        fun getGamesByTag(context: Context, tagId: Long): LiveData<List<Game>>{
+            val db = initializeDB(context)
+            return db.gameDAO().getGamesByTag(tagId)
+        }
+
+        fun getGamesByTags(context: Context, tagIds: List<Long>): LiveData<List<Game>> {
+            val db = initializeDB(context)
+            return if (tagIds.isEmpty()) {
+                db.gameDAO().getGames()
+            } else {
+                db.gameDAO().getGamesByTags(tagIds, tagIds.size)
+            }
+        }
+
+        // TODO: Objective CRUD
+        fun getObjectivesByGame(context: Context, gameId: Long): LiveData<List<Objective>> {
+            val db = initializeDB(context)
+            return db.objectiveDao().getObjectivesByGame(gameId)
+        }
+
+        suspend fun insertObjective(context: Context, objective: Objective) {
+            val db = initializeDB(context)
+            db.objectiveDao().insertObjective(objective)
+        }
+
+        suspend fun updateObjective(context: Context, objective: Objective) {
+            val db = initializeDB(context)
+            db.objectiveDao().updateObjective(objective)
+        }
+
+        suspend fun deleteObjective(context: Context, objective: Objective) {
+            val db = initializeDB(context)
+            db.objectiveDao().deleteObjective(objective)
         }
 
     }

@@ -9,8 +9,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.taurusgamevault.Model.Repository.Repository
 import com.example.taurusgamevault.Model.room.entities.Game
-import com.example.taurusgamevault.Model.room.entities.Plataform
-import com.example.taurusgamevault.Model.room.entities.PlataformGame
+import com.example.taurusgamevault.Model.room.entities.Tag
+import com.example.taurusgamevault.Model.room.entities.TagGame
 import com.example.taurusgamevault.Model.room.entities.Screenshot
 import com.example.taurusgamevault.classes.GameTempData
 import id.zelory.compressor.Compressor
@@ -27,14 +27,14 @@ class GameDetailViewModel : ViewModel() {
     private var _screenshots: LiveData<List<Screenshot>>? = null
     val screenshots: LiveData<List<Screenshot>>? get() = _screenshots
 
-    private var _plataforms: LiveData<List<Plataform>>? = null
-    val plataforms: LiveData<List<Plataform>>? get() = _plataforms
+    private var _gameTags: LiveData<List<Tag>>? = null
+    val gameTags: LiveData<List<Tag>>? get() = _gameTags
 
-    private var _allPlataforms: LiveData<List<Plataform>>? = null
-    val allPlataforms: LiveData<List<Plataform>>? get() = _allPlataforms
+    private var _allTags: LiveData<List<Tag>>? = null
+    val allTags: LiveData<List<Tag>>? get() = _allTags
 
-    fun getPlataforms(context: Context) {
-        _allPlataforms = Repository.getPlataforms(context)
+    fun getTags(context: Context) {
+        _allTags = Repository.getTags(context)
     }
 
     fun getGame(context: Context, gameId: Long) {
@@ -45,11 +45,11 @@ class GameDetailViewModel : ViewModel() {
         _screenshots = Repository.getScreenshots(context, gameId)
     }
 
-    fun getGamePlataforms(context: Context, gameId: Long) {
-        _plataforms = Repository.getGamePlataforms(context, gameId)
+    fun getGameTags(context: Context, gameId: Long) {
+        _gameTags = Repository.getGameTags(context, gameId)
     }
 
-    fun saveGame(context: Context, gameTempData: GameTempData, gameId: Long) {
+    fun saveGame(context: Context, gameTempData: GameTempData, gameId: Long, onComplete: () -> Unit) {
         viewModelScope.launch {
 
             if (gameTempData.imageUri != null) {
@@ -135,13 +135,14 @@ class GameDetailViewModel : ViewModel() {
                 }
             }
 
-            // Update platforms
-            if (!gameTempData.plataforms.isNullOrEmpty()) {
-                gameTempData.plataforms.forEach { platformID ->
-                    Repository.addGamePlataform(
+            // Update platforms and Tags
+            if (gameTempData.plataforms != null) {
+                Repository.deleteTagsByGameId(context, gameId)
+                gameTempData.plataforms.forEach { tagId ->
+                    Repository.addTagGame(
                         context,
-                        PlataformGame(
-                            plataform_id = platformID,
+                        TagGame(
+                            tag_id = tagId,
                             game_id = gameId
                         )
                     )
@@ -149,6 +150,7 @@ class GameDetailViewModel : ViewModel() {
             }
 
             Toast.makeText(context, "Game saved successfully!", Toast.LENGTH_SHORT).show()
+            onComplete()
         }
     }
 }

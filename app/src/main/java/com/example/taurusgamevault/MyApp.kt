@@ -1,14 +1,12 @@
 package com.example.taurusgamevault
 
 import android.app.Application
-import androidx.fragment.app.viewModels
 import coil.Coil
 import coil.ImageLoader
 import coil.disk.DiskCache
 import coil.memory.MemoryCache
+import com.example.taurusgamevault.Model.retrofit.igdb.IgdbRetrofit
 import com.example.taurusgamevault.Model.supabase.SupabaseClientManager
-import com.example.taurusgamevault.mainscreen.MainViewModel
-import kotlin.getValue
 
 class MyApp : Application() {
 
@@ -33,5 +31,7 @@ class MyApp : Application() {
         Coil.setImageLoader(imageLoader)
 
         SupabaseClientManager.init(this)
+
+        IgdbRetrofit.init(this)
     }
 }

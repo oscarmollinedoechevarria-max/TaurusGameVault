@@ -4,17 +4,17 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.taurusgamevault.Model.room.dao.AnnotationDao
 import com.example.taurusgamevault.Model.room.dao.GameDao
 import com.example.taurusgamevault.Model.room.dao.ListDao
-import com.example.taurusgamevault.Model.room.dao.PlataformDao
+import com.example.taurusgamevault.Model.room.dao.ObjectiveDao
 import com.example.taurusgamevault.Model.room.dao.ScreenshotDao
+import com.example.taurusgamevault.Model.room.dao.TagDao
 import com.example.taurusgamevault.Model.room.entities.Annotation
 import com.example.taurusgamevault.Model.room.entities.Game
 import com.example.taurusgamevault.Model.room.entities.GameList
 import com.example.taurusgamevault.Model.room.entities.List_game
 import com.example.taurusgamevault.Model.room.entities.Objective
-import com.example.taurusgamevault.Model.room.entities.Plataform
-import com.example.taurusgamevault.Model.room.entities.PlataformGame
 import com.example.taurusgamevault.Model.room.entities.Screenshot
 import com.example.taurusgamevault.Model.room.entities.TagGame
 import com.example.taurusgamevault.Model.room.entities.TagList
@@ -25,8 +25,6 @@ import com.example.taurusgamevault.Model.room.entities.Tag
         Game::class,
         GameList::class,
         List_game::class,
-        Plataform::class,
-        PlataformGame::class,
         Screenshot::class,
         Tag::class,
         TagGame::class,
@@ -34,15 +32,19 @@ import com.example.taurusgamevault.Model.room.entities.Tag
         Annotation::class,
         Objective::class,
     ],
-    version = 1,
+    version = 1, // 3
     exportSchema = false
 )
 abstract class DataBase : RoomDatabase() {
 
     abstract fun gameDAO(): GameDao
     abstract fun listDAO(): ListDao
-    abstract fun plataformDAO(): PlataformDao
     abstract fun screenshotDAO(): ScreenshotDao
+    abstract fun tagDao(): TagDao
+    abstract fun annotationDao(): AnnotationDao
+
+    abstract fun objectiveDao(): ObjectiveDao
+
 
     companion object {
 
@@ -70,7 +72,8 @@ abstract class DataBase : RoomDatabase() {
                 DataBase::class.java,
                 "taurus_game_vault"
             )
-//                .createFromAsset("database/taurus_game_vault.db")
+//                .fallbackToDestructiveMigration()
+                .createFromAsset("database/taurus_game_vault.db")
                 .build()
         }
     }

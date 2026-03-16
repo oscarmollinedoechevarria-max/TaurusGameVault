@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".importgamesigdb.ImportGamesNoAccountFragment">
+
+<EditText
+    android:id="@+id/etGameNames"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    android:gravity="top"
+    android:hint="Hollow Knight&#10;Celeste&#10;Hades"
+    android:inputType="textMultiLine"
+    android:background="@android:drawable/edit_text" />
+
+<ProgressBar
+    android:id="@+id/progressBar"
+    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="12dp"
+    android:visibility="gone" />
+
+<TextView
+    android:id="@+id/tvProgress"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="4dp" />
+
+<Button
+    android:id="@+id/btnImport"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="12dp"
+    android:text="Importar" />
+
+</LinearLayout>
+</layout>

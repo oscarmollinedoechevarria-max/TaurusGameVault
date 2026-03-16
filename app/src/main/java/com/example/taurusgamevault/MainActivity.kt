@@ -34,6 +34,8 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.getListNames(application)
 
+        viewModel.getPlataforms(application)
+
         setupNavigation()
 
         setupDrawer()
@@ -49,7 +51,7 @@ class MainActivity : AppCompatActivity() {
         val drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
 
         appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.mainFragment, R.id.gameListFragment),
+            setOf(R.id.mainFragment, R.id.gameListFragment, R.id.listTagsFragment),
             drawerLayout
         )
 
@@ -57,8 +59,10 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-        findViewById<NavigationView>(R.id.nav_view)
-            .setupWithNavController(navController)
+        val navView = findViewById<NavigationView>(R.id.nav_view)
+        navView.setupWithNavController(navController)
+
+        navView.itemIconTintList = null
     }
 
     private fun setupDrawer() {
@@ -128,6 +132,9 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.gameListFragment -> {
                 navController.navigate(R.id.gameListFragment)
+            }
+            R.id.listTagsFragment -> {
+                navController.navigate(R.id.listTagsFragment)
             }
             else -> {
                 val gameList = viewModel.lists?.value?.find {

@@ -368,9 +368,9 @@
                             app:layout_constraintEnd_toEndOf="parent"/>
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <!-- SUBSECTION: Plataform -->
+                    <!-- SUBSECTION: Platforms (isPlataform = true) -->
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/subsectionPlataform"
+                        android:id="@+id/subsectionPlatforms"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
@@ -381,47 +381,93 @@
                         app:layout_constraintEnd_toEndOf="parent">
 
                         <TextView
-                            android:id="@+id/labelPlataform"
+                            android:id="@+id/labelPlatforms"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Plataform"
+                            android:text="Platforms"
                             android:textStyle="bold"
                             android:textSize="14sp"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintStart_toStartOf="parent"/>
 
-                        <TextView
-                            android:id="@+id/multiSelectPlataformeEdit"
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/platformsRecyclerView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            app:layout_constraintTop_toBottomOf="@id/labelPlatforms"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            tools:listitem="@layout/plataformimportcard"
+                            android:orientation="horizontal"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnEditPlatforms"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:padding="12dp"
-                            android:text="Select plataforms"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:background="?attr/selectableItemBackground"
-                            android:drawableEnd="@drawable/outline_arrow_drop_down_24"
+                            android:text="Select platforms"
                             android:visibility="gone"
-                            android:gravity="center_vertical"
-                            app:layout_constraintTop_toBottomOf="@id/labelPlataform"
+                            app:icon="@drawable/outline_arrow_drop_down_24"
+                            app:iconGravity="end"
+                            app:layout_constraintTop_toBottomOf="@id/labelPlatforms"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent" />
 
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!-- SUBSECTION: Tags (isPlataform = false) -->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/subsectionTags"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:padding="12dp"
+                        android:background="#FFFFFF"
+                        app:layout_constraintTop_toBottomOf="@id/subsectionPlatforms"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent">
+
                         <TextView
-                            android:id="@+id/multiSelectPlataform"
+                            android:id="@+id/labelTags"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tags"
+                            android:textStyle="bold"
+                            android:textSize="14sp"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"/>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/tagsRecyclerView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            app:layout_constraintTop_toBottomOf="@id/labelTags"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            tools:listitem="@layout/plataformimportcard"
+                            android:orientation="horizontal"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnEditTags"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:padding="12dp"
-                            android:text="Select plataforms"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:background="?attr/selectableItemBackground"
-                            android:gravity="center_vertical"
-                            app:layout_constraintTop_toBottomOf="@id/labelPlataform"
+                            android:text="Select tags"
+                            android:visibility="gone"
+                            app:icon="@drawable/outline_arrow_drop_down_24"
+                            app:iconGravity="end"
+                            app:layout_constraintTop_toBottomOf="@id/labelTags"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"/>
+                            app:layout_constraintEnd_toEndOf="parent" />
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <!-- ========================================== -->
@@ -575,35 +621,35 @@
                                 android:id="@+id/star1"
                                 android:layout_width="32dp"
                                 android:layout_height="32dp"
-                                android:src="@drawable/chevronleft"
+                                android:src="@drawable/starimg"
                                 android:contentDescription="Star 1"/>
 
                             <ImageView
                                 android:id="@+id/star2"
                                 android:layout_width="32dp"
                                 android:layout_height="32dp"
-                                android:src="@drawable/chevronleft"
+                                android:src="@drawable/starimg"
                                 android:contentDescription="Star 2"/>
 
                             <ImageView
                                 android:id="@+id/star3"
                                 android:layout_width="32dp"
                                 android:layout_height="32dp"
-                                android:src="@drawable/chevronleft"
+                                android:src="@drawable/starimg"
                                 android:contentDescription="Star 3"/>
 
                             <ImageView
                                 android:id="@+id/star4"
                                 android:layout_width="32dp"
                                 android:layout_height="32dp"
-                                android:src="@drawable/chevronleft"
+                                android:src="@drawable/starimg"
                                 android:contentDescription="Star 4"/>
 
                             <ImageView
                                 android:id="@+id/star5"
                                 android:layout_width="32dp"
                                 android:layout_height="32dp"
-                                android:src="@drawable/chevronleft"
+                                android:src="@drawable/starimg"
                                 android:contentDescription="Star 5"/>
                         </LinearLayout>
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -1122,6 +1168,102 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <!-- ========================================== -->
+                <!-- SECTION: ANNOTATIONS -->
+                <!-- ========================================== -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/sectionAnnotations"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:layout_marginTop="16dp"
+                    android:background="#F5F5F5"
+                    app:layout_constraintTop_toBottomOf="@id/sectionPriority"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <!-- Section Title -->
+                    <TextView
+                        android:id="@+id/sectionAnnotationsTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Annotations"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:textColor="#333333"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                    <View
+                        android:id="@+id/dividerAnnotations"
+                        android:layout_width="0dp"
+                        android:layout_height="2dp"
+                        android:layout_marginTop="8dp"
+                        android:background="#E0E0E0"
+                        app:layout_constraintTop_toBottomOf="@id/sectionAnnotationsTitle"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+
+                    <Button
+                        android:id="@+id/btnGoToAnnotations"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="Open Annotations"
+                        app:layout_constraintTop_toBottomOf="@id/dividerAnnotations"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- ========================================== -->
+                <!-- SECTION: OBJECTIVES -->
+                <!-- ========================================== -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/sectionObjectives"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:layout_marginTop="16dp"
+                    android:background="#F5F5F5"
+                    app:layout_constraintTop_toBottomOf="@id/sectionAnnotations"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <!-- Section Title -->
+                    <TextView
+                        android:id="@+id/sectionObjectivesTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Objectives"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:textColor="#333333"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                    <View
+                        android:id="@+id/dividerObjectives"
+                        android:layout_width="0dp"
+                        android:layout_height="2dp"
+                        android:layout_marginTop="8dp"
+                        android:background="#E0E0E0"
+                        app:layout_constraintTop_toBottomOf="@id/sectionObjectivesTitle"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+
+                    <Button
+                        android:id="@+id/btnGoToObjectives"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="Open Objectives"
+                        app:layout_constraintTop_toBottomOf="@id/dividerObjectives"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- ========================================== -->
                 <!-- SAVE BUTTON -->
                 <!-- ========================================== -->
                 <Button
@@ -1133,7 +1275,7 @@
                     android:textStyle="bold"
                     android:layout_marginTop="24dp"
                     android:visibility="gone"
-                    app:layout_constraintTop_toBottomOf="@id/sectionPriority"
+                    app:layout_constraintTop_toBottomOf="@id/sectionObjectives"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
 

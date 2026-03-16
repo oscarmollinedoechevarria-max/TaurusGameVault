@@ -1,5 +1,8 @@
 package com.example.taurusgamevault.gamedetail
 
+// TODO: https://github.com/wasabeef/richeditor-android Tiene licencia Apache 2.0.
+// Esto significa que puedes usarla libremente en proyectos personales y comerciales, modificarla y distribuirla, solo necesitas incluir el aviso de copyright y la licencia en tu proyecto.
+
 import com.example.taurusgamevault.adapters.ScreenshotAdapter
 import android.app.AlertDialog
 import android.graphics.Matrix
@@ -22,8 +25,9 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import coil.request.CachePolicy
-import com.example.taurusgamevault.Model.room.entities.Plataform
+import com.example.taurusgamevault.Model.room.entities.Tag
 import com.example.taurusgamevault.R
+import com.example.taurusgamevault.adapters.TagsAdapter
 import com.example.taurusgamevault.classes.GameTempData
 import com.example.taurusgamevault.databinding.FragmentGameDetailBinding
 import com.example.taurusgamevault.enums.GameStates
@@ -42,8 +46,8 @@ class GameDetailFragment : Fragment() {
     private var editingScreenshotPosition: Int = -1
     private var currentScreenshots: MutableList<String> = mutableListOf()
     private var editMode: Boolean = false
-    private var plataformsSelected: MutableList<Long> = mutableListOf()
-    private var plataforms: List<Plataform> = listOf()
+    private var tagsSelectedIds: MutableList<Long> = mutableListOf()
+    private var allTags: List<Tag> = listOf()
     private var priority: Int = 0
     private var gameImage: Uri? = null
 
@@ -133,9 +137,9 @@ class GameDetailFragment : Fragment() {
         val gameId = args.gameId
 
         viewModel.getGame(requireContext(), gameId)
-        viewModel.getGamePlataforms(requireContext(), gameId)
+        viewModel.getGameTags(requireContext(), gameId)
         viewModel.getScreenshots(requireContext(), gameId)
-        viewModel.getPlataforms(requireContext())
+        viewModel.getTags(requireContext())
 
         viewModel.game?.observe(viewLifecycleOwner) { game ->
             loadMainImage(game.game_image)
@@ -169,14 +173,42 @@ class GameDetailFragment : Fragment() {
             updateRatingStars(game.personal_rating ?: 0f)
         }
 
-        viewModel.plataforms?.observe(viewLifecycleOwner) { plataformsFromBd ->
-            plataformsSelected = plataformsFromBd.map { it.plataform_id }.toMutableList()
-            binding.multiSelectPlataform.text = plataformsFromBd.joinToString(", ") { it.name }
-            binding.multiSelectPlataformeEdit.text = plataformsFromBd.joinToString(", ") { it.name }
+        viewModel.gameTags?.observe(viewLifecycleOwner) { tagsFromBd ->
+            tagsSelectedIds = tagsFromBd.map { it.tag_id }.toMutableList()
+            
+            val platformsOnly = tagsFromBd.filter { it.isPlataform }
+            val tagsOnly = tagsFromBd.filter { !it.isPlataform }
+
+            binding.platformsRecyclerView.apply {
+                layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                adapter = TagsAdapter(
+                    items = platformsOnly,
+                    onNavigate = { tag ->
+                        findNavController().navigate(
+                            GameDetailFragmentDirections.actionGameDetailFragmentToListByTagFragment(tag.tag_id)
+                        )
+                    }
+                )
+            }
+
+            binding.tagsRecyclerView.apply {
+                layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                adapter = TagsAdapter(
+                    items = tagsOnly,
+                    onNavigate = { tag ->
+                        findNavController().navigate(
+                            GameDetailFragmentDirections.actionGameDetailFragmentToListByTagFragment(tag.tag_id)
+                        )
+                    }
+                )
+            }
+
+            binding.btnEditPlatforms.text = platformsOnly.joinToString(", ") { it.name }.ifEmpty { "Select platforms" }
+            binding.btnEditTags.text = tagsOnly.joinToString(", ") { it.name }.ifEmpty { "Select tags" }
         }
 
-        viewModel.allPlataforms?.observe(viewLifecycleOwner) { allPlataformsFromBd ->
-            plataforms = allPlataformsFromBd
+        viewModel.allTags?.observe(viewLifecycleOwner) { tagsFromBd ->
+            allTags = tagsFromBd
         }
 
         viewModel.screenshots?.observe(viewLifecycleOwner) { screenshots ->
@@ -217,12 +249,14 @@ class GameDetailFragment : Fragment() {
                     .filter { it.startsWith("content://") }
                     .map { Uri.parse(it) },
                 allScreenshots = currentScreenshots.toList(),
-                plataforms = plataformsSelected.toList()
+                plataforms = tagsSelectedIds.toList()
             )
 
-            viewModel.saveGame(requireContext(), gameData, gameId)
-            viewModel.getGame(requireContext(), gameId)
-            editMode()
+            viewModel.saveGame(requireContext(), gameData, gameId) {
+                viewModel.getGame(requireContext(), gameId)
+                viewModel.getGameTags(requireContext(), gameId)
+                editMode()
+            }
         }
     }
 
@@ -243,7 +277,9 @@ class GameDetailFragment : Fragment() {
         binding.textViewPriority.isVisible = !editMode
         binding.priorityIndicators.isVisible = !editMode
         binding.starRatingLayout.isVisible = !editMode
-        binding.multiSelectPlataform.isVisible = !editMode
+        
+        binding.platformsRecyclerView.isVisible = !editMode
+        binding.tagsRecyclerView.isVisible = !editMode
 
         binding.editMainImage.isVisible = editMode
         binding.editName.isVisible = editMode
@@ -256,7 +292,8 @@ class GameDetailFragment : Fragment() {
         binding.editEndDate.isVisible = editMode
         binding.editDeadline.isVisible = editMode
         binding.editPriority.isVisible = editMode
-        binding.multiSelectPlataformeEdit.isVisible = editMode
+        binding.btnEditPlatforms.isVisible = editMode
+        binding.btnEditTags.isVisible = editMode
         binding.saveGameButton.isVisible = editMode
 
         binding.fabEdit.setImageResource(
@@ -310,10 +347,10 @@ class GameDetailFragment : Fragment() {
     }
 
     private fun updatePriorityStars(priority: Int) {
-        for (i in 0..priority) {
+        for (i in 1..5) {
             val resId = resources.getIdentifier("priority$i", "id", requireContext().packageName)
             if (resId != 0) {
-                view?.findViewById<View>(resId)?.visibility = View.VISIBLE
+                view?.findViewById<View>(resId)?.visibility = if (i <= priority) View.VISIBLE else View.GONE
             }
         }
     }
@@ -367,28 +404,55 @@ class GameDetailFragment : Fragment() {
             }
         }
 
-        binding.multiSelectPlataformeEdit.setOnClickListener {
-            val selectedItems = BooleanArray(plataforms.size) { index ->
-                plataformsSelected.contains(plataforms[index].plataform_id)
+        binding.btnEditPlatforms.setOnClickListener {
+            val platformsOnly = allTags.filter { it.isPlataform }
+            val selectedItems = BooleanArray(platformsOnly.size) { index ->
+                tagsSelectedIds.contains(platformsOnly[index].tag_id)
             }
 
             AlertDialog.Builder(requireContext())
                 .setTitle("Select platforms")
                 .setMultiChoiceItems(
-                    plataforms.map { it.name }.toTypedArray(),
+                    platformsOnly.map { it.name }.toTypedArray(),
                     selectedItems
                 ) { _, which, isChecked ->
-                    val id = plataforms[which].plataform_id
+                    val id = platformsOnly[which].tag_id
                     if (isChecked) {
-                        if (!plataformsSelected.contains(id)) plataformsSelected.add(id)
+                        if (!tagsSelectedIds.contains(id)) tagsSelectedIds.add(id)
                     } else {
-                        plataformsSelected.remove(id)
+                        tagsSelectedIds.remove(id)
                     }
                 }
                 .setPositiveButton("Accept") { _, _ ->
-                    val selected = plataforms.filter { plataformsSelected.contains(it.plataform_id) }
-                    binding.multiSelectPlataform.text = selected.joinToString(", ") { it.name }
-                    binding.multiSelectPlataformeEdit.text = selected.joinToString(", ") { it.name }
+                    val selected = platformsOnly.filter { tagsSelectedIds.contains(it.tag_id) }
+                    binding.btnEditPlatforms.text = selected.joinToString(", ") { it.name }.ifEmpty { "Select platforms" }
+                }
+                .setNegativeButton("Cancel", null)
+                .show()
+        }
+
+        binding.btnEditTags.setOnClickListener {
+            val tagsOnly = allTags.filter { !it.isPlataform }
+            val selectedItems = BooleanArray(tagsOnly.size) { index ->
+                tagsSelectedIds.contains(tagsOnly[index].tag_id)
+            }
+
+            AlertDialog.Builder(requireContext())
+                .setTitle("Select tags")
+                .setMultiChoiceItems(
+                    tagsOnly.map { it.name }.toTypedArray(),
+                    selectedItems
+                ) { _, which, isChecked ->
+                    val id = tagsOnly[which].tag_id
+                    if (isChecked) {
+                        if (!tagsSelectedIds.contains(id)) tagsSelectedIds.add(id)
+                    } else {
+                        tagsSelectedIds.remove(id)
+                    }
+                }
+                .setPositiveButton("Accept") { _, _ ->
+                    val selected = tagsOnly.filter { tagsSelectedIds.contains(it.tag_id) }
+                    binding.btnEditTags.text = selected.joinToString(", ") { it.name }.ifEmpty { "Select tags" }
                 }
                 .setNegativeButton("Cancel", null)
                 .show()
@@ -417,6 +481,17 @@ class GameDetailFragment : Fragment() {
             isClickable = true
             setOnClickListener { showDatePicker(text.toString()) { setText(it) } }
         }
+
+        binding.btnGoToAnnotations.setOnClickListener {
+            val action = GameDetailFragmentDirections.actionGameDetailFragmentToAnnotationsFragment(gameId = args.gameId)
+            findNavController().navigate(action)
+        }
+
+        binding.btnGoToObjectives.setOnClickListener {
+            val action = GameDetailFragmentDirections.actionGameDetailFragmentToObjectivesFragment(gameId = args.gameId)
+            findNavController().navigate(action)
+        }
+
     }
 
     private fun showDatePicker(currentDate: String, onDateSelected: (String) -> Unit) {

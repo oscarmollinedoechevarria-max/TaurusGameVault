@@ -7,6 +7,6 @@ import androidx.room.Entity
     primaryKeys = ["game_id", "tag_id"]
 )
 data class TagGame(
-    val game_id: Int,
-    val tag_id: Int
+    val game_id: Long,
+    val tag_id: Long
 )

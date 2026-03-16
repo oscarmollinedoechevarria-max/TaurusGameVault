@@ -8,6 +8,9 @@ plugins {
 
     //parcelize
     id("kotlin-parcelize")
+
+    //viewmodel hilt
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -60,6 +63,8 @@ dependencies {
     implementation(libs.androidx.legacy.support.v4)
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.remote.creation.core)
+    implementation(libs.protolite.well.known.types)
+    implementation(libs.volley)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -114,4 +119,14 @@ dependencies {
     // material
     implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.core:core:1.13.0")
+
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+
+    //hilt
+    implementation("com.google.dagger:hilt-android:2.56")
+    kapt("com.google.dagger:hilt-android-compiler:2.56")
+    implementation("androidx.hilt:hilt-navigation-fragment:1.1.0")
+
+    //rich text editor
+    implementation("jp.wasabeef:richeditor-android:2.0.0")
 }
