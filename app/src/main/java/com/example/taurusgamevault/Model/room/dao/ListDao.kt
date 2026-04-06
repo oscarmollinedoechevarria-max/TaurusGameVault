@@ -19,19 +19,8 @@ interface ListDao {
     fun getList(gameListId: Long): LiveData<GameList>
 
 
-    @Query("""
-    UPDATE list
-    SET name = :name,
-        description = :description,
-        image = :image
-    WHERE list_id = :id
-""")
-    suspend fun updateList(
-        id: Long,
-        name: String,
-        description: String?,
-        image: String?
-    )
+    @Query("UPDATE list SET name = :name, description = :description, image = :image WHERE list_id = :id")
+    suspend fun updateList(id: Long, name: String, description: String?, image: String?)
 
     @Query("UPDATE list SET image = :image WHERE list_id = :id")
     suspend fun updateListImage(id: Long, image: String?)
@@ -42,6 +31,7 @@ interface ListDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addList(list: GameList): Long
 
+    // get games by list
     @Query("SELECT game.* FROM game INNER JOIN list_game ON game.game_id = list_game.game_id WHERE list_game.list_id = :gameListId")
     fun getGamesByListId(gameListId: Long): LiveData<List<Game>>
     @Delete

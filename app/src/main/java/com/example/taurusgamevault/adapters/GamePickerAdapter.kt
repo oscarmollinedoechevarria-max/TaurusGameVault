@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class GamePickerAdapter(
     private var list: List<Game>,
+    // block for game click
     private val onGameClick: (Game) -> Unit
 ) : RecyclerView.Adapter<GamePickerAdapter.ViewHolder>() {
 
@@ -26,6 +27,7 @@ class GamePickerAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_game_picker, parent, false)
+
         return ViewHolder(view)
     }
 
@@ -100,6 +102,7 @@ class GamePickerAdapter(
         notifyDataSetChanged()
     }
 
+    //custom image position
     private fun applyImageMatrix(imageView: ImageView, drawable: Drawable) {
         imageView.scaleType = ImageView.ScaleType.MATRIX
 

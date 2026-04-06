@@ -19,6 +19,7 @@ import com.example.taurusgamevault.databinding.FragmentMainBinding
 import androidx.core.view.MenuProvider
 import com.example.taurusgamevault.Model.Repository.Repository
 import com.example.taurusgamevault.adapters.TagsAdapter
+import com.example.taurusgamevault.goldenPick.GoldenPickOverlayFragment
 
 class MainFragment : Fragment() {
     private val viewModel: MainViewModel by viewModels()
@@ -40,12 +41,15 @@ class MainFragment : Fragment() {
         setupGamesRecyclerView()
         setupTagsRecyclerView()
         setupSearchBar()
-        setupFabs()
+        setupAddFab()
+        setupGoldenPickFab()
+
         observeGames()
 
         return binding.root
     }
 
+    // setup main fragment superior menu
     private fun setupMenu() {
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -67,6 +71,7 @@ class MainFragment : Fragment() {
         binding.gamesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
     }
 
+    // setup tags recycler view
     private fun setupTagsRecyclerView() {
         binding.labelTags.visibility = View.GONE
         binding.tagsRecyclerView.visibility = View.GONE
@@ -94,10 +99,7 @@ class MainFragment : Fragment() {
 
     private fun setupSearchBar() {
         binding.btnCloseSearch.setOnClickListener {
-            binding.searchBar.visibility = View.GONE
-            binding.labelTags.visibility = View.GONE
-            binding.tagsRecyclerView.visibility = View.GONE
-            binding.fabSearch.visibility = View.VISIBLE
+            toggleSearchBarVisibility()
             binding.etSearchQuery.text.clear()
             viewModel.searchGames("")
             tagsAdapter?.clearSelection()
@@ -110,28 +112,46 @@ class MainFragment : Fragment() {
         }
     }
 
-    private fun setupFabs() {
+    private fun setupAddFab() {
         binding.fabAdd.setOnClickListener {
             findNavController().navigate(R.id.action_mainFragment_to_createGameFragment)
         }
+    }
 
-        binding.fabSearch.setOnClickListener {
-            binding.searchBar.visibility = View.VISIBLE
-            binding.fabSearch.visibility = View.GONE
-            if (tagsAdapter != null) {
-                binding.labelTags.visibility = View.VISIBLE
-                binding.tagsRecyclerView.visibility = View.VISIBLE
-            }
+    private fun setupGoldenPickFab() {
+        binding.fabGoldenPick.setOnClickListener {
+            showGoldenPickOverlay()
+        }
+    }
+
+    // show the golden pick overlay(istance of GoldenPickOverlayFragment)
+    private fun showGoldenPickOverlay() {
+        val fragment = GoldenPickOverlayFragment.newInstance()
+
+        requireActivity().supportFragmentManager.beginTransaction()
+            .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+            .add(android.R.id.content, fragment, "golden_pick_overlay")
+            .addToBackStack(null)
+            .commit()
+    }
+
+    fun toggleSearchBarVisibility() {
+        val isVisible = binding.searchBar.visibility == View.VISIBLE
+        binding.fabGoldenPick.visibility = if (isVisible) View.VISIBLE else View.GONE
+        binding.searchBar.visibility = if (isVisible) View.GONE else View.VISIBLE
+        binding.labelTags.visibility = if (isVisible || tagsAdapter == null) View.GONE else View.VISIBLE
+        binding.tagsRecyclerView.visibility = if (isVisible || tagsAdapter == null) View.GONE else View.VISIBLE
+        if (!isVisible) {
             binding.etSearchQuery.requestFocus()
         }
     }
 
+    // observe the games list and update the ui accordingly
     private fun observeGames() {
         viewModel.games.observe(viewLifecycleOwner) { games ->
             val isEmpty = games.isNullOrEmpty()
             binding.tvEmptyGames.visibility = if (isEmpty) View.VISIBLE else View.GONE
             binding.gamesRecyclerView.visibility = if (isEmpty) View.GONE else View.VISIBLE
-            binding.fabSearch.visibility = if (isEmpty) View.GONE else View.VISIBLE
 
             if (!isEmpty) {
                 binding.gamesRecyclerView.adapter = GameAdapter(

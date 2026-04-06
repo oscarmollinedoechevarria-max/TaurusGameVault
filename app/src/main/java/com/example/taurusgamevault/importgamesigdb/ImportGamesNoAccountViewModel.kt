@@ -44,6 +44,7 @@ class ImportGamesNoAccountViewModel(
     private val _state = MutableLiveData<ImportState>(ImportState.Idle)
     val state: LiveData<ImportState> = _state
 
+    // import games from igdb api
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     fun importGames(context: Context, rawNames: String) {
         val names = rawNames.lines()
@@ -68,6 +69,7 @@ class ImportGamesNoAccountViewModel(
         }
     }
 
+    // save game to database
     suspend fun saveGame(context: Context, gameTempData: GameTempData) {
 
         val screenshots = gameTempData.screenshots?.take(3)
@@ -112,11 +114,13 @@ class ImportGamesNoAccountViewModel(
         Toast.makeText(context, "Game saved successfully!", Toast.LENGTH_SHORT).show()
     }
 
+    // http client for download images
     private val httpClient = OkHttpClient.Builder()
         .connectTimeout(15, TimeUnit.SECONDS)
         .readTimeout(30, TimeUnit.SECONDS)
         .build()
 
+    // download image and upload to supabase
     private suspend fun downloadAndUploadImage(context: Context, url: String): String? {
         return try {
             val tempFile = File(context.cacheDir, "${UUID.randomUUID()}.jpg")
@@ -149,6 +153,7 @@ class ImportGamesNoAccountViewModel(
         }
     }}
 
+// sealed class for import state
 sealed class ImportState {
     object Idle : ImportState()
     data class Loading(val current: Int, val total: Int, val currentGame: String) : ImportState()

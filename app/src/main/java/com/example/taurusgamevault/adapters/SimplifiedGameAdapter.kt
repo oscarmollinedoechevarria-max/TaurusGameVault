@@ -23,6 +23,7 @@ class SimplifiedGameAdapter(
     context: Context,
     private val navigation: NavController,
     private val shouldBeClicable: Boolean,
+    //block for remove button
     private val onRemove: ((SimplifiedGame) -> Unit)? = null
 ): RecyclerView.Adapter<SimplifiedGameAdapter.ViewHolder>() {
 
@@ -76,11 +77,12 @@ class SimplifiedGameAdapter(
             )
         }
 
+        // navigation to game detail if should be clickable
         holder.container.setOnClickListener {
             if (shouldBeClicable && !isEditMode) {
                 navigation.navigate(
                     GameListDetailFragmentDirections
-                        .actionGameListDetailFragmentToGameDetailFragment(item.gameId, false)
+                        .actionGameListDetailFragmentToGameDetailFragment(item.gameId, item.name, false)
                 )
             }
         }

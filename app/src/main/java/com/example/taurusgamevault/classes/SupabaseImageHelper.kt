@@ -1,5 +1,6 @@
 package com.example.taurusgamevault.classes
 
+// supabase client for images, used object for singleton
 object SupabaseImageHelper {
     private const val SUPABASE_URL = "https://swsawzjvsxtesdhbsuxn.supabase.co"
     private const val STORAGE_BUCKET = "filesdatabase"

@@ -18,6 +18,7 @@ import java.util.UUID
 
 class CreateListViewModel : ViewModel() {
     fun saveList(context: Context, listTempData: ListTempData) {
+        // upload list cover
         viewModelScope.launch {
             val gameImage: String? = listTempData.image?.let { uri ->
                 val inputStream = context.contentResolver.openInputStream(uri)

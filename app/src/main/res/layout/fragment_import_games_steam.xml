@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".importsteam.ImportGamesSteamFragment">
+
+<TextView
+    android:text="Steam ID"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"/>
+
+<EditText
+    android:id="@+id/etSteamId"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:hint="e.g. 76561198XXXXXXXXX"
+    android:inputType="number"/>
+
+<TextView
+    android:text="Steam API Key"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="12dp"/>
+
+<EditText
+    android:id="@+id/etApiKey"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:hint="Get it at steamcommunity.com/dev/apikey"
+    android:inputType="textPassword"/>
+
+<Button
+    android:id="@+id/btnImport"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    android:text="Import from Steam"/>
+
+<ProgressBar
+    android:id="@+id/progressBar"
+    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:visibility="gone"/>
+
+<TextView
+    android:id="@+id/tvProgress"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"/>
+
+</LinearLayout>
+</layout>

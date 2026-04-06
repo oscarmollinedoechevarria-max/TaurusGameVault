@@ -8,6 +8,7 @@ import kotlin.time.Duration.Companion.seconds
 import com.example.taurusgamevault.R
 
 
+// singleton for SupabaseClient
 object SupabaseClientManager {
 
     lateinit var supabase: SupabaseClient

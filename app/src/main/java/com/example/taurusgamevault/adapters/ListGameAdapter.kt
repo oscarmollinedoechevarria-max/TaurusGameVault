@@ -70,12 +70,14 @@ class ListGameAdapter(
             )
         }
 
+        // navigation to list detail
         holder.container.setOnClickListener {
             navigation.navigate(
-                GameListFragmentDirections.actionGameListFragmentToGameListDetailFragment(item.list_id, false)
+                GameListFragmentDirections.actionGameListFragmentToGameListDetailFragment(item.list_id, item.name, false)
             )
         }
 
+        // context menu
         holder.container.setOnLongClickListener { view ->
             val popup = PopupMenu(view.context, view)
             popup.inflate(R.menu.game_menu_context)
@@ -83,7 +85,7 @@ class ListGameAdapter(
             popup.setOnMenuItemClickListener { menuItem ->
                 if (menuItem.itemId == R.id.action_edit) {
                     navigation.navigate(
-                        GameListFragmentDirections.actionGameListFragmentToGameListDetailFragment(item.list_id, true)
+                        GameListFragmentDirections.actionGameListFragmentToGameListDetailFragment(item.list_id, item.name, true)
                     )
                     true
                 } else if (menuItem.itemId == R.id.action_delete) {

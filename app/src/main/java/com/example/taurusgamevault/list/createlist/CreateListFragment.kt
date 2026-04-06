@@ -30,6 +30,7 @@ class CreateListFragment : Fragment() {
 
     private var selectedGamesRecyclerView: SimplifiedGameAdapter? = null
 
+    // launch the photo picker and let the user choose only images
     private val pickMedia =
         registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
             if (uri != null) {
@@ -76,6 +77,7 @@ class CreateListFragment : Fragment() {
         }
     }
 
+    // requirements and save the list to the database
     private fun saveList() {
 
         val name = binding.textViewListName.text.toString().trim()
@@ -109,6 +111,7 @@ class CreateListFragment : Fragment() {
         findNavController().navigate(R.id.action_createListFragment_to_gameListFragment)
     }
 
+    // listen to the result of the game picker
     private fun setupGamePickerResultListener() {
         parentFragmentManager.setFragmentResultListener(
             GamePickerFragment.REQUEST_KEY,
@@ -124,6 +127,7 @@ class CreateListFragment : Fragment() {
         }
     }
 
+    // show the game picker dialog
     private fun showGamePicker() {
         val selectedGames = gamesSelected ?: emptyList()
 

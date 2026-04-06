@@ -1,7 +1,6 @@
 package com.example.taurusgamevault.gamedetail
 
 // TODO: https://github.com/wasabeef/richeditor-android Tiene licencia Apache 2.0.
-// Esto significa que puedes usarla libremente en proyectos personales y comerciales, modificarla y distribuirla, solo necesitas incluir el aviso de copyright y la licencia en tu proyecto.
 
 import com.example.taurusgamevault.adapters.ScreenshotAdapter
 import android.app.AlertDialog
@@ -17,6 +16,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -72,8 +72,10 @@ class GameDetailFragment : Fragment() {
                         currentScreenshots.add(uri.toString())
                     }
                 }
+                binding.screenshotsRecyclerView.isVisible = true
                 screenshotAdapter.updateScreenshots(currentScreenshots.toList())
                 editingScreenshotPosition = -1
+                binding.addScreenshotButton.isVisible = editMode && currentScreenshots.size < MAX_SCREENSHOTS
             }
         }
 
@@ -98,10 +100,6 @@ class GameDetailFragment : Fragment() {
 
         setupScreenshotCarousel()
         setupGameData()
-
-        binding.fabGoBack.setOnClickListener {
-            findNavController().popBackStack()
-        }
 
         binding.fabEdit.setOnClickListener {
             editMode()
@@ -133,6 +131,7 @@ class GameDetailFragment : Fragment() {
         }
     }
 
+    // setup ui fragment
     private fun setupGameData() {
         val gameId = args.gameId
 
@@ -142,9 +141,11 @@ class GameDetailFragment : Fragment() {
         viewModel.getTags(requireContext())
 
         viewModel.game?.observe(viewLifecycleOwner) { game ->
+
+            (activity as? AppCompatActivity)?.supportActionBar?.title = game.name
+
             loadMainImage(game.game_image)
 
-            binding.tvFragmentTitleGameDetail.text = game.name
             binding.textViewName.text = game.name
             binding.textViewDescription.text = game.description
             binding.textViewReleaseDate.text = game.release_date
@@ -185,7 +186,7 @@ class GameDetailFragment : Fragment() {
                     items = platformsOnly,
                     onNavigate = { tag ->
                         findNavController().navigate(
-                            GameDetailFragmentDirections.actionGameDetailFragmentToListByTagFragment(tag.tag_id)
+                            GameDetailFragmentDirections.actionGameDetailFragmentToListByTagFragment(tag.tag_id, tag.name)
                         )
                     }
                 )
@@ -197,7 +198,7 @@ class GameDetailFragment : Fragment() {
                     items = tagsOnly,
                     onNavigate = { tag ->
                         findNavController().navigate(
-                            GameDetailFragmentDirections.actionGameDetailFragmentToListByTagFragment(tag.tag_id)
+                            GameDetailFragmentDirections.actionGameDetailFragmentToListByTagFragment(tag.tag_id, tag.name)
                         )
                     }
                 )
@@ -221,6 +222,7 @@ class GameDetailFragment : Fragment() {
         }
     }
 
+    // requirements and save
     fun saveCurrentData(gameId: Long) {
         val name = binding.editName.text.toString().trim()
         val personalRating = binding.editPersonalRating.text.toString().toFloatOrNull() ?: -1.0f
@@ -260,11 +262,13 @@ class GameDetailFragment : Fragment() {
         }
     }
 
+    // editmode for ui
     private fun editMode() {
         editMode = !editMode
 
         screenshotAdapter.setEditMode(editMode)
 
+        binding.addScreenshotButton.isVisible = editMode && currentScreenshots.size < MAX_SCREENSHOTS
         binding.textViewName.isVisible = !editMode
         binding.textViewDescription.isVisible = !editMode
         binding.textViewReleaseDate.isVisible = !editMode
@@ -325,7 +329,6 @@ class GameDetailFragment : Fragment() {
                         postTranslate((viewWidth - imageWidth * scale) / 2f, 0f)
                     }
                     binding.selectedImageView.imageMatrix = matrix
-                    Log.d("ImageCache", "Fuente: ${result.dataSource}")
                 },
                 onError = { _, _ ->
                     binding.selectedImageView.scaleType = ImageView.ScaleType.FIT_XY
@@ -336,13 +339,13 @@ class GameDetailFragment : Fragment() {
 
     private fun showEmptyScreenshots() {
         binding.screenshotsRecyclerView.isVisible = false
-        binding.addScreenshotButton.isVisible = true
+        binding.addScreenshotButton.isVisible = editMode
     }
 
     private fun showScreenshots(screenshots: List<String>) {
         currentScreenshots = screenshots.toMutableList()
         binding.screenshotsRecyclerView.isVisible = true
-        binding.addScreenshotButton.isVisible = false
+        binding.addScreenshotButton.isVisible = editMode && currentScreenshots.size < MAX_SCREENSHOTS
         screenshotAdapter.updateScreenshots(currentScreenshots.toList())
     }
 
@@ -369,9 +372,18 @@ class GameDetailFragment : Fragment() {
         }
     }
 
+    // screenshot system image picker
     private fun setupPickers() {
+        binding.addScreenshotButton.setOnClickListener {
+            editingScreenshotPosition = currentScreenshots.size
+            pickScreenshotLauncher.launch(
+                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+            )
+        }
+
         val priorities: Array<String> = Priority.entries.map { it.text }.toTypedArray()
 
+        // priorities dialog
         binding.editPriority.apply {
             isFocusable = false
             isClickable = true
@@ -390,6 +402,7 @@ class GameDetailFragment : Fragment() {
 
         val states: Array<String> = GameStates.entries.map { it.text }.toTypedArray()
 
+        // game state dialog
         binding.editGameState.apply {
             isFocusable = false
             isClickable = true
@@ -404,6 +417,7 @@ class GameDetailFragment : Fragment() {
             }
         }
 
+        // edit platforms dialog
         binding.btnEditPlatforms.setOnClickListener {
             val platformsOnly = allTags.filter { it.isPlataform }
             val selectedItems = BooleanArray(platformsOnly.size) { index ->
@@ -431,6 +445,7 @@ class GameDetailFragment : Fragment() {
                 .show()
         }
 
+        // edit tags dialog
         binding.btnEditTags.setOnClickListener {
             val tagsOnly = allTags.filter { !it.isPlataform }
             val selectedItems = BooleanArray(tagsOnly.size) { index ->
@@ -483,12 +498,12 @@ class GameDetailFragment : Fragment() {
         }
 
         binding.btnGoToAnnotations.setOnClickListener {
-            val action = GameDetailFragmentDirections.actionGameDetailFragmentToAnnotationsFragment(gameId = args.gameId)
+            val action = GameDetailFragmentDirections.actionGameDetailFragmentToAnnotationsFragment(gameId = args.gameId, args.gameName)
             findNavController().navigate(action)
         }
 
         binding.btnGoToObjectives.setOnClickListener {
-            val action = GameDetailFragmentDirections.actionGameDetailFragmentToObjectivesFragment(gameId = args.gameId)
+            val action = GameDetailFragmentDirections.actionGameDetailFragmentToObjectivesFragment(gameId = args.gameId, args.gameName)
             findNavController().navigate(action)
         }
 

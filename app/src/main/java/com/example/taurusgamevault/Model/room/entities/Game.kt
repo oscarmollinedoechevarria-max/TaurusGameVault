@@ -45,6 +45,7 @@ data class Game(
     val game_image: String? = null
 )
 
+// Extension function to convert Game to SimplifiedGame
 fun Game.toSimplifiedGame(): SimplifiedGame {
     return SimplifiedGame(
         gameId = this.game_id,

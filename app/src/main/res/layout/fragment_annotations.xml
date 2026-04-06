@@ -49,90 +49,154 @@
                 android:padding="4dp"
                 android:gravity="center_vertical">
 
-                <!-- Formato -->
+                <!-- Bold -->
                 <ImageButton android:id="@+id/btn_bold"
-                    style="@style/ToolbarButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="8dp"
+                    android:scaleType="centerInside"
                     android:src="@drawable/editor_icon_bold"/>
 
+                <!-- Italic -->
                 <ImageButton android:id="@+id/btn_italic"
-                    style="@style/ToolbarButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="8dp"
+                    android:scaleType="centerInside"
                     android:src="@drawable/editor_icon_italic"/>
 
+                <!-- Underline -->
                 <ImageButton android:id="@+id/btn_underline"
-                    style="@style/ToolbarButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="8dp"
+                    android:scaleType="centerInside"
                     android:src="@drawable/editor_icon_underline"/>
 
+                <!-- Strike -->
                 <ImageButton android:id="@+id/btn_strike"
-                    style="@style/ToolbarButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="8dp"
+                    android:scaleType="centerInside"
                     android:src="@drawable/editor_icon_strike1"/>
 
                 <View style="@style/ToolbarDivider"/>
 
-                <!-- Destacar -->
+                <!-- Highlight yellow -->
                 <ImageButton android:id="@+id/btn_highlight_yellow"
-                    style="@style/ToolbarButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="8dp"
+                    android:scaleType="centerInside"
                     android:src="@drawable/editor_icon_highlight_yellow"/>
 
+                <!-- Highlight green -->
                 <ImageButton android:id="@+id/btn_highlight_green"
-                    style="@style/ToolbarButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="8dp"
+                    android:scaleType="centerInside"
                     android:src="@drawable/editor_icon_highlight_green"/>
 
+                <!-- Text red -->
                 <ImageButton android:id="@+id/btn_text_red"
-                    style="@style/ToolbarButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="8dp"
+                    android:scaleType="centerInside"
                     android:src="@drawable/editor_icon_text_red"/>
 
+                <!-- Text blue -->
                 <ImageButton android:id="@+id/btn_text_blue"
-                    style="@style/ToolbarButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="8dp"
+                    android:scaleType="centerInside"
                     android:src="@drawable/editor_icon_text_blue"/>
 
                 <View style="@style/ToolbarDivider"/>
 
-                <!-- Estructura -->
+                <!-- H1 -->
                 <ImageButton android:id="@+id/btn_h1"
-                    style="@style/ToolbarButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="8dp"
+                    android:scaleType="centerInside"
                     android:src="@drawable/editor_icon_h1"/>
 
+                <!-- H2 -->
                 <ImageButton android:id="@+id/btn_h2"
-                    style="@style/ToolbarButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="8dp"
+                    android:scaleType="centerInside"
                     android:src="@drawable/editor_icon_h2"/>
 
+                <!-- Blockquote -->
                 <ImageButton android:id="@+id/btn_blockquote"
-                    style="@style/ToolbarButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="8dp"
+                    android:scaleType="centerInside"
                     android:src="@drawable/editor_icon_blockquote"/>
 
+                <!-- Bullet -->
                 <ImageButton android:id="@+id/btn_bullets"
-                    style="@style/ToolbarButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="8dp"
+                    android:scaleType="centerInside"
                     android:src="@drawable/editor_icon_bullets"/>
 
+                <!-- Checkbox -->
                 <ImageButton android:id="@+id/btn_checkbox"
-                    style="@style/ToolbarButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="8dp"
+                    android:scaleType="centerInside"
                     android:src="@drawable/editor_icon_checkbox"/>
 
                 <View style="@style/ToolbarDivider"/>
 
-                <!-- Insertar -->
+                <!-- Link -->
                 <ImageButton android:id="@+id/btn_link"
-                    style="@style/ToolbarButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="8dp"
+                    android:scaleType="centerInside"
                     android:src="@drawable/editor_icon_link"/>
 
+                <!-- Youtube -->
                 <ImageButton android:id="@+id/btn_youtube"
-                    style="@style/ToolbarButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="8dp"
+                    android:scaleType="centerInside"
                     android:src="@drawable/appicon"/>
 
                 <View style="@style/ToolbarDivider"/>
 
-                <!-- Acciones -->
+                <!-- Undo -->
                 <ImageButton android:id="@+id/btn_undo"
-                    style="@style/ToolbarButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="8dp"
+                    android:scaleType="centerInside"
                     android:src="@drawable/editor_icon_undo"/>
 
+                <!-- Redo -->
                 <ImageButton android:id="@+id/btn_redo"
-                    style="@style/ToolbarButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="8dp"
+                    android:scaleType="centerInside"
                     android:src="@drawable/editor_icon_redo"/>
 
             </LinearLayout>
         </HorizontalScrollView>
 
+        <!-- Rich Editor -->
         <jp.wasabeef.richeditor.RichEditor
             android:id="@+id/editor"
             android:layout_width="match_parent"

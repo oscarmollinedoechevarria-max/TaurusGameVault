@@ -27,8 +27,11 @@ class CreateGameViewModel : ViewModel() {
         _tags = Repository.getTags(context)
     }
 
+    // save game(upload images, create objects on the db)
     fun saveGame(context: Context, gameTempData: GameTempData, tagsSelected: List<Long>?) {
         viewModelScope.launch {
+
+            // upload game cover
             val gameImage: String? = gameTempData.imageUri?.let { uri ->
                 val inputStream = context.contentResolver.openInputStream(uri)
                 inputStream?.use { input ->
@@ -50,6 +53,7 @@ class CreateGameViewModel : ViewModel() {
                 }
             }
 
+            // add game to db
             val game = Game(
                 name = gameTempData.name,
                 description = gameTempData.description,
@@ -66,6 +70,7 @@ class CreateGameViewModel : ViewModel() {
 
             val gameID = Repository.addGame(context, game)
 
+            // upload screenshots
             gameTempData.screenshots?.forEachIndexed { index, uri ->
                 val screenshot: String? = gameTempData.screenshots[index].let { uri ->
                     val inputStream = context.contentResolver.openInputStream(uri)

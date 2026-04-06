@@ -1,5 +1,6 @@
 package com.example.taurusgamevault.enums
 
+// for ui priority picker
 enum class Priority(val text: String, val number: Int) {
     BACK_LOG("Back log",1),
     LOW("Low",2),

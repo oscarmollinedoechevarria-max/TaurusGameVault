@@ -12,9 +12,12 @@ import com.example.taurusgamevault.R
 import com.example.taurusgamevault.databinding.ItemScreenshotBinding
 
 class ScreenshotAdapter(
+    private var items: List<String> = emptyList(),
+    // block for image click
     private val onImageClick: (String) -> Unit,
+    // block for edit screenshot
     private val onEditScreenshot: (position: Int) -> Unit
-) : ListAdapter<String, ScreenshotAdapter.ViewHolder>(ScreenshotDiffCallback()) {
+) : RecyclerView.Adapter<ScreenshotViewHolder>() {
 
     private var isEditMode = false
 
@@ -24,52 +27,50 @@ class ScreenshotAdapter(
     }
 
     fun updateScreenshots(newList: List<String>) {
-        submitList(null)
-        submitList(newList.toList())
+        items = newList
+        notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScreenshotViewHolder {
         val binding = ItemScreenshotBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
         )
-        return ViewHolder(binding, onImageClick, onEditScreenshot)
+        return ScreenshotViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position), isEditMode)
+    override fun onBindViewHolder(holder: ScreenshotViewHolder, position: Int) {
+        holder.bind(items[position], isEditMode, onImageClick, onEditScreenshot)
     }
 
-    class ViewHolder(
-        private val binding: ItemScreenshotBinding,
-        private val onImageClick: (String) -> Unit,
-        private val onEditScreenshot: (position: Int) -> Unit
-    ) : RecyclerView.ViewHolder(binding.root) {
+    override fun getItemCount(): Int = items.size
+}
 
-        fun bind(imageUrl: String, isEditMode: Boolean) {
-            binding.screenshotImageView.load(imageUrl) {
-                crossfade(true)
-                placeholder(R.drawable.ic_launcher_background)
-                error(R.drawable.ic_launcher_background)
-                memoryCachePolicy(CachePolicy.ENABLED)
-                diskCachePolicy(CachePolicy.ENABLED)
-            }
+class ScreenshotViewHolder(
+    private val binding: ItemScreenshotBinding
+) : RecyclerView.ViewHolder(binding.root) {
 
-            binding.editScreenshot.visibility = if (isEditMode) View.VISIBLE else View.GONE
-
-            binding.editScreenshot.setOnClickListener {
-                onEditScreenshot(adapterPosition)
-            }
-
-            binding.root.setOnClickListener {
-                onImageClick(imageUrl)
-            }
+    fun bind(
+        imageUrl: String,
+        isEditMode: Boolean,
+        onImageClick: (String) -> Unit,
+        onEditScreenshot: (Int) -> Unit
+    ) {
+        binding.screenshotImageView.load(imageUrl) {
+            crossfade(true)
+            placeholder(R.drawable.ic_launcher_background)
+            error(R.drawable.ic_launcher_background)
         }
-    }
 
-    private class ScreenshotDiffCallback : DiffUtil.ItemCallback<String>() {
-        override fun areItemsTheSame(oldItem: String, newItem: String) = oldItem == newItem
-        override fun areContentsTheSame(oldItem: String, newItem: String) = oldItem == newItem
+        binding.editScreenshot.visibility = if (isEditMode) View.VISIBLE else View.GONE
+
+        binding.editScreenshot.setOnClickListener {
+            onEditScreenshot(bindingAdapterPosition)
+        }
+
+        binding.root.setOnClickListener {
+            onImageClick(imageUrl)
+        }
     }
 }

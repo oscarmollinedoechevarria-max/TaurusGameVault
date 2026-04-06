@@ -44,7 +44,7 @@ class ListByTagFragment : Fragment() {
                 binding.recyclerViewGamesByTag.visibility = View.VISIBLE
                 recyclerview.adapter = GameAdapter(games, requireContext(), findNavController(), lifecycleScope,
                     onItemClick = { game -> findNavController().navigate(
-                        ListByTagFragmentDirections.actionListByTagFragmentToGameDetailFragment(gameId = game.game_id, editMode = false)
+                        ListByTagFragmentDirections.actionListByTagFragmentToGameDetailFragment(gameId = game.game_id, game.name, editMode = false)
                             ) },
                     false)
             }

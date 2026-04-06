@@ -40,6 +40,7 @@ class GameListDetailViewModel : ViewModel() {
     }
 
     fun saveList(context: Context, listTempData: ListTempData, gameListId: Long, oldListImage: String?) {
+        // upload list cover
         viewModelScope.launch {
             val gameImage: String? = if (listTempData.image != null) {
                 val inputStream = context.contentResolver.openInputStream(listTempData.image)

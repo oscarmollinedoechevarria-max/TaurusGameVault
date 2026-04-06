@@ -6,7 +6,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/surface"
+        android:background="?attr/colorSurface"
         tools:context=".list.gamelistdetail.GameListDetailFragment">
 
         <!-- HEADER -->
@@ -15,37 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:elevation="4dp"
-            android:background="@color/surface">
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_go_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:contentDescription="@string/goBack"
-                app:srcCompat="@drawable/chevronleft"
-                app:backgroundTint="?attr/colorSecondary"
-                app:tint="@android:color/white"
-                app:fabSize="normal"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-
-            <TextView
-                android:id="@+id/tv_fragment_title_game_detail"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="?attr/colorOnBackground"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:gravity="center"
-                app:layout_constraintStart_toEndOf="@id/fab_go_back"
-                app:layout_constraintEnd_toStartOf="@id/fab_edit"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+            android:background="?attr/colorSurface">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab_edit"
@@ -124,7 +94,7 @@
                                 android:layout_height="wrap_content"
                                 android:textSize="24sp"
                                 android:textStyle="bold"
-                                android:textColor="@color/on_surface"
+                                android:textColor="?attr/colorOnSurface"
                                 tools:text="My Game List" />
 
                             <EditText
@@ -133,11 +103,11 @@
                                 android:layout_height="wrap_content"
                                 android:textSize="24sp"
                                 android:textStyle="bold"
-                                android:textColor="@color/on_surface"
+                                android:textColor="?attr/colorOnSurface"
                                 android:inputType="text"
                                 android:maxLines="2"
                                 android:hint="@string/enter_list_name"
-                                android:textColorHint="@color/on_surface_variant"
+                                android:textColorHint="?attr/colorOnSurfaceVariant"
                                 android:visibility="gone" />
 
                             <TextView
@@ -146,7 +116,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
                                 android:textSize="14sp"
-                                android:textColor="@color/on_surface_variant"
+                                android:textColor="?attr/colorOnSurfaceVariant"
                                 tools:text="A personal collection of my favorite games" />
 
                             <EditText
@@ -155,13 +125,13 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
                                 android:textSize="14sp"
-                                android:textColor="@color/on_surface_variant"
+                                android:textColor="?attr/colorOnSurfaceVariant"
                                 android:inputType="textMultiLine"
                                 android:maxLines="4"
                                 android:minHeight="48dp"
                                 android:gravity="top|start"
                                 android:hint="@string/enter_list_description"
-                                android:textColorHint="@color/on_surface_variant"
+                                android:textColorHint="?attr/colorOnSurfaceVariant"
                                 android:visibility="gone" />
 
                             <FrameLayout
@@ -176,7 +146,7 @@
                                     android:layout_height="match_parent"
                                     android:paddingHorizontal="12dp"
                                     android:textSize="13sp"
-                                    android:textColor="@color/on_secondary_container"
+                                    android:textColor="?attr/colorOnSecondaryContainer"
                                     android:gravity="center"
                                     tools:text="12 games" />
                             </FrameLayout>
@@ -193,7 +163,7 @@
                     android:text="@string/games"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:textColor="@color/on_surface" />
+                    android:textColor="?attr/colorOnSurface" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView_games"
@@ -216,7 +186,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/no_games_yet"
                         android:textSize="16sp"
-                        android:textColor="@color/on_surface_variant" />
+                        android:textColor="?attr/colorOnSurfaceVariant" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -224,7 +194,7 @@
                         android:layout_marginTop="4dp"
                         android:text="@string/add_first_game"
                         android:textSize="14sp"
-                        android:textColor="@color/on_surface_variant" />
+                        android:textColor="?attr/colorOnSurfaceVariant" />
                 </LinearLayout>
 
             </LinearLayout>

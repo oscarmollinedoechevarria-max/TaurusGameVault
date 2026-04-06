@@ -13,7 +13,7 @@ class MyApp : Application() {
     override fun onCreate() {
         super.onCreate()
 
-
+        // Initialize Coil, Supabase, and Retrofit
         val imageLoader = ImageLoader.Builder(this)
             .memoryCache {
                 MemoryCache.Builder(this)

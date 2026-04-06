@@ -17,6 +17,8 @@ class MainViewModel : ViewModel() {
     private var selectedTagIds: List<Long> = emptyList()
 
     private var currentSource: LiveData<List<Game>>? = null
+
+    // observer for games list
     private val observer = Observer<List<Game>> { list ->
         _games.value = if (currentQuery.isBlank()) list
         else list.filter { it.name.contains(currentQuery, ignoreCase = true) }
@@ -39,6 +41,7 @@ class MainViewModel : ViewModel() {
         swapSource(Repository.getGamesByTags(context, selectedTagIds))
     }
 
+    // change games source and observe changes
     private fun swapSource(newSource: LiveData<List<Game>>) {
         currentSource?.removeObserver(observer)
         currentSource = newSource

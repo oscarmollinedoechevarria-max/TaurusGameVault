@@ -30,8 +30,6 @@ import java.util.TimeZone
 class CreateGameFragment : Fragment() {
     private val viewModel: CreateGameViewModel by viewModels()
 
-    private val sharedViewModel: SharedViewModel by viewModels()
-
     lateinit var binding: FragmentCreateGameBinding
 
     private var selectedImageUri: Uri? = null
@@ -46,6 +44,7 @@ class CreateGameFragment : Fragment() {
 
     private var priority = 0
 
+    // pick multiple images
     private val pickMultipleMedia =
         registerForActivityResult(
             ActivityResultContracts.PickMultipleVisualMedia(MAX_SCREENSHOTS)
@@ -78,6 +77,7 @@ class CreateGameFragment : Fragment() {
             }
         }
 
+    // pick single image
     private val pickMedia =
         registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
             if (uri != null) {
@@ -95,6 +95,7 @@ class CreateGameFragment : Fragment() {
     ): View {
         binding = FragmentCreateGameBinding.inflate(inflater)
 
+        // bind carousel images
         binding.carousel.setAdapter(object : Carousel.Adapter {
             override fun count(): Int {
                 return selectedScreenshotUris.size
@@ -109,12 +110,14 @@ class CreateGameFragment : Fragment() {
             }
         })
 
+        // game cover
         binding.selectImageButton.setOnClickListener {
             pickMedia.launch(
                 PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
             )
         }
 
+        // game screenshots
         binding.selectScreenshotButton.setOnClickListener {
             pickMultipleMedia.launch(
                 PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
@@ -127,6 +130,7 @@ class CreateGameFragment : Fragment() {
             allTags = tagsList
         }
 
+        // save button requirements and save game
         binding.saveGameButton.setOnClickListener {
             val name = binding.editName.text.toString().trim()
             val personalRating = binding.editPersonalRating.text.toString().toFloatOrNull() ?: -1.0f
@@ -165,23 +169,22 @@ class CreateGameFragment : Fragment() {
             }
         }
 
-        binding.fabGoBack.setOnClickListener {
-            findNavController().navigate(R.id.action_createGameFragment_to_mainFragment)
-        }
-
         setupPickers()
 
         return binding.root
     }
 
+    // setup ui pickers
     private fun setupPickers() {
 
+        // plataforms
         binding.multiSelectPlataform.setOnClickListener {
             val platformsOnly = allTags.filter { it.isPlataform }
             val selectedItems = BooleanArray(platformsOnly.size) { index ->
                 plataformsSelected.contains(platformsOnly[index].tag_id)
             }
 
+            // dialog platforms picker
             AlertDialog.Builder(requireContext())
                 .setTitle("Select platforms")
                 .setMultiChoiceItems(
@@ -203,6 +206,7 @@ class CreateGameFragment : Fragment() {
                 .show()
         }
 
+        // dialog select tags
         binding.multiSelectTags.setOnClickListener {
             val tagsOnly = allTags.filter { !it.isPlataform }
             val selectedItems = BooleanArray(tagsOnly.size) { index ->

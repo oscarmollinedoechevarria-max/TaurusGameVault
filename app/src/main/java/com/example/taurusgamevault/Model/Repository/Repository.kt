@@ -11,6 +11,7 @@ import com.example.taurusgamevault.Model.retrofit.igdb.IgdbApiService
 import com.example.taurusgamevault.Model.retrofit.igdb.IgdbGame
 import com.example.taurusgamevault.Model.room.DataBase
 import com.example.taurusgamevault.Model.room.entities.Game
+import com.example.taurusgamevault.Model.room.entities.Annotation
 import com.example.taurusgamevault.Model.room.entities.GameList
 import com.example.taurusgamevault.Model.room.entities.List_game
 import com.example.taurusgamevault.Model.room.entities.Objective
@@ -18,6 +19,7 @@ import com.example.taurusgamevault.Model.room.entities.Screenshot
 import com.example.taurusgamevault.Model.room.entities.Tag
 import com.example.taurusgamevault.Model.room.entities.TagGame
 import com.example.taurusgamevault.Model.supabase.SupabaseClientManager
+import com.example.taurusgamevault.classes.GameStats
 import io.github.jan.supabase.storage.storage
 import io.github.jan.supabase.storage.upload
 import kotlinx.coroutines.Dispatchers
@@ -55,14 +57,13 @@ class Repository {
             return db.gameDAO().addGame(game)
         }
 
+        //
         @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
         suspend fun searchGame(api: IgdbApiService, name: String): IgdbGame? {
             if (name.isBlank()) return null
 
             return try {
                 val query = "search \"$name\"; fields name, summary, rating, first_release_date, cover.image_id, platforms.name, screenshots.image_id; limit 10;"
-
-                Log.d("IGDB", "Query enviado: $query")
 
                 val body = query.toRequestBody("text/plain".toMediaType())
 
@@ -74,11 +75,7 @@ class Repository {
 
                 val results = sorted.first()
 
-                Log.d("IGDB", "Nº resultados: ${resultsQuery.size}")
-                Log.d("IGDB", "Resultado: $results")
-
                 if (resultsQuery.isEmpty()) {
-                    Log.w("IGDB", "Juego no encontrado: $name")
                     null
                 } else {
                     results
@@ -86,24 +83,24 @@ class Repository {
 
             } catch (e: HttpException) {
                 val errorBody = e.message
-                Log.e("IGDB", "HTTP ${e.cause} buscando '$name': $errorBody")
+                Log.e("IGDB", "HTTP ${e.cause} searching '$name': $errorBody")
                 null
             } catch (e: IOException) {
-                Log.e("IGDB", "Error de red buscando '$name': ${e.message}")
+                Log.e("IGDB", "red error searching '$name': ${e.message}")
                 null
             } catch (e: Exception) {
-                Log.e("IGDB", "Error inesperado buscando '$name': ${e::class.simpleName} - ${e.message}")
+                Log.e("IGDB", "unknow error searching '$name': ${e::class.simpleName} - ${e.message}")
                 null
             }
         }
 
+        // queries the games in the api in batches and imports them to the database
         @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
         suspend fun importGames(
             api: IgdbApiService,
             names: List<String>,
             onProgress: (current: Int, total: Int, gameName: String) -> Unit
         ): List<IgdbGame?> {
-            Log.d("IGDB", "Iniciando importación de ${names.size} juegos: $names")
             val total = names.size
             val counter = java.util.concurrent.atomic.AtomicInteger(0)
 
@@ -112,10 +109,11 @@ class Repository {
                     batch.map { name ->
                         async(Dispatchers.IO) {
                             val current = counter.incrementAndGet()
+
                             onProgress(current, total, name)
-                            Log.d("IGDB", "Buscando [$current/$total]: $name")
+
                             val result = searchGame(api, name)
-                            Log.d("IGDB", "Resultado para '$name': $result")
+
                             result
                         }
                     }.awaitAll()
@@ -147,6 +145,7 @@ class Repository {
             return db.gameDAO().deleteGame(game)
         }
 
+        // queries for upload and update the game image in the supabase
         suspend fun uploadImageAndGetPublicUrl(localFile: File): String? {
             val storage = SupabaseClientManager.supabase.storage.from("filesdatabase")
 
@@ -315,6 +314,11 @@ class Repository {
             }
         }
 
+        fun getVaultStats(context: Context): LiveData<GameStats> {
+            val db = initializeDB(context)
+            return db.gameDAO().getVaultStats()
+        }
+
         // TODO: List CRUD
         fun getLists(context: Context): LiveData<List<GameList>>? {
             val db = initializeDB(context)
@@ -412,14 +416,6 @@ class Repository {
             return db.tagDao().getPlataforms()
         }
 
-
-        fun getTag(context: Context, tagId: Long): LiveData<List<Tag>>? {
-            val db = initializeDB(context)
-
-            return db.tagDao().getTag(tagId)
-        }
-
-
         suspend fun addTag(context: Context, tag: Tag): Long {
             val db = initializeDB(context)
 
@@ -491,6 +487,20 @@ class Repository {
             db.objectiveDao().deleteObjective(objective)
         }
 
-    }
+        // TODO: Annotation CRUD
+        suspend fun getAnnotationByGameId(context: Context, gameId: Long): Annotation? {
+            val db = initializeDB(context)
+            return db.annotationDao().getAnnotationByGameId(gameId)
+        }
 
+        suspend fun insertAnnotation(context: Context, annotation: Annotation) : Long {
+            val db = initializeDB(context)
+            return db.annotationDao().insertAnnotation(annotation)
+        }
+
+        suspend fun updateAnnotation(context: Context, annotation: Annotation) {
+            val db = initializeDB(context)
+            db.annotationDao().updateAnnotation(annotation.annotation_id, annotation.text)
+        }
+    }
 }

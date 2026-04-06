@@ -1,7 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+
     <style name="Base.Theme.TaurusGameVault" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+
+        <!-- Fuente global -->
+        <item name="android:fontFamily">@font/nunito</item>
+        <item name="fontFamily">@font/nunito</item>
+
+        <!-- Primary -->
+        <item name="colorPrimary">@color/taurus_yellow</item>
+        <item name="colorPrimaryVariant">@color/taurus_brown</item>
+        <item name="colorOnPrimary">@color/dark_on_primary</item>
+
+        <!-- Secondary -->
+        <item name="colorSecondary">@color/gold_key</item>
+        <item name="colorOnSecondary">@color/dark_background</item>
+
+        <!-- Secondary Container -->
+        <item name="colorSecondaryContainer">@color/color_secondary_container_dark</item>
+        <item name="colorOnSecondaryContainer">@color/color_on_secondary_container_dark</item>
+
+        <!-- Background -->
+        <item name="android:windowBackground">@color/color_background_dark</item>
+        <item name="android:colorBackground">@color/color_background_dark</item>
+        <item name="colorOnBackground">@color/color_on_surface_dark</item>
+
+        <!-- Surface -->
+        <item name="colorSurface">@color/color_surface_dark</item>
+        <item name="colorOnSurface">@color/color_on_surface_dark</item>
+        <item name="colorSurfaceVariant">@color/color_surface_variant_dark</item>
+        <item name="colorOnSurfaceVariant">@color/color_on_surface_variant_dark</item>
+
+        <!-- Error -->
+        <item name="colorError">@color/color_error</item>
+        <item name="colorOnError">@color/color_on_error</item>
+
+        <!-- Status bar -->
+        <item name="android:statusBarColor">@color/color_background_dark</item>
+        <item name="android:windowLightStatusBar">false</item>
+
+        <!-- Toolbar — en noche fondo oscuro con texto amarillo -->
+        <item name="toolbarStyle">@style/Widget.TaurusGameVault.Toolbar.Night</item>
+        <item name="actionBarTheme">@style/ThemeOverlay.TaurusGameVault.Toolbar.Night</item>
+
     </style>
+
+    <style name="Theme.TaurusGameVault" parent="Base.Theme.TaurusGameVault" />
+
+    <style name="SplashTheme" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_background</item>
+        <item name="android:statusBarColor">@color/color_background_dark</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
 </resources>

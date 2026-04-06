@@ -6,45 +6,17 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="?attr/colorSurface"
         tools:context=".gamedetail.GameDetailFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/headerLayout"
             android:layout_width="0dp"
             android:layout_height="56dp"
+            android:background="?attr/colorSurface"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
-
-            <!-- FAB -->
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_go_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:contentDescription="@string/goBack"
-                app:srcCompat="@drawable/chevronleft"
-                app:backgroundTint="?attr/colorSecondary"
-                app:tint="@android:color/white"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-
-            <!-- FRAGMENT TITLE -->
-            <TextView
-                android:id="@+id/tv_fragment_title_game_detail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="GAME DETAIL"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="?attr/colorOnBackground"
-                android:maxLines="1"
-                android:ellipsize="end"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab_edit"
@@ -58,6 +30,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ScrollView
@@ -81,7 +54,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:padding="16dp"
-                    android:background="#F5F5F5"
+                    android:background="?attr/colorSurfaceVariant"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent">
@@ -123,7 +96,7 @@
                         android:layout_width="0dp"
                         android:layout_height="2dp"
                         android:layout_marginTop="8dp"
-                        android:background="#E0E0E0"
+                        android:background="?attr/colorOnSurfaceVariant"
                         app:layout_constraintTop_toBottomOf="@id/imageContainer"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"/>
@@ -141,7 +114,7 @@
                     android:layout_height="wrap_content"
                     android:padding="16dp"
                     android:layout_marginTop="16dp"
-                    android:background="#F5F5F5"
+                    android:background="?attr/colorSurfaceVariant"
                     app:layout_constraintTop_toBottomOf="@id/sectionImage"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent">
@@ -154,7 +127,7 @@
                         android:text="Screenshots"
                         android:textStyle="bold"
                         android:textSize="18sp"
-                        android:textColor="#333333"
+                        android:textColor="?attr/colorOnSurface"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
 
@@ -164,7 +137,7 @@
                         android:layout_width="0dp"
                         android:layout_height="2dp"
                         android:layout_marginTop="8dp"
-                        android:background="#E0E0E0"
+                        android:background="?attr/colorOnSurfaceVariant"
                         app:layout_constraintTop_toBottomOf="@id/sectionScreenshotTitle"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent" />
@@ -187,7 +160,7 @@
                         android:id="@+id/addScreenshotButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="+ Add Screenshots"
+                        android:text="+"
                         android:layout_marginTop="12dp"
                         android:visibility="gone"
                         app:layout_constraintTop_toBottomOf="@id/dividerScreenshot"
@@ -195,6 +168,7 @@
                         app:layout_constraintEnd_toEndOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
 
                 <!-- ========================================== -->
                 <!-- SECTION: BASE INFO -->
@@ -205,7 +179,7 @@
                     android:layout_height="wrap_content"
                     android:padding="16dp"
                     android:layout_marginTop="16dp"
-                    android:background="#F5F5F5"
+                    android:background="?attr/colorSurfaceVariant"
                     app:layout_constraintTop_toBottomOf="@id/sectionScreenshot"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent">
@@ -218,7 +192,7 @@
                         android:text="Basic info"
                         android:textStyle="bold"
                         android:textSize="18sp"
-                        android:textColor="#333333"
+                        android:textColor="?attr/colorOnSurface"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"/>
 
@@ -227,7 +201,7 @@
                         android:layout_width="0dp"
                         android:layout_height="2dp"
                         android:layout_marginTop="8dp"
-                        android:background="#E0E0E0"
+                        android:background="?attr/colorOnSurfaceVariant"
                         app:layout_constraintTop_toBottomOf="@id/sectionBasicInfoTitle"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"/>
@@ -239,7 +213,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:padding="12dp"
-                        android:background="#FFFFFF"
+                        android:background="?attr/colorSurface"
                         app:layout_constraintTop_toBottomOf="@id/dividerBasicInfo"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent">
@@ -251,6 +225,7 @@
                             android:text="Name*"
                             android:textStyle="bold"
                             android:textSize="14sp"
+                            android:textColor="?attr/colorOnSurface"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -260,6 +235,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:hint="Ex: The Legend of Zelda"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textColorHint="?attr/colorOnSurfaceVariant"
                             app:layout_constraintTop_toBottomOf="@id/labelName"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -271,6 +248,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:hint="Ex: The Legend of Zelda"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textColorHint="?attr/colorOnSurfaceVariant"
                             app:layout_constraintTop_toBottomOf="@id/labelName"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"/>
@@ -283,7 +262,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:padding="12dp"
-                        android:background="#FFFFFF"
+                        android:background="?attr/colorSurface"
                         app:layout_constraintTop_toBottomOf="@id/subsectionName"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent">
@@ -295,6 +274,7 @@
                             android:text="Description"
                             android:textStyle="bold"
                             android:textSize="14sp"
+                            android:textColor="?attr/colorOnSurface"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -306,6 +286,8 @@
                             android:minLines="3"
                             android:gravity="top"
                             android:hint="description about the game..."
+                            android:textColor="?attr/colorOnSurface"
+                            android:textColorHint="?attr/colorOnSurfaceVariant"
                             app:layout_constraintTop_toBottomOf="@id/labelDescription"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -319,6 +301,8 @@
                             android:minLines="3"
                             android:gravity="top"
                             android:hint="description about the game..."
+                            android:textColor="?attr/colorOnSurface"
+                            android:textColorHint="?attr/colorOnSurfaceVariant"
                             app:layout_constraintTop_toBottomOf="@id/labelDescription"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"/>
@@ -331,7 +315,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:padding="12dp"
-                        android:background="#FFFFFF"
+                        android:background="?attr/colorSurface"
                         app:layout_constraintTop_toBottomOf="@id/subsectionDescription"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent">
@@ -343,6 +327,7 @@
                             android:text="Release date"
                             android:textStyle="bold"
                             android:textSize="14sp"
+                            android:textColor="?attr/colorOnSurface"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -352,6 +337,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:hint="DD/MM/YYYY"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textColorHint="?attr/colorOnSurfaceVariant"
                             app:layout_constraintTop_toBottomOf="@id/labelReleaseDate"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -363,6 +350,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:hint="DD/MM/YYYY"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textColorHint="?attr/colorOnSurfaceVariant"
                             app:layout_constraintTop_toBottomOf="@id/labelReleaseDate"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"/>
@@ -375,7 +364,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:padding="12dp"
-                        android:background="#FFFFFF"
+                        android:background="?attr/colorSurface"
                         app:layout_constraintTop_toBottomOf="@id/subsectionReleaseDate"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent">
@@ -387,6 +376,7 @@
                             android:text="Platforms"
                             android:textStyle="bold"
                             android:textSize="14sp"
+                            android:textColor="?attr/colorOnSurface"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -425,7 +415,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:padding="12dp"
-                        android:background="#FFFFFF"
+                        android:background="?attr/colorSurface"
                         app:layout_constraintTop_toBottomOf="@id/subsectionPlatforms"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent">
@@ -437,6 +427,7 @@
                             android:text="Tags"
                             android:textStyle="bold"
                             android:textSize="14sp"
+                            android:textColor="?attr/colorOnSurface"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -479,7 +470,7 @@
                     android:layout_height="wrap_content"
                     android:padding="16dp"
                     android:layout_marginTop="16dp"
-                    android:background="#F5F5F5"
+                    android:background="?attr/colorSurfaceVariant"
                     app:layout_constraintTop_toBottomOf="@id/sectionBasicInfo"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent">
@@ -492,7 +483,7 @@
                         android:text="Progress of the game"
                         android:textStyle="bold"
                         android:textSize="18sp"
-                        android:textColor="#333333"
+                        android:textColor="?attr/colorOnSurface"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"/>
 
@@ -501,7 +492,7 @@
                         android:layout_width="0dp"
                         android:layout_height="2dp"
                         android:layout_marginTop="8dp"
-                        android:background="#E0E0E0"
+                        android:background="?attr/colorOnSurfaceVariant"
                         app:layout_constraintTop_toBottomOf="@id/sectionProgressTitle"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"/>
@@ -513,7 +504,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:padding="12dp"
-                        android:background="#FFFFFF"
+                        android:background="?attr/colorSurface"
                         app:layout_constraintTop_toBottomOf="@id/dividerProgress"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent">
@@ -525,6 +516,7 @@
                             android:text="Time played (Hours)"
                             android:textStyle="bold"
                             android:textSize="14sp"
+                            android:textColor="?attr/colorOnSurface"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -535,6 +527,8 @@
                             android:layout_marginTop="4dp"
                             android:inputType="number"
                             android:hint="Ex: 45"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textColorHint="?attr/colorOnSurfaceVariant"
                             app:layout_constraintTop_toBottomOf="@id/labelPlaytime"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -546,6 +540,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:hint="Ex: 45"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textColorHint="?attr/colorOnSurfaceVariant"
                             app:layout_constraintTop_toBottomOf="@id/labelPlaytime"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"/>
@@ -558,7 +554,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:padding="12dp"
-                        android:background="#FFFFFF"
+                        android:background="?attr/colorSurface"
                         app:layout_constraintTop_toBottomOf="@id/subsectionPlaytime"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent">
@@ -567,9 +563,10 @@
                             android:id="@+id/labelPersonalRating"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Personal rating"
+                            android:text="Personal raiting"
                             android:textStyle="bold"
                             android:textSize="14sp"
+                            android:textColor="?attr/colorOnSurface"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -579,7 +576,7 @@
                             android:layout_height="wrap_content"
                             android:text="(0 - 10)"
                             android:textSize="12sp"
-                            android:textColor="#666666"
+                            android:textColor="?attr/colorOnSurfaceVariant"
                             android:layout_marginStart="8dp"
                             app:layout_constraintTop_toTopOf="@id/labelPersonalRating"
                             app:layout_constraintBottom_toBottomOf="@id/labelPersonalRating"
@@ -592,6 +589,8 @@
                             android:layout_marginTop="4dp"
                             android:inputType="numberDecimal"
                             android:hint="Ex: 8.5"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textColorHint="?attr/colorOnSurfaceVariant"
                             app:layout_constraintTop_toBottomOf="@id/labelPersonalRating"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -603,6 +602,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:hint="Ex: 8.5"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textColorHint="?attr/colorOnSurfaceVariant"
                             app:layout_constraintTop_toBottomOf="@id/labelPersonalRating"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"/>
@@ -661,7 +662,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:padding="12dp"
-                        android:background="#FFFFFF"
+                        android:background="?attr/colorSurface"
                         app:layout_constraintTop_toBottomOf="@id/subsectionRating"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent">
@@ -673,6 +674,7 @@
                             android:text="Game state"
                             android:textStyle="bold"
                             android:textSize="14sp"
+                            android:textColor="?attr/colorOnSurface"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -682,7 +684,7 @@
                             android:layout_height="wrap_content"
                             android:text="(Not started, Playing, Completed, etc.)"
                             android:textSize="12sp"
-                            android:textColor="#666666"
+                            android:textColor="?attr/colorOnSurfaceVariant"
                             android:layout_marginTop="2dp"
                             app:layout_constraintTop_toBottomOf="@id/labelGameState"
                             app:layout_constraintStart_toStartOf="parent"/>
@@ -693,6 +695,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:hint="Ex: Completed"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textColorHint="?attr/colorOnSurfaceVariant"
                             android:visibility="gone"
                             app:layout_constraintTop_toBottomOf="@id/stateHint"
                             app:layout_constraintStart_toStartOf="parent"
@@ -704,6 +708,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:hint="Ex: Completed"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textColorHint="?attr/colorOnSurfaceVariant"
                             app:layout_constraintTop_toBottomOf="@id/stateHint"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"/>
@@ -719,7 +725,7 @@
                     android:layout_height="wrap_content"
                     android:padding="16dp"
                     android:layout_marginTop="16dp"
-                    android:background="#F5F5F5"
+                    android:background="?attr/colorSurfaceVariant"
                     app:layout_constraintTop_toBottomOf="@id/sectionGameProgress"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent">
@@ -732,7 +738,7 @@
                         android:text="Dates"
                         android:textStyle="bold"
                         android:textSize="18sp"
-                        android:textColor="#333333"
+                        android:textColor="?attr/colorOnSurface"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"/>
 
@@ -741,7 +747,7 @@
                         android:layout_width="0dp"
                         android:layout_height="2dp"
                         android:layout_marginTop="8dp"
-                        android:background="#E0E0E0"
+                        android:background="?attr/colorOnSurfaceVariant"
                         app:layout_constraintTop_toBottomOf="@id/sectionDatesTitle"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"/>
@@ -753,7 +759,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:padding="12dp"
-                        android:background="#FFFFFF"
+                        android:background="?attr/colorSurface"
                         app:layout_constraintTop_toBottomOf="@id/dividerDates"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent">
@@ -765,6 +771,7 @@
                             android:text="Play Period"
                             android:textStyle="bold"
                             android:textSize="14sp"
+                            android:textColor="?attr/colorOnSurface"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -786,7 +793,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Start"
                                 android:textSize="12sp"
-                                android:textColor="#666666"
+                                android:textColor="?attr/colorOnSurfaceVariant"
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"/>
 
@@ -797,6 +804,8 @@
                                 android:layout_marginTop="4dp"
                                 android:hint="DD/MM/YYYY"
                                 android:textSize="14sp"
+                                android:textColor="?attr/colorOnSurface"
+                                android:textColorHint="?attr/colorOnSurfaceVariant"
                                 android:visibility="gone"
                                 app:layout_constraintTop_toBottomOf="@id/labelStartDate"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -809,6 +818,8 @@
                                 android:layout_marginTop="4dp"
                                 android:hint="DD/MM/YYYY"
                                 android:textSize="14sp"
+                                android:textColor="?attr/colorOnSurface"
+                                android:textColorHint="?attr/colorOnSurfaceVariant"
                                 app:layout_constraintTop_toBottomOf="@id/labelStartDate"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"/>
@@ -821,6 +832,7 @@
                             android:layout_height="24dp"
                             android:src="@drawable/outline_arrow_right_alt_24"
                             android:contentDescription="to"
+                            app:tint="?attr/colorOnSurfaceVariant"
                             app:layout_constraintTop_toTopOf="@id/startDateContainer"
                             app:layout_constraintBottom_toBottomOf="@id/startDateContainer"
                             app:layout_constraintStart_toEndOf="@id/startDateContainer"
@@ -843,7 +855,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="End"
                                 android:textSize="12sp"
-                                android:textColor="#666666"
+                                android:textColor="?attr/colorOnSurfaceVariant"
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"/>
 
@@ -854,6 +866,8 @@
                                 android:layout_marginTop="4dp"
                                 android:hint="DD/MM/YYYY"
                                 android:textSize="14sp"
+                                android:textColor="?attr/colorOnSurface"
+                                android:textColorHint="?attr/colorOnSurfaceVariant"
                                 android:visibility="gone"
                                 app:layout_constraintTop_toBottomOf="@id/labelEndDate"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -866,6 +880,8 @@
                                 android:layout_marginTop="4dp"
                                 android:hint="DD/MM/YYYY"
                                 android:textSize="14sp"
+                                android:textColor="?attr/colorOnSurface"
+                                android:textColorHint="?attr/colorOnSurfaceVariant"
                                 app:layout_constraintTop_toBottomOf="@id/labelEndDate"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"/>
@@ -879,7 +895,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:padding="12dp"
-                        android:background="#FFFFFF"
+                        android:background="?attr/colorSurface"
                         app:layout_constraintTop_toBottomOf="@id/subsectionPlayPeriod"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent">
@@ -891,6 +907,7 @@
                             android:text="Deadline"
                             android:textStyle="bold"
                             android:textSize="14sp"
+                            android:textColor="?attr/colorOnSurface"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -900,7 +917,7 @@
                             android:layout_height="wrap_content"
                             android:text="(Personal goal to complete)"
                             android:textSize="12sp"
-                            android:textColor="#666666"
+                            android:textColor="?attr/colorOnSurfaceVariant"
                             android:layout_marginTop="2dp"
                             app:layout_constraintTop_toBottomOf="@id/labelDeadline"
                             app:layout_constraintStart_toStartOf="parent"/>
@@ -911,6 +928,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:hint="DD/MM/YYYY"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textColorHint="?attr/colorOnSurfaceVariant"
                             android:visibility="gone"
                             app:layout_constraintTop_toBottomOf="@id/deadlineHint"
                             app:layout_constraintStart_toStartOf="parent"
@@ -922,6 +941,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:hint="DD/MM/YYYY"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textColorHint="?attr/colorOnSurfaceVariant"
                             app:layout_constraintTop_toBottomOf="@id/deadlineHint"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"/>
@@ -933,7 +954,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
                             android:text="⚠️ Deadline passed! Complete the game soon."
-                            android:textColor="#D32F2F"
+                            android:textColor="?attr/colorError"
                             android:textStyle="bold"
                             android:textSize="12sp"
                             android:visibility="gone"
@@ -952,7 +973,7 @@
                     android:layout_height="wrap_content"
                     android:padding="16dp"
                     android:layout_marginTop="16dp"
-                    android:background="#F5F5F5"
+                    android:background="?attr/colorSurfaceVariant"
                     app:layout_constraintTop_toBottomOf="@id/sectionDates"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent">
@@ -962,10 +983,10 @@
                         android:id="@+id/sectionPriorityTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Priority"
+                        android:text="Piority"
                         android:textStyle="bold"
                         android:textSize="18sp"
-                        android:textColor="#333333"
+                        android:textColor="?attr/colorOnSurface"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"/>
 
@@ -974,7 +995,7 @@
                         android:layout_width="0dp"
                         android:layout_height="2dp"
                         android:layout_marginTop="8dp"
-                        android:background="#E0E0E0"
+                        android:background="?attr/colorOnSurfaceVariant"
                         app:layout_constraintTop_toBottomOf="@id/sectionPriorityTitle"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"/>
@@ -986,7 +1007,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:padding="12dp"
-                        android:background="#FFFFFF"
+                        android:background="?attr/colorSurface"
                         app:layout_constraintTop_toBottomOf="@id/dividerPriority"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent">
@@ -998,6 +1019,7 @@
                             android:text="Priority Level"
                             android:textStyle="bold"
                             android:textSize="14sp"
+                            android:textColor="?attr/colorOnSurface"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -1007,7 +1029,7 @@
                             android:layout_height="wrap_content"
                             android:text="(1 = Back log, 5 = High)"
                             android:textSize="12sp"
-                            android:textColor="#666666"
+                            android:textColor="?attr/colorOnSurfaceVariant"
                             android:layout_marginTop="2dp"
                             app:layout_constraintTop_toBottomOf="@id/labelPriority"
                             app:layout_constraintStart_toStartOf="parent"/>
@@ -1019,10 +1041,12 @@
                             android:layout_marginTop="4dp"
                             android:inputType="number"
                             android:hint="Ex: 3"
-                            android:visibility="gone"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textColorHint="?attr/colorOnSurfaceVariant"
                             app:layout_constraintTop_toBottomOf="@id/priorityHint"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"/>
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:visibility="gone"/>
 
                         <TextView
                             android:id="@+id/textViewPriority"
@@ -1030,6 +1054,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:hint="Ex: 3"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textColorHint="?attr/colorOnSurfaceVariant"
                             app:layout_constraintTop_toBottomOf="@id/priorityHint"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"/>
@@ -1061,7 +1087,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:text="1"
-                                    android:textColor="@android:color/white"
+                                    android:textColor="?attr/colorOnPrimary"
                                     android:textSize="16sp"
                                     android:gravity="center"
                                     android:fontFamily="sans-serif-medium"/>
@@ -1085,7 +1111,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:text="2"
-                                    android:textColor="@android:color/black"
+                                    android:textColor="?attr/colorOnSurface"
                                     android:textSize="16sp"
                                     android:gravity="center"
                                     android:fontFamily="sans-serif-medium"/>
@@ -1109,7 +1135,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:text="3"
-                                    android:textColor="@android:color/white"
+                                    android:textColor="?attr/colorOnPrimary"
                                     android:textSize="16sp"
                                     android:gravity="center"
                                     android:fontFamily="sans-serif-medium"/>
@@ -1133,7 +1159,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:text="4"
-                                    android:textColor="@android:color/white"
+                                    android:textColor="?attr/colorOnPrimary"
                                     android:textSize="16sp"
                                     android:gravity="center"
                                     android:fontFamily="sans-serif-medium"/>
@@ -1156,7 +1182,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:text="5"
-                                    android:textColor="@android:color/white"
+                                    android:textColor="?attr/colorOnPrimary"
                                     android:textSize="16sp"
                                     android:gravity="center"
                                     android:fontFamily="sans-serif-medium"/>
@@ -1176,7 +1202,7 @@
                     android:layout_height="wrap_content"
                     android:padding="16dp"
                     android:layout_marginTop="16dp"
-                    android:background="#F5F5F5"
+                    android:background="?attr/colorSurfaceVariant"
                     app:layout_constraintTop_toBottomOf="@id/sectionPriority"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent">
@@ -1189,7 +1215,7 @@
                         android:text="Annotations"
                         android:textStyle="bold"
                         android:textSize="18sp"
-                        android:textColor="#333333"
+                        android:textColor="?attr/colorOnSurface"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"/>
 
@@ -1198,7 +1224,7 @@
                         android:layout_width="0dp"
                         android:layout_height="2dp"
                         android:layout_marginTop="8dp"
-                        android:background="#E0E0E0"
+                        android:background="?attr/colorOnSurfaceVariant"
                         app:layout_constraintTop_toBottomOf="@id/sectionAnnotationsTitle"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"/>
@@ -1224,7 +1250,7 @@
                     android:layout_height="wrap_content"
                     android:padding="16dp"
                     android:layout_marginTop="16dp"
-                    android:background="#F5F5F5"
+                    android:background="?attr/colorSurfaceVariant"
                     app:layout_constraintTop_toBottomOf="@id/sectionAnnotations"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent">
@@ -1237,7 +1263,7 @@
                         android:text="Objectives"
                         android:textStyle="bold"
                         android:textSize="18sp"
-                        android:textColor="#333333"
+                        android:textColor="?attr/colorOnSurface"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"/>
 
@@ -1246,7 +1272,7 @@
                         android:layout_width="0dp"
                         android:layout_height="2dp"
                         android:layout_marginTop="8dp"
-                        android:background="#E0E0E0"
+                        android:background="?attr/colorOnSurfaceVariant"
                         app:layout_constraintTop_toBottomOf="@id/sectionObjectivesTitle"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"/>
@@ -1275,6 +1301,8 @@
                     android:textStyle="bold"
                     android:layout_marginTop="24dp"
                     android:visibility="gone"
+                    android:textColor="?attr/colorOnPrimary"
+                    android:backgroundTint="?attr/colorPrimary"
                     app:layout_constraintTop_toBottomOf="@id/sectionObjectives"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>

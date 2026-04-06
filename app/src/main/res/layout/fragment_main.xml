@@ -112,12 +112,12 @@
 
         <!-- FAB search (top right, hidden when search bar opens) -->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_search"
+            android:id="@+id/fab_goldenPick"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:contentDescription="Search"
-            app:srcCompat="@drawable/ic_search"
+            android:contentDescription="Golden pick"
+            app:srcCompat="@drawable/golden_pick"
             app:backgroundTint="?attr/colorSecondary"
             app:tint="@android:color/white"
             app:layout_constraintEnd_toEndOf="parent"

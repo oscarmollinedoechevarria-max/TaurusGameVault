@@ -1,4 +1,4 @@
-package com.example.taurusgamevault.objectives
+package com.example.taurusgamevault.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +10,9 @@ import com.example.taurusgamevault.databinding.ItemObjectiveBinding
 class ObjectivesAdapter(
     private var items: List<Objective> = emptyList(),
     private var editMode: Boolean = false,
+    // block for checkbox click
     private val onChecked: (Objective) -> Unit,
+    // block for delete button click
     private val onDelete: (Objective) -> Unit
 ) : RecyclerView.Adapter<ObjectivesAdapter.ViewHolder>() {
 
@@ -42,7 +44,9 @@ class ObjectivesAdapter(
         holder.bind(items[position])
     }
 
-    override fun getItemCount(): Int = items.size
+    override fun getItemCount(): Int {
+        return items.size
+    }
 
     fun updateData(newItems: List<Objective>, newEditMode: Boolean) {
         items = newItems

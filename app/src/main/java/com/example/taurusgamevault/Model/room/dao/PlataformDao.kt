@@ -9,6 +9,7 @@ import androidx.room.Query
 import com.example.taurusgamevault.Model.room.entities.Plataform
 import com.example.taurusgamevault.Model.room.entities.PlataformGame
 
+// deprecated
 @Dao
 interface PlataformDao {
 

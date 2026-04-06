@@ -52,6 +52,7 @@ class GameDetailViewModel : ViewModel() {
     fun saveGame(context: Context, gameTempData: GameTempData, gameId: Long, onComplete: () -> Unit) {
         viewModelScope.launch {
 
+            //update icon cover
             if (gameTempData.imageUri != null) {
                 val inputStream = context.contentResolver.openInputStream(gameTempData.imageUri)
                 inputStream?.use { input ->
@@ -94,6 +95,7 @@ class GameDetailViewModel : ViewModel() {
 
             Repository.updateGame(context, game)
 
+            // update screenshots
             if (!gameTempData.allScreenshots.isNullOrEmpty()) {
 
                 val oldScreenshots = _screenshots?.value?.map { it.image } ?: emptyList()

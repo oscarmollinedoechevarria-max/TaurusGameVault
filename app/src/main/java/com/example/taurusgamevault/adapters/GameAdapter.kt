@@ -35,10 +35,11 @@ class GameAdapter(
     private val context: Context,
     private val navigation: NavController,
     private val scope: CoroutineScope,
+    // block for game click
     private val onItemClick: (Game) -> Unit = { game ->
         navigation.navigate(
             MainFragmentDirections.actionMainFragmentToGameDetailFragment(
-                gameId = game.game_id, editMode = false
+                gameId = game.game_id, editMode = false, gameName = game.name
             )
         )
     },
@@ -54,9 +55,8 @@ class GameAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]
 
+        //TODO: implement image cache locally
         //TODO: fix editmode cache screenshots
-        //tODO: date pickers on detail edit mode
-        //todo: edit mode main screen
 
         holder.gameNameTextView.text = item.name
 
@@ -64,7 +64,8 @@ class GameAdapter(
 
         holder.descriptionTextView.text = item.description
 
-        //TODO: implement image cache locally
+
+        // custom position for image in card
         holder.productImageView.load(item.game_image) {
             crossfade(true)
             placeholder(R.drawable.ic_launcher_background)
@@ -98,19 +99,23 @@ class GameAdapter(
             onItemClick(item)
         }
 
+        //card context menu
         if (showContextMenu) {
             holder.container.setOnLongClickListener { view ->
                 val popup = PopupMenu(view.context, view)
                 popup.inflate(R.menu.game_menu_context)
 
                 popup.setOnMenuItemClickListener { menuItem ->
+                    //edit
                     if (menuItem.itemId == R.id.action_edit) {
                         navigation.navigate(
                             MainFragmentDirections
-                                .actionMainFragmentToGameDetailFragment(gameId = item.game_id, editMode = true)
+                                .actionMainFragmentToGameDetailFragment(gameId = item.game_id, editMode = true, gameName = item.name)
                         )
                         true
-                    } else if (menuItem.itemId == R.id.action_delete) {
+                    }
+                    //delete
+                    else if (menuItem.itemId == R.id.action_delete) {
                         scope.launch {
                             Repository.deleteGame(context, item)
                         }
@@ -133,6 +138,7 @@ class GameAdapter(
         return list.size
     }
 
+    //custom image postion
     private fun applyImageMatrix(imageView: ImageView, drawable: Drawable) {
         imageView.scaleType = ImageView.ScaleType.MATRIX
 

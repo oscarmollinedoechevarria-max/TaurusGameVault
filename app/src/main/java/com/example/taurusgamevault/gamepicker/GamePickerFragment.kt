@@ -58,6 +58,8 @@ class GamePickerFragment : DialogFragment() {
 
     override fun onStart() {
         super.onStart()
+
+        // Set the dialog size for fit screen
         dialog?.window?.setLayout(
             ViewGroup.LayoutParams.MATCH_PARENT,
             (resources.displayMetrics.heightPixels * 0.9).toInt()
@@ -85,6 +87,7 @@ class GamePickerFragment : DialogFragment() {
 
         binding.doneButton.setOnClickListener {
             val simplifiedGames = selectedGames.map {  it.toSimplifiedGame() }
+            // Send the selected games back to the previous fragment
             setFragmentResult(
                 REQUEST_KEY,
                 bundleOf(RESULT_SELECTED_GAMES to ArrayList(simplifiedGames))
@@ -101,6 +104,7 @@ class GamePickerFragment : DialogFragment() {
         }
     }
 
+    // Restore preselected games from arguments
     private fun restorePreselectedGames() {
         arguments?.getParcelableArrayList<SimplifiedGame>(ARG_PRESELECTED_GAMES)?.let { preselected ->
             val preselectedGames = preselected.mapNotNull { simplified ->
@@ -136,6 +140,8 @@ class GamePickerFragment : DialogFragment() {
         binding.emptyStateLayout.visibility = if (isEmpty) View.VISIBLE else View.GONE
         binding.gamesRecyclerView.visibility = if (isEmpty) View.GONE else View.VISIBLE
     }
+
+    //keys for fragment result
     companion object {
         const val REQUEST_KEY = "game_picker_request"
         const val RESULT_SELECTED_GAMES = "selected_games"

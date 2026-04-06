@@ -1,11 +1,12 @@
 package com.example.taurusgamevault.Model.retrofit.igdb
 
+// data class for igdb api response
 data class IgdbGame(
     val id: Int,
     val name: String?,
     val summary: String?,
     val rating: Double?,
-    val first_release_date: Long?,   // timestamp Unix
+    val first_release_date: Long?,
     val cover: IgdbCover?,
     val genres: List<IgdbGenre>?,
     val platforms: List<IgdbPlatform>?,

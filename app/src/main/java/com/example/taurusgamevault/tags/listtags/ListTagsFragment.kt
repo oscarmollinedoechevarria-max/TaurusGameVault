@@ -29,7 +29,7 @@ class ListTagsFragment : Fragment() {
         viewModel.tags?.observe(viewLifecycleOwner) { tags ->
             binding.listTagsImportRecyclerView.layoutManager = LinearLayoutManager(requireContext())
             binding.listTagsImportRecyclerView.adapter = TagsAdapter(tags) { tag ->
-                val action = ListTagsFragmentDirections.actionListTagsFragmentToListByTagFragment(tag.tag_id)
+                val action = ListTagsFragmentDirections.actionListTagsFragmentToListByTagFragment(tag.tag_id, tag.name)
                 findNavController().navigate(action)
             }
         }

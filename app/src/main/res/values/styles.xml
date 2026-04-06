@@ -1,18 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="ToolbarButton">
-        <item name="android:layout_width">48dp</item>
-        <item name="android:layout_height">48dp</item>
-        <item name="android:background">@null</item>
-        <item name="android:contentDescription">@null</item>
-        <item name="android:scaleType">fitCenter</item>
+
+
+    <!-- TOOLBAR - DAY -->
+    <style name="Widget.TaurusGameVault.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="android:background">@color/taurus_brown</item>
+        <item name="titleTextColor">@color/light_on_primary</item>
+        <item name="subtitleTextColor">@color/taurus_yellow</item>
+        <item name="titleTextAppearance">@style/TextAppearance.TaurusGameVault.ToolbarTitle</item>
+    </style>
+
+    <style name="ThemeOverlay.TaurusGameVault.Toolbar" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="colorOnSurface">@color/light_on_primary</item>
+        <item name="colorControlNormal">@color/light_on_primary</item>
+    </style>
+
+    <!-- TOOLBAR - NIGHT -->
+    <style name="Widget.TaurusGameVault.Toolbar.Night" parent="Widget.Material3.Toolbar">
+        <item name="android:background">@color/dark_surface</item>
+        <item name="titleTextColor">@color/taurus_yellow</item>
+        <item name="subtitleTextColor">@color/gold_key</item>
+        <item name="titleTextAppearance">@style/TextAppearance.TaurusGameVault.ToolbarTitle</item>
+    </style>
+
+    <style name="ThemeOverlay.TaurusGameVault.Toolbar.Night" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="colorOnSurface">@color/taurus_yellow</item>
+        <item name="colorControlNormal">@color/taurus_yellow</item>
+    </style>
+
+    <!-- TOOLBAR TITLE -->
+    <style name="TextAppearance.TaurusGameVault.ToolbarTitle" parent="TextAppearance.Material3.TitleLarge">
+        <item name="fontFamily">@font/nunito</item>
+        <item name="android:fontFamily">@font/nunito</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontWeight">500</item>
+    </style>
+
+    <!-- TEXT FONT -->
+    <style name="TextAppearance.TaurusGameVault.Title" parent="TextAppearance.Material3.TitleMedium">
+        <item name="fontFamily">@font/nunito</item>
+        <item name="android:fontFamily">@font/nunito</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:fontWeight">500</item>
+    </style>
+
+    <style name="TextAppearance.TaurusGameVault.Body" parent="TextAppearance.Material3.BodyMedium">
+        <item name="fontFamily">@font/nunito</item>
+        <item name="android:fontFamily">@font/nunito</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontWeight">400</item>
+    </style>
+
+    <!-- TOOLBAR BUTTONS       -->
+    <style name="ToolbarButton" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">40dp</item>
         <item name="android:padding">8dp</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:tint">?attr/colorOnSurface</item>
+        <item name="android:scaleType">centerInside</item>
     </style>
 
     <style name="ToolbarDivider">
         <item name="android:layout_width">1dp</item>
-        <item name="android:layout_height">32dp</item>
-        <item name="android:background">#444</item>
+        <item name="android:layout_height">24dp</item>
+        <item name="android:background">?attr/colorOutline</item>
         <item name="android:layout_marginStart">4dp</item>
         <item name="android:layout_marginEnd">4dp</item>
     </style>

@@ -13,6 +13,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -54,6 +55,7 @@ class GameListDetailFragment : Fragment() {
 
     private var selectedGamesRecyclerView: SimplifiedGameAdapter? = null
 
+    // system picker
     private val pickMedia =
         registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
             if (uri != null) {
@@ -76,10 +78,6 @@ class GameListDetailFragment : Fragment() {
         listId = args.listId
 
         setupView(listId ?: 0)
-
-        binding.fabGoBack.setOnClickListener {
-            findNavController().navigate(R.id.action_gameListDetailFragment_to_gameListFragment)
-        }
 
         if(args.editMode){
             editMode()
@@ -192,7 +190,6 @@ class GameListDetailFragment : Fragment() {
         binding.savListButton.isVisible = editMode
 
         binding.fabAddGame.isVisible = !editMode
-        binding.fabGoBack.isVisible = !editMode
         binding.buttonChangeBanner.isVisible = editMode
 
         selectedGamesRecyclerView?.toggleEditMode()
@@ -202,6 +199,7 @@ class GameListDetailFragment : Fragment() {
         )
     }
 
+    // requirements and save the list
     private fun saveList() {
         val name = binding.textViewListNameEdit.text.toString().trim()
         val description = binding.textViewListDescriptionEdit.text.toString().trim()
@@ -231,6 +229,7 @@ class GameListDetailFragment : Fragment() {
         editMode()
     }
 
+    // show the game picker dialog
     private fun showGamePicker() {
         val selectedGames = gamesSelected ?: emptyList()
 
@@ -238,6 +237,7 @@ class GameListDetailFragment : Fragment() {
         dialog.show(parentFragmentManager, "GamePickerDialog")
     }
 
+    // listen to the result of the game picker
     private fun setupGamePickerResultListener() {
         parentFragmentManager.setFragmentResultListener(
             GamePickerFragment.REQUEST_KEY,

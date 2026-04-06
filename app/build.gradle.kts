@@ -65,6 +65,7 @@ dependencies {
     implementation(libs.androidx.remote.creation.core)
     implementation(libs.protolite.well.known.types)
     implementation(libs.volley)
+    implementation(libs.play.services.games)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

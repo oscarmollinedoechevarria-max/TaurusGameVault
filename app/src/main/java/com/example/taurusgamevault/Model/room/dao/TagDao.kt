@@ -20,6 +20,7 @@ interface TagDao {
     @Query("SELECT * FROM tag WHERE isPlataform = 1")
     fun getPlataforms(): LiveData<List<Tag>>
 
+    // get tags by game
     @Query("""
     UPDATE tag
     SET image = :image
@@ -45,6 +46,7 @@ interface TagDao {
     @Query("DELETE FROM tag_game WHERE game_id = :gameId")
     suspend fun deleteTagsByGameId(gameId: Long)
 
+    // get tags by game
     @Query("""
         SELECT t.* FROM tag t
         INNER JOIN tag_game tg ON t.tag_id = tg.tag_id

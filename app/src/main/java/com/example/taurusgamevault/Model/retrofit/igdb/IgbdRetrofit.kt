@@ -8,6 +8,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
+// singleton for igdb api for use as a service
 object IgdbRetrofit {
     private const val BASE_URL = "https://api.igdb.com/v4/"
 

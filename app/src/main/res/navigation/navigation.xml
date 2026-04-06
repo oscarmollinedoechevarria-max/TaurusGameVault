@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.example.taurusgamevault.mainscreen.MainFragment"
-        android:label="MainFragment" >
+        android:label="Vault" >
         <action
             android:id="@+id/action_mainFragment_to_createGameFragment"
             app:destination="@id/createGameFragment" />
@@ -27,20 +27,25 @@
         <action
             android:id="@+id/action_mainFragment_to_annotationsFragment"
             app:destination="@id/annotationsFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_appConfigurationFragment"
+            app:destination="@id/appConfigurationFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/createGameFragment"
         android:name="com.example.taurusgamevault.creategame.CreateGameFragment"
-        android:label="fragment_create_game"
+        android:label="Register Game"
         tools:layout="@layout/fragment_create_game" >
         <action
             android:id="@+id/action_createGameFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/gameDetailFragment"
         android:name="com.example.taurusgamevault.gamedetail.GameDetailFragment"
-        android:label="GameDetailFragment" >
+        android:label="{gameName}">
         <action
             android:id="@+id/action_gameDetailFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
@@ -56,29 +61,35 @@
         <argument
             android:name="gameId"
             app:argType="long" />
-
+        <argument
+            android:name="gameName"
+            app:argType="string" />
         <argument
             android:name="editMode"
             app:argType="boolean" />
     </fragment>
+
     <fragment
         android:id="@+id/createListFragment"
         android:name="com.example.taurusgamevault.list.createlist.CreateListFragment"
-        android:label="fragment_create_list"
+        android:label="New List"
         tools:layout="@layout/fragment_create_list" >
         <action
             android:id="@+id/action_createListFragment_to_gameListFragment"
             app:destination="@id/gameListFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/gameListDetailFragment"
         android:name="com.example.taurusgamevault.list.gamelistdetail.GameListDetailFragment"
-        android:label="fragment_game_list_detail"
+        android:label="{listName}"
         tools:layout="@layout/fragment_game_list_detail" >
-         <argument
+        <argument
             android:name="listId"
             app:argType="long" />
-
+        <argument
+            android:name="listName"
+            app:argType="string" />
         <argument
             android:name="editMode"
             app:argType="boolean" />
@@ -90,10 +101,11 @@
             android:id="@+id/action_gameListDetailFragment_to_gameDetailFragment"
             app:destination="@id/gameDetailFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/gameListFragment"
         android:name="com.example.taurusgamevault.list.gamelist.GameListFragment"
-        android:label="fragment_game_list"
+        android:label="My Lists"
         tools:layout="@layout/fragment_game_list" >
         <action
             android:id="@+id/action_gameListFragment_to_createListFragment"
@@ -102,22 +114,31 @@
             android:id="@+id/action_gameListFragment_to_gameListDetailFragment"
             app:destination="@id/gameListDetailFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/importGamesNoAccountFragment"
         android:name="com.example.taurusgamevault.importgamesigdb.ImportGamesNoAccountFragment"
-        android:label="ImportGamesNoAccountFragment" />
+        android:label="Import Games" />
+
     <fragment
         android:id="@+id/plataformsImportFragment"
         android:name="com.example.taurusgamevault.importgamesoptions.PlataformsImportFragment"
-        android:label="PlataformsImportFragment" >
+        android:label="Select Platforms" >
         <action
             android:id="@+id/action_plataformsImportFragment_to_importGamesNoAccountFragment"
             app:destination="@id/importGamesNoAccountFragment" />
+        <action
+            android:id="@+id/action_plataformsImportFragment_to_importGamesSteamFragment"
+            app:destination="@id/importGamesSteamFragment" />
+        <action
+            android:id="@+id/action_plataformsImportFragment_to_importGamesGOGFragment"
+            app:destination="@id/importGamesGOGFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/listTagsFragment"
         android:name="com.example.taurusgamevault.tags.listtags.ListTagsFragment"
-        android:label="fragment_list_tags"
+        android:label="Tags"
         tools:layout="@layout/fragment_list_tags" >
         <action
             android:id="@+id/action_listTagsFragment_to_mainFragment"
@@ -129,39 +150,66 @@
             android:id="@+id/action_listTagsFragment_to_listByTagFragment"
             app:destination="@id/listByTagFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/createTagsFragment"
         android:name="com.example.taurusgamevault.tags.createtags.CreateTagsFragment"
-        android:label="CreateTagsFragment" >
+        android:label="New Tag" >
         <action
             android:id="@+id/action_createTagsFragment_to_listTagsFragment"
             app:destination="@id/listTagsFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/listByTagFragment"
         android:name="com.example.taurusgamevault.tags.listgamesbytag.ListByTagFragment"
-        android:label="ListByTagFragment" >
+        android:label="{tagName}" >
         <argument
             android:name="tagId"
             app:argType="long" />
+        <argument
+            android:name="tagName"
+            app:argType="string" />
         <action
             android:id="@+id/action_listByTagFragment_to_gameDetailFragment"
             app:destination="@id/gameDetailFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/annotationsFragment"
         android:name="com.example.taurusgamevault.annotations.AnnotationsFragment"
-        android:label="AnnotationsFragment">
+        android:label="Notes: {gameName}">
         <argument
             android:name="gameId"
             app:argType="long" />
+        <argument
+            android:name="gameName"
+            app:argType="string" />
     </fragment>
+
     <fragment
         android:id="@+id/objectivesFragment"
         android:name="com.example.taurusgamevault.objectives.ObjectivesFragment"
-        android:label="ObjectivesFragment">
+        android:label="Objectives: {gameName}">
         <argument
             android:name="gameId"
             app:argType="long" />
+        <argument
+            android:name="gameName"
+            app:argType="string" />
     </fragment>
+
+    <fragment
+        android:id="@+id/appConfigurationFragment"
+        android:name="com.example.taurusgamevault.appconf.AppConfigurationFragment"
+        android:label="Settings"
+        tools:layout="@layout/fragment_app_configuration" />
+    <fragment
+        android:id="@+id/importGamesGOGFragment"
+        android:name="com.example.taurusgamevault.importgog.ImportGamesGOGFragment"
+        android:label="Import games from GOG" />
+    <fragment
+        android:id="@+id/importGamesSteamFragment"
+        android:name="com.example.taurusgamevault.importsteam.ImportGamesSteamFragment"
+        android:label="Import games from Steam" />
 </navigation>

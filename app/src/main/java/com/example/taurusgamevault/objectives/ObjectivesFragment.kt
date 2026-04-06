@@ -15,6 +15,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.taurusgamevault.R
+import com.example.taurusgamevault.adapters.ObjectivesAdapter
 import com.example.taurusgamevault.databinding.FragmentObjectivesBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -22,6 +23,7 @@ class ObjectivesFragment : Fragment() {
 
     private val viewModel: ObjectivesViewModel by viewModels()
     private val args: ObjectivesFragmentArgs by navArgs()
+
     lateinit var binding: FragmentObjectivesBinding
     private lateinit var adapter: ObjectivesAdapter
 
@@ -60,6 +62,7 @@ class ObjectivesFragment : Fragment() {
         }
     }
 
+    // show the add objective dialog
     private fun showAddObjectiveDialog() {
         val input = EditText(requireContext())
         MaterialAlertDialogBuilder(requireContext())
@@ -75,6 +78,7 @@ class ObjectivesFragment : Fragment() {
             .show()
     }
 
+    // setup objectives fragment superior menu
     private fun setupMenu() {
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {

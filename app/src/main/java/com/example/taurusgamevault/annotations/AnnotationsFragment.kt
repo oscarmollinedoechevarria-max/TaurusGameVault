@@ -36,12 +36,14 @@ class AnnotationsFragment : Fragment() {
 
         viewModel.loadAnnotation(requireContext(), args.gameId)
 
+        // observe changes and update the editor content
         viewModel.annotation.observe(viewLifecycleOwner) { annotation ->
             if (annotation != null) {
                 binding.editor.setHtml(annotation.text)
             }
         }
 
+        // save annotations
         binding.btnSaveAnnotation.setOnClickListener {
             val htmlContent = binding.editor.html ?: ""
             viewModel.saveAnnotation(requireContext(), args.gameId, htmlContent)
@@ -56,6 +58,7 @@ class AnnotationsFragment : Fragment() {
             setEditorFontSize(55)
             setPlaceholder("Start writing here your annotations...")
             setPadding(16, 16, 16, 16)
+            // enable WebView settings for rich text rendering
             settings.javaScriptEnabled = true
             settings.domStorageEnabled = true
             settings.loadWithOverviewMode = true
@@ -64,7 +67,7 @@ class AnnotationsFragment : Fragment() {
             settings.allowContentAccess = true
         }
 
-        // Acceder al WebView interno de RichEditor para interceptar clicks
+        // use reflection to access the internal WebView of the RichEditor library
         val fieldName = listOf("mWebView", "webView", "mEditor").firstOrNull { name ->
             runCatching { RichEditor::class.java.getDeclaredField(name) }.isSuccess
         }
@@ -80,6 +83,7 @@ class AnnotationsFragment : Fragment() {
                         request: WebResourceRequest
                     ): Boolean {
                         val uri = request.url
+                        // redirect youTube links
                         if (uri.host?.contains("youtube.com") == true ||
                             uri.host?.contains("youtu.be") == true
                         ) {
@@ -98,11 +102,13 @@ class AnnotationsFragment : Fragment() {
     private fun setupToolbar() {
         val editor = binding.editor
 
+        // basic text formatting
         binding.btnBold.setOnClickListener { editor.setBold() }
         binding.btnItalic.setOnClickListener { editor.setItalic() }
         binding.btnUnderline.setOnClickListener { editor.setUnderline() }
         binding.btnStrike.setOnClickListener { editor.setStrikeThrough() }
 
+        // color and highlight management
         binding.btnHighlightYellow.setOnClickListener {
             editor.setTextBackgroundColor(Color.YELLOW)
         }
@@ -116,6 +122,7 @@ class AnnotationsFragment : Fragment() {
             editor.setTextColor(Color.BLUE)
         }
 
+        // structural elements (headers, lists, checkboxes)
         binding.btnH1.setOnClickListener { editor.setHeading(1) }
         binding.btnH2.setOnClickListener { editor.setHeading(2) }
         binding.btnBlockquote.setOnClickListener { editor.setBlockquote() }
@@ -123,8 +130,11 @@ class AnnotationsFragment : Fragment() {
         binding.btnCheckbox.setOnClickListener { editor.insertTodo() }
 
         binding.btnLink.setOnClickListener { showInsertLinkDialog() }
-        binding.btnYoutube.setOnClickListener { showInsertYoutubeDialog() }
 
+        // NOTE: YouTube button is currently disabled
+        // binding.btnYoutube.setOnClickListener { showInsertYoutubeDialog() }
+
+        // history management
         binding.btnUndo.setOnClickListener { editor.undo() }
         binding.btnRedo.setOnClickListener { editor.redo() }
     }
@@ -153,6 +163,7 @@ class AnnotationsFragment : Fragment() {
             .show()
     }
 
+    // youTube insertion logic
     private fun showInsertYoutubeDialog() {
         val etUrl = EditText(requireContext()).apply {
             hint = "https://www.youtube.com/watch?v=..."
@@ -175,7 +186,7 @@ class AnnotationsFragment : Fragment() {
     private fun insertYoutubeEmbed(url: String) {
         val videoId = extractYoutubeId(url)
         if (videoId == null) {
-            Toast.makeText(requireContext(), "URL de YouTube inválida", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Invalid YouTube URL", Toast.LENGTH_SHORT).show()
             return
         }
 

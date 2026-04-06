@@ -7,6 +7,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.taurusgamevault.Model.room.entities.Game
+import com.example.taurusgamevault.classes.GameStats
 
 @Dao
 interface GameDao {
@@ -16,6 +17,7 @@ interface GameDao {
     @Query("SELECT * FROM game WHERE game_id = :gameID")
     fun getGame(gameID: Long): LiveData<Game>
 
+    // get games by tag
     @Query("""
         SELECT game.* FROM game
         INNER JOIN tag_game ON game.game_id = tag_game.game_id
@@ -23,6 +25,7 @@ interface GameDao {
     """)
     fun getGamesByTag(tagId: Long): LiveData<List<Game>>
 
+    // get games by tags
     @Query("""
     SELECT game.* FROM game
     INNER JOIN tag_game ON game.game_id = tag_game.game_id
@@ -31,6 +34,16 @@ interface GameDao {
     HAVING COUNT(DISTINCT tag_game.tag_id) = :tagCount
 """)
     fun getGamesByTags(tagIds: List<Long>, tagCount: Int): LiveData<List<Game>>
+
+    // get stats for vault
+    @Query("""
+    SELECT 
+        SUM(playtime) as totalPlaytime,
+        SUM(CASE WHEN game_state = 'Completed' THEN 1 ELSE 0 END) as completedCount,
+        SUM(CASE WHEN game_state = 'Pending' THEN 1 ELSE 0 END) as pendingCount
+    FROM game
+""")
+    fun getVaultStats(): LiveData<GameStats>
 
     @Query("""
     UPDATE game 

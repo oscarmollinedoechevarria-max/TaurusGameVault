@@ -26,11 +26,18 @@ class PlataformsImportFragment : Fragment() {
 
         val items = listOf(
             ItemPlataformImport(R.drawable.circlereddarkened, "Import games"),
-        )
+            ItemPlataformImport(R.drawable.circlereddarkened, "Import games Steam"),
+            ItemPlataformImport(R.drawable.circlereddarkened, "Import games Gog"),
+            )
 
+        // Set up the RecyclerView(made like this for easy tests)
         binding.plataformsImportRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.plataformsImportRecyclerView.adapter = ImportPlataformAdapter(items) { item ->
-            findNavController().navigate(R.id.action_plataformsImportFragment_to_importGamesNoAccountFragment)
+            when (item.title) {
+                "Import games" -> findNavController().navigate(R.id.action_plataformsImportFragment_to_importGamesNoAccountFragment)
+                "Import games Steam" -> findNavController().navigate(R.id.action_plataformsImportFragment_to_importGamesSteamFragment)
+                "Import games Gog" -> findNavController().navigate(R.id.action_plataformsImportFragment_to_importGamesGOGFragment)
+            }
         }
 
         return binding.root

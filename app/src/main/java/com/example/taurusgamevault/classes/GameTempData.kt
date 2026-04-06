@@ -11,6 +11,8 @@ import com.example.taurusgamevault.Model.room.entities.Screenshot
 //todo: SHOW MORE SHOW LESS LIST
 //TODO: FIX DATABSE LIST XML ON MAIN ACTIVITY
 //TODO: FRAGMENT NAMES ON NAVIGATION
+
+// data class for game temp data for imports
 data class GameTempData(
     val imageUri: Uri?,
     val name: String,

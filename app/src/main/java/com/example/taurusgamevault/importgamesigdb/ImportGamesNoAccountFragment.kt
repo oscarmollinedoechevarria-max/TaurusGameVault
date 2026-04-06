@@ -16,6 +16,7 @@ import com.example.taurusgamevault.Model.retrofit.igdb.IgdbRetrofit
 
 class ImportGamesNoAccountFragment : Fragment() {
 
+    // viewModel with custom factory to pass retrofit instance
     private val viewModel: ImportGamesNoAccountViewModel by viewModels {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -33,6 +34,7 @@ class ImportGamesNoAccountFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentImportGamesNoAccountBinding.inflate(inflater, container, false)
+
         return binding.root
     }
 
@@ -57,7 +59,7 @@ class ImportGamesNoAccountFragment : Fragment() {
                     binding.progressBar.isVisible = true
                     binding.progressBar.max = state.total
                     binding.progressBar.progress = state.current
-                    binding.tvProgress.text = "(${state.current}/${state.total}) ${state.currentGame}"
+                    binding.tvProgress.text = "(${state.current}/${state.total})"
                 }
                 is ImportState.Done -> {
                     binding.btnImport.isEnabled = true

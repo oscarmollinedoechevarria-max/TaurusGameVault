@@ -4,6 +4,7 @@ import android.os.Parcelable
 import com.example.taurusgamevault.Model.room.entities.Game
 import kotlinx.parcelize.Parcelize
 
+//used for game dialog(Parcelize for send between fragments)
 @Parcelize
 data class SimplifiedGame (
     val gameId: Long,

@@ -16,16 +16,14 @@ class AnnotationsViewModel : ViewModel() {
 
     fun loadAnnotation(context: Context, gameId: Long) {
         viewModelScope.launch {
-            val db = Repository.initializeDB(context)
-            val result = db.annotationDao().getAnnotationByGameId(gameId)
+            val result = Repository.getAnnotationByGameId(context, gameId)
             _annotation.postValue(result)
         }
     }
 
     fun saveAnnotation(context: Context, gameId: Long, text: String) {
         viewModelScope.launch {
-            val db = Repository.initializeDB(context)
-            val existing = db.annotationDao().getAnnotationByGameId(gameId)
+            val existing = Repository.getAnnotationByGameId(context, gameId)
             
             val newAnnotation = if (existing != null) {
                 existing.copy(text = text)
@@ -35,7 +33,11 @@ class AnnotationsViewModel : ViewModel() {
                     game_id = gameId
                 )
             }
-            db.annotationDao().insertAnnotation(newAnnotation)
+            if (existing != null) {
+                Repository.updateAnnotation(context, newAnnotation)
+            } else {
+                Repository.insertAnnotation(context, newAnnotation)
+            }
         }
     }
 }
