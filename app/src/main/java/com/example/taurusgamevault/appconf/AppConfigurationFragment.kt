@@ -12,8 +12,10 @@ import com.example.taurusgamevault.databinding.FragmentAppConfigurationBinding
 import android.net.Uri
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import com.example.taurusgamevault.MainActivity
 import com.example.taurusgamevault.annotations.AnnotationsViewModel
 import kotlin.getValue
+import androidx.core.content.edit
 
 class AppConfigurationFragment : Fragment() {
     private lateinit var binding: FragmentAppConfigurationBinding
@@ -47,7 +49,9 @@ class AppConfigurationFragment : Fragment() {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             }
 
-            prefs.edit().putBoolean("dark_mode", isChecked).apply()
+            prefs.edit {
+                putBoolean("dark_mode", isChecked)
+            }
         }
 
         // create backup

@@ -14,34 +14,13 @@ class ObjectivesAdapter(
     private val onChecked: (Objective) -> Unit,
     // block for delete button click
     private val onDelete: (Objective) -> Unit
-) : RecyclerView.Adapter<ObjectivesAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<ObjectivesViewHolder>() {
 
-    inner class ViewHolder(private val binding: ItemObjectiveBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(item: Objective) {
-            binding.tvObjectiveTitle.text = item.title
-            binding.cbCompleted.isChecked = item.completed
-            binding.cbCompleted.isEnabled = editMode
-            binding.cbCompleted.setOnClickListener {
-                onChecked(item)
-            }
-            binding.btnDeleteObjective.visibility = if (editMode) View.VISIBLE else View.GONE
-            binding.btnDeleteObjective.setOnClickListener {
-                onDelete(item)
-            }
-        }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ObjectivesViewHolder {
         val binding = ItemObjectiveBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
         )
-        return ViewHolder(binding)
-    }
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(items[position])
+        return ObjectivesViewHolder(binding)
     }
 
     override fun getItemCount(): Int {
@@ -58,4 +37,27 @@ class ObjectivesAdapter(
         editMode = newEditMode
         notifyDataSetChanged()
     }
+
+    override fun onBindViewHolder(holder: ObjectivesViewHolder, position: Int) {
+        val item = items[position]
+
+        // bind data and state
+        holder.binding.tvObjectiveTitle.text = item.title
+        holder.binding.cbCompleted.isChecked = item.completed
+        holder.binding.cbCompleted.isEnabled = editMode
+
+        // checked box click
+        holder.binding.cbCompleted.setOnClickListener {
+            onChecked(item)
+        }
+
+        // delete button visibility and click
+        holder.binding.btnDeleteObjective.visibility = if (editMode) View.VISIBLE else View.GONE
+        holder.binding.btnDeleteObjective.setOnClickListener {
+            onDelete(item)
+        }
+    }
 }
+
+class ObjectivesViewHolder(val binding: ItemObjectiveBinding) :
+    RecyclerView.ViewHolder(binding.root)

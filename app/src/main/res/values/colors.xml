@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Brand colors -->
+    <!-- Brand -->
     <color name="taurus_brown">#5C4033</color>
     <color name="taurus_yellow">#FFBF00</color>
     <color name="gold_key">#FFD700</color>
@@ -15,8 +15,6 @@
     <!-- Secondary -->
     <color name="color_secondary">#FFBF00</color>
     <color name="color_on_secondary">#5C4033</color>
-
-    <!-- Secondary Container -->
     <color name="secondary_container">#FFF4D1</color>
     <color name="on_secondary_container">#5C4033</color>
     <color name="color_secondary_container_light">#FFF4D1</color>
@@ -24,41 +22,49 @@
     <color name="color_secondary_container_dark">#3A2A1A</color>
     <color name="color_on_secondary_container_dark">#FFD700</color>
 
-    <!-- Surface (genérico, usado en drawables legacy) -->
+    <!-- Base surface -->
+    <color name="surface_soft">#F8F9FA</color>
     <color name="surface">#FFFFFF</color>
-    <color name="surface_variant">#E0E0E0</color>
-    <color name="on_surface">#333333</color>
-    <color name="on_surface_variant">#7F7F7F</color>
+    <color name="surface_variant">#F5F5F5</color>
+    <color name="on_surface">#1C1B1B</color>
+    <color name="on_surface_variant">#49454F</color>
 
     <!-- Light mode -->
     <color name="color_background_light">#F5F5F5</color>
     <color name="color_surface_light">#FFFFFF</color>
-    <color name="color_surface_variant_light">#E0E0E0</color>
-    <color name="color_on_surface_light">#333333</color>
-    <color name="color_on_surface_variant_light">#7F7F7F</color>
+    <color name="color_surface_variant_light">#E7E0D1</color>
+    <color name="color_on_surface_light">#1C1B1F</color>
+    <color name="color_on_surface_variant_light">#49454F</color>
     <color name="light_background">#F5F5F5</color>
     <color name="light_surface">#FFFFFF</color>
-    <color name="light_text_primary">#333333</color>
-    <color name="light_text_secondary">#7F7F7F</color>
+    <color name="light_text_primary">#1C1B1F</color>
+    <color name="light_text_secondary">#49454F</color>
     <color name="light_on_primary">#FFFFFF</color>
 
     <!-- Dark mode -->
     <color name="color_background_dark">#121212</color>
     <color name="color_surface_dark">#1E1E1E</color>
-    <color name="color_surface_variant_dark">#2C2C2C</color>
-    <color name="color_on_surface_dark">#F5F5F5</color>
-    <color name="color_on_surface_variant_dark">#B0B0B0</color>
+    <color name="color_surface_variant_dark">#333333</color>
+    <color name="color_on_surface_dark">#F2F2F2</color>
+    <color name="color_on_surface_variant_dark">#C4C4C4</color>
     <color name="dark_background">#121212</color>
     <color name="dark_surface">#1E1E1E</color>
-    <color name="dark_text_primary">#F5F5F5</color>
-    <color name="dark_text_secondary">#B0B0B0</color>
-    <color name="dark_on_primary">#212121</color>
+    <color name="dark_text_primary">#F2F2F2</color>
+    <color name="dark_text_secondary">#C4C4C4</color>
+    <color name="dark_on_primary">#121212</color>
 
     <!-- Error -->
-    <color name="color_error">#B00020</color>
-    <color name="color_on_error">#FFFFFF</color>
+    <color name="color_error">#F2B8B5</color>
+    <color name="color_on_error">#601410</color>
 
-    <!-- Misc -->
+    <!-- UI components -->
     <color name="colorMenuButton">#5C4033</color>
+
+    <!-- overlay selection color -->
+    <color name="selection_overlay">#66FFBF00</color>
+    <color name="selection_yellow">#CCFF00</color>
+
+    <!-- color import platforms -->
+    <color name="text_primary_adaptive">#212121</color>
 
 </resources>

@@ -41,36 +41,33 @@ class ScreenshotAdapter(
     }
 
     override fun onBindViewHolder(holder: ScreenshotViewHolder, position: Int) {
-        holder.bind(items[position], isEditMode, onImageClick, onEditScreenshot)
-    }
+        val imageUrl = items[position]
 
-    override fun getItemCount(): Int = items.size
-}
-
-class ScreenshotViewHolder(
-    private val binding: ItemScreenshotBinding
-) : RecyclerView.ViewHolder(binding.root) {
-
-    fun bind(
-        imageUrl: String,
-        isEditMode: Boolean,
-        onImageClick: (String) -> Unit,
-        onEditScreenshot: (Int) -> Unit
-    ) {
-        binding.screenshotImageView.load(imageUrl) {
+        // load image
+        holder.binding.screenshotImageView.load(imageUrl) {
             crossfade(true)
             placeholder(R.drawable.ic_launcher_background)
             error(R.drawable.ic_launcher_background)
         }
 
-        binding.editScreenshot.visibility = if (isEditMode) View.VISIBLE else View.GONE
+        // update ui based on edit mode
+        holder.binding.editScreenshot.visibility = if (isEditMode) View.VISIBLE else View.GONE
 
-        binding.editScreenshot.setOnClickListener {
-            onEditScreenshot(bindingAdapterPosition)
+        // edit click
+        holder.binding.editScreenshot.setOnClickListener {
+            onEditScreenshot(holder.bindingAdapterPosition)
         }
 
-        binding.root.setOnClickListener {
+        // Handle root(card view) click
+        holder.binding.root.setOnClickListener {
             onImageClick(imageUrl)
         }
     }
+
+    override fun getItemCount(): Int {
+        return items.size
+    }
 }
+
+class ScreenshotViewHolder(val binding: ItemScreenshotBinding) :
+    RecyclerView.ViewHolder(binding.root)

@@ -64,6 +64,10 @@ abstract class DataBase : RoomDatabase() {
             return INSTANCE!!
         }
 
+        fun clearInstance() {
+            INSTANCE = null
+        }
+
         private fun buildDatabase(context: Context): DataBase {
 //            context.deleteDatabase("taurus_game_vault")
 

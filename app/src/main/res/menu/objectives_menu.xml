@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_toggle_edit"
-        android:icon="@drawable/editimage"
+        android:icon="@drawable/ic_edit_image"
         android:title="Toggle Edit Mode"
         app:showAsAction="ifRoom"
         app:iconTint="@color/color_on_primary" />

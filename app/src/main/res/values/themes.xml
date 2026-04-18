@@ -13,7 +13,7 @@
 
         <!-- Secondary -->
         <item name="colorSecondary">@color/taurus_yellow</item>
-        <item name="colorOnSecondary">@color/light_text_primary</item>
+        <item name="colorOnSecondary">@color/taurus_brown</item>
 
         <!-- Secondary Container -->
         <item name="colorSecondaryContainer">@color/color_secondary_container_light</item>
@@ -49,6 +49,14 @@
         <item name="android:windowBackground">@drawable/splash_background</item>
         <item name="android:statusBarColor">@color/taurus_brown</item>
         <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+    <style name="TransparentOverlayDialog" parent="Theme.TaurusGameVault">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
     </style>
 
 </resources>

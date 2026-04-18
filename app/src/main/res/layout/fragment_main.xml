@@ -52,7 +52,6 @@
 
         </LinearLayout>
 
-        <!-- Tags label (always visible, below search bar) -->
         <TextView
             android:id="@+id/labelTags"
             android:layout_width="wrap_content"
@@ -82,6 +81,20 @@
             tools:listitem="@layout/plataformimportcard"
             android:visibility="gone"/>
 
+        <!-- FAB select tags -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_selectTags"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:contentDescription="Select tags"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_tag_multiple"
+            app:backgroundTint="?attr/colorSecondary"
+            app:tint="@android:color/white"
+            app:layout_constraintEnd_toStartOf="@id/fab_add"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
         <!-- Games list, fills remaining space -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/gamesRecyclerView"
@@ -110,7 +123,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
 
-        <!-- FAB search (top right, hidden when search bar opens) -->
+        <!-- FAB golden pick -->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_goldenPick"
             android:layout_width="wrap_content"
@@ -122,6 +135,7 @@
             app:tint="@android:color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
 
         <!-- Empty state label -->
         <TextView

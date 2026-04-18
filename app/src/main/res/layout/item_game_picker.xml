@@ -1,39 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
     <com.google.android.material.card.MaterialCardView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/cardContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="4dp">
+        android:checkable="true"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        app:strokeColor="@color/card_stroke_selector"
+        app:strokeWidth="3dp"
+        app:cardPreventCornerOverlap="false">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/backgroundView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-            <CheckBox
-                android:id="@+id/gameCheckBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:clickable="false"
-                android:focusable="false"
-                app:layout_constraintEnd_toEndOf="@id/productImageView"
-                app:layout_constraintTop_toTopOf="@id/productImageView" />
 
             <ImageView
                 android:id="@+id/productImageView"
                 android:layout_width="0dp"
-                android:layout_height="100dp"
+                android:layout_height="110dp"
                 android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:srcCompat="@tools:sample/avatars" />
+                tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+            <ImageView
+                android:id="@+id/ivSelectionCheck"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_margin="8dp"
+                android:src="@drawable/outline_check_24"
+                android:padding="4dp"
+                android:visibility="gone"
+                app:tint="#CCFF00"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/gameNameTextView"
@@ -42,11 +50,11 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="8dp"
-                android:text="game name"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Game name"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:maxLines="1"
-                android:ellipsize="end"
                 app:layout_constraintEnd_toStartOf="@id/releaseDateTextView"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/productImageView" />
@@ -69,27 +77,15 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="12dp"
                 android:layout_marginBottom="12dp"
-                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eros nulla, efficitur at ipsum vitae, congue commodo ligula. Nulla vitae nibh mi. Donec quis odio tellus. Curabitur pharetra in quam sed vulputate."
-                android:textSize="11sp"
-                android:maxLines="3"
                 android:ellipsize="end"
+                android:maxLines="2"
+                android:text="Text desc"
+                android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/gameNameTextView" />
 
-            <View
-                android:id="@+id/selectionOverlay"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="#4D2196F3"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </com.google.android.material.card.MaterialCardView>
 </layout>

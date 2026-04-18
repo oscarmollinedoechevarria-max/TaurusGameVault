@@ -48,10 +48,6 @@ class CreateListFragment : Fragment() {
     ): View {
         binding = FragmentCreateListBinding.inflate(inflater)
 
-        binding.fabGoBack.setOnClickListener {
-            findNavController().navigate(R.id.action_createListFragment_to_gameListFragment)
-        }
-
         setupGamePickerResultListener()
 
         setupRecyclerView()

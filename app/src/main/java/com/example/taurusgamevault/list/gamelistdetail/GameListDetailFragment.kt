@@ -7,35 +7,31 @@ import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.request.CachePolicy
-import com.example.taurusgamevault.Model.room.entities.Game
 import com.example.taurusgamevault.R
-import com.example.taurusgamevault.adapters.ListGameAdapter
 import com.example.taurusgamevault.adapters.SimplifiedGameAdapter
 import com.example.taurusgamevault.classes.ListTempData
 import com.example.taurusgamevault.classes.SimplifiedGame
-import com.example.taurusgamevault.classes.toGame
 import com.example.taurusgamevault.databinding.FragmentGameListDetailBinding
-import com.example.taurusgamevault.gamedetail.GameDetailFragmentArgs
 import com.example.taurusgamevault.gamepicker.GamePickerFragment
-import io.ktor.http.Url
 import kotlin.getValue
-import androidx.core.net.toUri
 import com.example.taurusgamevault.Model.room.entities.List_game
+import androidx.core.view.MenuProvider
 
 class GameListDetailFragment : Fragment() {
 
@@ -54,6 +50,8 @@ class GameListDetailFragment : Fragment() {
     private var oldImageUri: String? = null
 
     private var selectedGamesRecyclerView: SimplifiedGameAdapter? = null
+
+    private var menu: Menu? = null
 
     // system picker
     private val pickMedia =
@@ -89,10 +87,6 @@ class GameListDetailFragment : Fragment() {
     fun setupView(gameListId: Long) {
         setupRecyclerView()
         setupGamePickerResultListener()
-
-        binding.fabEdit.setOnClickListener {
-            editMode()
-        }
 
         binding.savListButton.setOnClickListener {
             saveList()
@@ -171,6 +165,29 @@ class GameListDetailFragment : Fragment() {
             handleSelectedGames(games)
         }
 
+        setupMenu()
+
+    }
+
+    private fun setupMenu() {
+        requireActivity().addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.fragment_game_list_detail_menu, menu)
+                this@GameListDetailFragment.menu = menu
+            }
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.action_edit -> {
+                        editMode()
+                        menu?.findItem(R.id.action_edit)?.setIcon(
+                            if (editMode) R.drawable.outline_check_24 else R.drawable.ic_edit_image
+                        )
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     fun editMode() {
@@ -193,10 +210,6 @@ class GameListDetailFragment : Fragment() {
         binding.buttonChangeBanner.isVisible = editMode
 
         selectedGamesRecyclerView?.toggleEditMode()
-
-        binding.fabEdit.setImageResource(
-            if (editMode) R.drawable.outline_check_24 else R.drawable.editimage
-        )
     }
 
     // requirements and save the list

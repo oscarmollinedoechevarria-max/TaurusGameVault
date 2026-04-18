@@ -39,13 +39,13 @@
         <item name="android:statusBarColor">@color/color_background_dark</item>
         <item name="android:windowLightStatusBar">false</item>
 
-        <!-- Toolbar — en noche fondo oscuro con texto amarillo -->
+        <!-- Toolbar -->
         <item name="toolbarStyle">@style/Widget.TaurusGameVault.Toolbar.Night</item>
         <item name="actionBarTheme">@style/ThemeOverlay.TaurusGameVault.Toolbar.Night</item>
 
     </style>
 
-    <style name="Theme.TaurusGameVault" parent="Base.Theme.TaurusGameVault" />
+
 
     <style name="SplashTheme" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:windowBackground">@drawable/splash_background</item>

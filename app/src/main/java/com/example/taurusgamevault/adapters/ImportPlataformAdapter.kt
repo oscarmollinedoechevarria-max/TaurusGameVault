@@ -2,12 +2,14 @@ package com.example.taurusgamevault.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.example.taurusgamevault.R
 import com.example.taurusgamevault.classes.ItemPlataformImport
 import com.example.taurusgamevault.databinding.PlataformimportcardBinding
 
 class ImportPlataformAdapter(
-    private val list: List<ItemPlataformImport>,
+    private var list: List<ItemPlataformImport>,
     // block for item click
     private val onClick: (ItemPlataformImport) -> Unit
 ) : RecyclerView.Adapter<ImportPlataformViewHolder>() {
@@ -20,23 +22,30 @@ class ImportPlataformAdapter(
     }
 
     override fun onBindViewHolder(holder: ImportPlataformViewHolder, position: Int) {
-        holder.bind(list[position], onClick)
-    }
+        val item = list[position]
 
-    override fun getItemCount(): Int = list.size
-}
+        // for each item in the list add the image and text of the item to the view
+        holder.binding.tvTitle.text = item.title
+        holder.binding.imgItem.setImageResource(item.imageRes)
 
-// for each item in the list add the image and text of the item to the view
-class ImportPlataformViewHolder(
-    private val binding: PlataformimportcardBinding
-) : RecyclerView.ViewHolder(binding.root) {
+        //tint for the first icon
+        if (item.title == "Import games") {
+            holder.binding.imgItem.setColorFilter(
+                ContextCompat.getColor(holder.binding.imgItem.context, R.color.text_primary_adaptive)
+            )
+        } else {
+            holder.binding.imgItem.colorFilter = null
+        }
 
-    fun bind(item: ItemPlataformImport, onClick: (ItemPlataformImport) -> Unit) {
-        binding.imgItem.setImageResource(item.imageRes)
-        binding.tvTitle.text = item.title
-
-        binding.root.setOnClickListener {
+        holder.binding.root.setOnClickListener {
             onClick(item)
         }
     }
+
+    override fun getItemCount(): Int {
+     return  list.size
+    }
 }
+
+class ImportPlataformViewHolder(val binding: PlataformimportcardBinding) :
+    RecyclerView.ViewHolder(binding.root)

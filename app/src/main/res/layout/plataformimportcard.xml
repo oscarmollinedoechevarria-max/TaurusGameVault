@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-<androidx.cardview.widget.CardView
+
+    <androidx.cardview.widget.CardView
     android:id="@+id/backgroundView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -22,7 +23,7 @@
             android:layout_height="56dp"
             android:scaleType="centerCrop"
             android:src="@drawable/appicon"
-            android:contentDescription="Imagen del item" />
+            android:contentDescription="Text image" />
 
         <TextView
             android:id="@+id/tvTitle"
@@ -34,14 +35,14 @@
             android:text="Título"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="@android:color/black" />
+            android:textColor="@color/text_primary_adaptive" />
 
         <ImageView
             android:id="@+id/imgArrow"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/chevron_right"
-            android:contentDescription="Ver más"
+            android:contentDescription="See more"
             app:tint="@android:color/darker_gray" />
 
     </LinearLayout>

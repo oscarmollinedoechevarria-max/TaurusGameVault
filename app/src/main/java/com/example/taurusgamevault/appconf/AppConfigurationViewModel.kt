@@ -51,26 +51,28 @@ class AppConfigurationViewModel : ViewModel() {
     // import database via deleting database and copying the new
     fun importDatabase(context: Context, uriNewFile: Uri) {
         try {
-
             val dbName = "taurus_game_vault"
 
             DataBase.Companion.getDatabase(context).close()
+            DataBase.Companion.clearInstance()
 
             val destination = context.getDatabasePath(dbName)
 
             File(destination.path + "-wal").delete()
             File(destination.path + "-shm").delete()
+            File(destination.path + "-journal").delete()
 
             context.contentResolver.openInputStream(uriNewFile)?.use { input ->
-                destination.outputStream().use { output ->
-                    input.copyTo(output)
-                }
-            }
+                val bytes = input.readBytes()
+                if (bytes.size < 100) throw Exception("File is empty")
+                destination.writeBytes(bytes)
+            } ?: throw Exception("cannot open file")
 
             restartApp(context)
 
         } catch (e: Exception) {
             e.printStackTrace()
+            Toast.makeText(context, "Error importing: ${e.message}", Toast.LENGTH_LONG).show()
         }
     }
 

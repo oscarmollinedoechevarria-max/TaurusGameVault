@@ -27,7 +27,7 @@
             android:layout_height="200dp">
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/imageViewTag"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
@@ -55,7 +55,7 @@
             android:padding="16dp"/>
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/buttonCreateTag"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Create tag" />

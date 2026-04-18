@@ -9,54 +9,12 @@
         tools:context=".list.createlist.CreateListFragment">
 
         <!-- ========================================== -->
-        <!-- HEADER -->
-        <!-- ========================================== -->
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/headerLayout"
-            android:layout_width="0dp"
-            android:layout_height="56dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <!-- FAB Go Back -->
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_go_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:contentDescription="@string/goBack"
-                app:srcCompat="@drawable/chevronleft"
-                app:backgroundTint="?attr/colorSecondary"
-                app:tint="@android:color/white"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-
-            <!-- Fragment Title -->
-            <TextView
-                android:id="@+id/tv_fragment_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Create List"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="?attr/colorOnBackground"
-                android:maxLines="1"
-                android:ellipsize="end"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <!-- ========================================== -->
         <!-- SCROLLABLE CONTENT -->
         <!-- ========================================== -->
         <ScrollView
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@id/headerLayout"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">

@@ -155,6 +155,23 @@
         android:id="@+id/createTagsFragment"
         android:name="com.example.taurusgamevault.tags.createtags.CreateTagsFragment"
         android:label="New Tag" >
+
+        <argument
+            android:name="tagId"
+            app:argType="long"
+            android:defaultValue="-1L" />
+
+        <argument
+            android:name="tagName"
+            app:argType="string"
+            android:defaultValue="" />
+
+        <argument
+            android:name="tagImage"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+
         <action
             android:id="@+id/action_createTagsFragment_to_listTagsFragment"
             app:destination="@id/listTagsFragment" />

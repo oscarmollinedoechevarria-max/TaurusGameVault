@@ -31,6 +31,9 @@ interface TagDao {
         image: String?,
     )
 
+    @Query("UPDATE tag SET image = :newUrl WHERE tag_id = :tagId")
+    suspend fun updateTagImage(tagId: Long, newUrl: String)
+
     @Delete
     suspend fun deleteTag(tag: Tag)
 

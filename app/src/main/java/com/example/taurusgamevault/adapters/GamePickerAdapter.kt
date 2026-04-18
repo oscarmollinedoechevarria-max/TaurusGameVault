@@ -2,23 +2,21 @@ package com.example.taurusgamevault.adapters
 
 import android.graphics.Matrix
 import android.graphics.drawable.Drawable
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
+import androidx.core.view.isVisible
+import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.request.CachePolicy
 import com.example.taurusgamevault.Model.room.entities.Game
 import com.example.taurusgamevault.R
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.CheckBox
-import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.recyclerview.widget.RecyclerView
-
+import com.google.android.material.card.MaterialCardView
 
 class GamePickerAdapter(
     private var list: List<Game>,
-    // block for game click
     private val onGameClick: (Game) -> Unit
 ) : RecyclerView.Adapter<GamePickerAdapter.ViewHolder>() {
 
@@ -27,28 +25,23 @@ class GamePickerAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_game_picker, parent, false)
-
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]
+        val isSelected = selectedGames.contains(item)
 
         holder.gameNameTextView.text = item.name
         holder.releaseDateTextView.text = item.release_date ?: "Unknown"
         holder.descriptionTextView.text = item.description ?: "No description available"
 
-        // Set checkbox state
-        holder.gameCheckBox.isChecked = selectedGames.contains(item)
+        // overlay, stroke
+        holder.cardContainer.isChecked = isSelected
+        holder.cardContainer.isChecked = isSelected
+        holder.ivSelectionCheck.isVisible = isSelected
 
-        // Set overlay visibility based on selection
-        holder.selectionOverlay.visibility = if (selectedGames.contains(item)) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
-
-        // Load game image
+        // Image load
         holder.productImageView.load(item.game_image) {
             crossfade(true)
             placeholder(R.drawable.ic_launcher_background)
@@ -57,38 +50,21 @@ class GamePickerAdapter(
             diskCachePolicy(CachePolicy.ENABLED)
             networkCachePolicy(CachePolicy.ENABLED)
 
-            listener(
-                onSuccess = { _, result ->
-                    if (holder.productImageView.width > 0 && holder.productImageView.height > 0) {
-                        applyImageMatrix(holder.productImageView, result.drawable)
-                    } else {
-                        holder.productImageView.post {
-                            applyImageMatrix(holder.productImageView, result.drawable)
-                        }
-                    }
-                },
-                onError = { _, _ ->
-                    holder.productImageView.scaleType = ImageView.ScaleType.FIT_XY
-                },
-                onStart = { _ ->
-                    holder.productImageView.scaleType = ImageView.ScaleType.FIT_XY
+            listener(onSuccess = { _, result ->
+                holder.productImageView.post {
+                    applyImageMatrix(holder.productImageView, result.drawable)
                 }
-            )
+            })
         }
 
         // Handle clicks on the entire card
-        holder.container.setOnClickListener {
-            onGameClick(item)
-        }
-
-        // Handle checkbox clicks
-        holder.gameCheckBox.setOnClickListener {
+        holder.cardContainer.setOnClickListener {
             onGameClick(item)
         }
     }
 
     override fun getItemCount(): Int {
-        return list.size
+      return list.size
     }
 
     fun updateSelection(selected: Set<Game>) {
@@ -102,13 +78,17 @@ class GamePickerAdapter(
         notifyDataSetChanged()
     }
 
-    //custom image position
     private fun applyImageMatrix(imageView: ImageView, drawable: Drawable) {
+        if (imageView.width <= 0) return
+
         imageView.scaleType = ImageView.ScaleType.MATRIX
 
         val imageWidth = drawable.intrinsicWidth.toFloat()
+
         val imageHeight = drawable.intrinsicHeight.toFloat()
+
         val viewWidth = imageView.width.toFloat()
+
         val viewHeight = imageView.height.toFloat()
 
         val scale = maxOf(viewWidth / imageWidth, viewHeight / imageHeight)
@@ -117,17 +97,21 @@ class GamePickerAdapter(
             postScale(scale, scale)
             postTranslate((viewWidth - imageWidth * scale) / 2f, 0f)
         }
-
         imageView.imageMatrix = matrix
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
+        val cardContainer: MaterialCardView = itemView.findViewById(R.id.cardContainer)
+
         val gameNameTextView: TextView = itemView.findViewById(R.id.gameNameTextView)
+
         val releaseDateTextView: TextView = itemView.findViewById(R.id.releaseDateTextView)
+
         val descriptionTextView: TextView = itemView.findViewById(R.id.descriptionTextView)
+
         val productImageView: ImageView = itemView.findViewById(R.id.productImageView)
-        val gameCheckBox: CheckBox = itemView.findViewById(R.id.gameCheckBox)
-        val selectionOverlay: View = itemView.findViewById(R.id.selectionOverlay)
-        val container: ConstraintLayout = itemView.findViewById(R.id.backgroundView)
+
+        val ivSelectionCheck: ImageView = itemView.findViewById(R.id.ivSelectionCheck)
     }
 }

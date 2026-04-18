@@ -11,7 +11,7 @@
         <ImageView
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:src="@drawable/ic_settings"
+            android:src="@drawable/gogicon"
             android:layout_marginBottom="16dp"/>
 
         <TextView

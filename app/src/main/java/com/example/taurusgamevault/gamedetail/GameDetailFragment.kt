@@ -7,8 +7,10 @@ import android.app.AlertDialog
 import android.graphics.Matrix
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -17,9 +19,12 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
+import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,6 +40,7 @@ import com.example.taurusgamevault.enums.Priority
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.Calendar
+import java.util.Locale
 import java.util.TimeZone
 
 class GameDetailFragment : Fragment() {
@@ -42,7 +48,7 @@ class GameDetailFragment : Fragment() {
     private val args: GameDetailFragmentArgs by navArgs()
     private lateinit var binding: FragmentGameDetailBinding
 
-    private val MAX_SCREENSHOTS = 5
+    private val maxScreenshots = 5
     private var editingScreenshotPosition: Int = -1
     private var currentScreenshots: MutableList<String> = mutableListOf()
     private var editMode: Boolean = false
@@ -50,6 +56,8 @@ class GameDetailFragment : Fragment() {
     private var allTags: List<Tag> = listOf()
     private var priority: Int = 0
     private var gameImage: Uri? = null
+
+    private var menu: Menu? = null
 
     val pickMainImageLauncher: ActivityResultLauncher<PickVisualMediaRequest> =
         registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
@@ -61,7 +69,7 @@ class GameDetailFragment : Fragment() {
 
     private val pickScreenshotLauncher: ActivityResultLauncher<PickVisualMediaRequest> =
         registerForActivityResult(
-            ActivityResultContracts.PickMultipleVisualMedia(MAX_SCREENSHOTS)
+            ActivityResultContracts.PickMultipleVisualMedia(maxScreenshots)
         ) { uris ->
             if (uris.isNotEmpty()) {
                 uris.forEachIndexed { index, uri ->
@@ -75,7 +83,7 @@ class GameDetailFragment : Fragment() {
                 binding.screenshotsRecyclerView.isVisible = true
                 screenshotAdapter.updateScreenshots(currentScreenshots.toList())
                 editingScreenshotPosition = -1
-                binding.addScreenshotButton.isVisible = editMode && currentScreenshots.size < MAX_SCREENSHOTS
+                binding.addScreenshotButton.isVisible = editMode && currentScreenshots.size < maxScreenshots
             }
         }
 
@@ -101,10 +109,6 @@ class GameDetailFragment : Fragment() {
         setupScreenshotCarousel()
         setupGameData()
 
-        binding.fabEdit.setOnClickListener {
-            editMode()
-        }
-
         binding.saveGameButton.setOnClickListener {
             saveCurrentData(args.gameId)
         }
@@ -115,6 +119,7 @@ class GameDetailFragment : Fragment() {
             )
         }
 
+        setupMenu()
         setupPickers()
 
         if (args.editMode) {
@@ -129,6 +134,29 @@ class GameDetailFragment : Fragment() {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = screenshotAdapter
         }
+    }
+
+    // setup game detail superior menu
+
+    private fun setupMenu() {
+        requireActivity().addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.fragment_game_detail_menu, menu)
+                this@GameDetailFragment.menu = menu
+            }
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.action_edit -> {
+                        editMode()
+                        menu?.findItem(R.id.action_edit)?.setIcon(
+                            if (editMode) R.drawable.outline_check_24 else R.drawable.ic_edit_image
+                        )
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     // setup ui fragment
@@ -184,7 +212,7 @@ class GameDetailFragment : Fragment() {
                 layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
                 adapter = TagsAdapter(
                     items = platformsOnly,
-                    onNavigate = { tag ->
+                    onItemClick = { tag ->
                         findNavController().navigate(
                             GameDetailFragmentDirections.actionGameDetailFragmentToListByTagFragment(tag.tag_id, tag.name)
                         )
@@ -196,7 +224,7 @@ class GameDetailFragment : Fragment() {
                 layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
                 adapter = TagsAdapter(
                     items = tagsOnly,
-                    onNavigate = { tag ->
+                    onItemClick = { tag ->
                         findNavController().navigate(
                             GameDetailFragmentDirections.actionGameDetailFragmentToListByTagFragment(tag.tag_id, tag.name)
                         )
@@ -249,7 +277,7 @@ class GameDetailFragment : Fragment() {
                 priority = Priority.Companion.numberToPriority(priority)?.text,
                 screenshots = currentScreenshots
                     .filter { it.startsWith("content://") }
-                    .map { Uri.parse(it) },
+                    .map { it.toUri() },
                 allScreenshots = currentScreenshots.toList(),
                 plataforms = tagsSelectedIds.toList()
             )
@@ -268,7 +296,7 @@ class GameDetailFragment : Fragment() {
 
         screenshotAdapter.setEditMode(editMode)
 
-        binding.addScreenshotButton.isVisible = editMode && currentScreenshots.size < MAX_SCREENSHOTS
+        binding.addScreenshotButton.isVisible = editMode && currentScreenshots.size < maxScreenshots
         binding.textViewName.isVisible = !editMode
         binding.textViewDescription.isVisible = !editMode
         binding.textViewReleaseDate.isVisible = !editMode
@@ -299,10 +327,6 @@ class GameDetailFragment : Fragment() {
         binding.btnEditPlatforms.isVisible = editMode
         binding.btnEditTags.isVisible = editMode
         binding.saveGameButton.isVisible = editMode
-
-        binding.fabEdit.setImageResource(
-            if (editMode) R.drawable.outline_check_24 else R.drawable.editimage
-        )
     }
 
     private fun loadMainImage(imageUrl: String?) {
@@ -345,7 +369,7 @@ class GameDetailFragment : Fragment() {
     private fun showScreenshots(screenshots: List<String>) {
         currentScreenshots = screenshots.toMutableList()
         binding.screenshotsRecyclerView.isVisible = true
-        binding.addScreenshotButton.isVisible = editMode && currentScreenshots.size < MAX_SCREENSHOTS
+        binding.addScreenshotButton.isVisible = editMode && currentScreenshots.size < maxScreenshots
         screenshotAdapter.updateScreenshots(currentScreenshots.toList())
     }
 
@@ -498,12 +522,12 @@ class GameDetailFragment : Fragment() {
         }
 
         binding.btnGoToAnnotations.setOnClickListener {
-            val action = GameDetailFragmentDirections.actionGameDetailFragmentToAnnotationsFragment(gameId = args.gameId, args.gameName)
+            val action = GameDetailFragmentDirections.actionGameDetailFragmentToAnnotationsFragment(gameId = args.gameId, gameName = args.gameName)
             findNavController().navigate(action)
         }
 
         binding.btnGoToObjectives.setOnClickListener {
-            val action = GameDetailFragmentDirections.actionGameDetailFragmentToObjectivesFragment(gameId = args.gameId, args.gameName)
+            val action = GameDetailFragmentDirections.actionGameDetailFragmentToObjectivesFragment(gameId = args.gameId, gameName = args.gameName)
             findNavController().navigate(action)
         }
 
@@ -534,7 +558,7 @@ class GameDetailFragment : Fragment() {
         val day = calendar.get(Calendar.DAY_OF_MONTH)
         val month = calendar.get(Calendar.MONTH) + 1
         val year = calendar.get(Calendar.YEAR)
-        return String.format("%02d/%02d/%04d", day, month, year)
+        return String.format(Locale.getDefault(), "%02d/%02d/%04d", day, month, year)
     }
 
     private fun parseDateToMillis(dateString: String): Long {
@@ -544,7 +568,7 @@ class GameDetailFragment : Fragment() {
             calendar.set(parts[2].toInt(), parts[1].toInt() - 1, parts[0].toInt(), 0, 0, 0)
             calendar.set(Calendar.MILLISECOND, 0)
             calendar.timeInMillis
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             MaterialDatePicker.todayInUtcMilliseconds()
         }
     }

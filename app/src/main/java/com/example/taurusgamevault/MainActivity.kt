@@ -1,6 +1,7 @@
 package com.example.taurusgamevault
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.GravityCompat
+import androidx.core.view.forEach
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -83,34 +85,33 @@ class MainActivity : AppCompatActivity() {
         val prefs = getSharedPreferences("settings", Context.MODE_PRIVATE)
         val isDarkMode = prefs.getBoolean("dark_mode", false)
 
-        val themeOverlay = if (isDarkMode) {
+        if (isDarkMode) {
             R.style.ThemeOverlay_TaurusGameVault_Toolbar_Night
         } else {
             R.style.ThemeOverlay_TaurusGameVault_Toolbar
         }
         toolbar.context
 
-        val iconColor = ContextCompat.getColor(this, R.color.light_on_primary) // #FFFFFF
-
-        toolbar.navigationIcon?.let {
-            DrawableCompat.setTint(it, iconColor)
-        }
-        toolbar.setTitleTextColor(iconColor)
-        toolbar.overflowIcon?.let {
-            DrawableCompat.setTint(it, iconColor)
-        }
+        val drawerContentColor = ContextCompat.getColor(
+            this,
+            R.color.surface_soft
+        )
 
         val navView = binding.navView
         navView.setupWithNavController(navController)
 
         navView.itemIconTintList = null
 
-        binding.toolbar.findViewById<android.widget.ImageButton>(R.id.btnSearchToolbar)?.setOnClickListener {
-            val currentFragment = navHostFragment.childFragmentManager.primaryNavigationFragment
-            if (currentFragment is MainFragment) {
-                currentFragment.toggleSearchBarVisibility()
+        navView.menu.forEach { menuItem ->
+            if (menuItem.groupId != 99) {
+                menuItem.icon?.let {
+                    DrawableCompat.setTint(it, drawerContentColor)
+                }
             }
         }
+
+        navView.itemTextColor = ColorStateList.valueOf(drawerContentColor)
+
     }
 
     private fun setupDrawer() {

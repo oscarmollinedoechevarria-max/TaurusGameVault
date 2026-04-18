@@ -57,41 +57,63 @@ class Repository {
             return db.gameDAO().addGame(game)
         }
 
-        //
+        // searches the games in the igdb api via query
         @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
         suspend fun searchGame(api: IgdbApiService, name: String): IgdbGame? {
             if (name.isBlank()) return null
 
             return try {
-                val query = "search \"$name\"; fields name, summary, rating, first_release_date, cover.image_id, platforms.name, screenshots.image_id; limit 10;"
+                // IGDB by relevance
+                val query = """
+                    search "${name.replace("\"", "")}";
+                    fields name, summary, rating, first_release_date, 
+                           cover.image_id, platforms.name, screenshots.image_id;
+                    where cover != null & category = (0,8,9);
+                    limit 20;
+                """.trimIndent()
 
                 val body = query.toRequestBody("text/plain".toMediaType())
-
                 val resultsQuery = api.searchGames(body)
 
-                val sorted = resultsQuery
-                    .filter { it.first_release_date != null && it.cover != null }
-                    .sortedBy { it.first_release_date }
+                if (resultsQuery.isEmpty()) return null
 
-                val results = sorted.first()
-
-                if (resultsQuery.isEmpty()) {
-                    null
-                } else {
-                    results
-                }
+                // name similarity, release date and rating bonus
+                resultsQuery
+                    .filter { it.cover != null }
+                    .maxByOrNull { game ->
+                        val nameSimilarity = nameSimilarityScore(name, game.name.orEmpty())
+                        val hasDate = if (game.first_release_date != null) 0.2 else 0.0
+                        val ratingBonus = ((game.rating ?: 0.0) / 100.0) * 0.1
+                        nameSimilarity + hasDate + ratingBonus
+                    }
 
             } catch (e: HttpException) {
-                val errorBody = e.message
-                Log.e("IGDB", "HTTP ${e.cause} searching '$name': $errorBody")
+                Log.e("IGDB", "HTTP ${e.cause} searching '$name': ${e.message}")
                 null
             } catch (e: IOException) {
-                Log.e("IGDB", "red error searching '$name': ${e.message}")
+                Log.e("IGDB", "Network error searching '$name': ${e.message}")
                 null
             } catch (e: Exception) {
-                Log.e("IGDB", "unknow error searching '$name': ${e::class.simpleName} - ${e.message}")
+                Log.e("IGDB", "Unknown error searching '$name': ${e::class.simpleName} - ${e.message}")
                 null
             }
+        }
+
+        // similarity in names
+        private fun nameSimilarityScore(query: String, candidate: String): Double {
+            val normalize = { s: String ->
+                s.lowercase()
+                    .replace(Regex("[^a-z0-9 ]"), "")
+                    .split(" ")
+                    .filter { it.isNotBlank() && it !in setOf("the", "a", "an", "of", "and") }
+                    .toSet()
+            }
+            val queryTokens = normalize(query)
+            val candidateTokens = normalize(candidate)
+            if (queryTokens.isEmpty()) return 0.0
+            val intersection = queryTokens.intersect(candidateTokens).size
+            val union = queryTokens.union(candidateTokens).size
+            return intersection.toDouble() / union.toDouble()
         }
 
         // queries the games in the api in batches and imports them to the database
@@ -196,6 +218,57 @@ class Repository {
 
             return storage.publicUrl(pathInBucket)
         }
+
+        suspend fun uploadTagImageAndGetPublicUrl(localFile: File): String? {
+            val storage = SupabaseClientManager.supabase.storage.from("filesdatabase")
+
+            val pathInBucket = "tagsImages/${localFile.name}"
+
+            val result = storage.upload(
+                path = pathInBucket,
+                file = localFile
+            )
+
+            if (result.isEmpty()) {
+                return null
+            }
+
+            return storage.publicUrl(pathInBucket)
+        }
+
+        suspend fun updateTagImageAndGetPublicUrl(
+            context: Context,
+            tagId: Long,
+            localFile: File,
+            oldImageUrl: String?
+        ): String? {
+            val bucket = SupabaseClientManager.supabase.storage.from("filesdatabase")
+            val byteArray = localFile.readBytes()
+            val newPath = "tagsImages/${localFile.name}"
+
+            return try {
+                if (!oldImageUrl.isNullOrBlank() && oldImageUrl.contains("filesdatabase/")) {
+                    val oldPath = oldImageUrl.substringAfter("filesdatabase/")
+                    try {
+                        bucket.delete(listOf(oldPath))
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+
+                bucket.upload(newPath, byteArray)
+
+                val newUrl = bucket.publicUrl(newPath)
+
+                updateTagImage(context, tagId, newUrl)
+
+                newUrl
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
+        }
+
 
         suspend fun updateGameImageAndGetPublicUrl(
             context: Context,
@@ -302,8 +375,13 @@ class Repository {
             return db.gameDAO().updateGameImage(gameId, newImage)
         }
 
-        suspend fun deleteScreenshotsByGameId(context: Context, gameId: Long) {
+        suspend fun updateTagImage(context: Context, gameId: Long, newImage: String) {
             val db = initializeDB(context)
+
+            return db.tagDao().updateTagImage(gameId, newImage)
+        }
+
+        suspend fun deleteScreenshotsByGameId(context: Context, gameId: Long) {
 
             val screenshotsList = getScreenshots(context, gameId)?.asFlow()?.first()
 

@@ -3,22 +3,16 @@ package com.example.taurusgamevault.gamepicker
 import androidx.fragment.app.viewModels
 import android.os.Bundle
 import android.text.Editable
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.taurusgamevault.Model.room.entities.Game
-import com.example.taurusgamevault.R
 import com.example.taurusgamevault.adapters.GamePickerAdapter
 import com.example.taurusgamevault.databinding.FragmentGamePickerBinding
 import android.text.TextWatcher
-import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.Observer
-import com.example.taurusgamevault.list.createlist.CreateListViewModel
 import androidx.fragment.app.setFragmentResult
 import com.example.taurusgamevault.Model.room.entities.toSimplifiedGame
 import com.example.taurusgamevault.classes.SimplifiedGame
@@ -27,7 +21,7 @@ class GamePickerFragment : DialogFragment() {
 
     lateinit var binding: FragmentGamePickerBinding
     private lateinit var adapter: GamePickerAdapter
-    private var allGames: List<Game>? = null
+    private var allGames: List<Game> = listOf()
     private val selectedGames = mutableSetOf<Game>()
 
     private val viewModel: GamePickerViewModel by viewModels()
@@ -38,7 +32,6 @@ class GamePickerFragment : DialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentGamePickerBinding.inflate(inflater)
-
         return binding.root
     }
 
@@ -52,25 +45,44 @@ class GamePickerFragment : DialogFragment() {
 
         setupRecyclerView()
         setupButtons()
-        loadGames()
-        restorePreselectedGames()
+        observeViewModel()
     }
 
-    override fun onStart() {
-        super.onStart()
 
-        // Set the dialog size for fit screen
-        dialog?.window?.setLayout(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            (resources.displayMetrics.heightPixels * 0.9).toInt()
-        )
+    private fun observeViewModel() {
+        viewModel.getGames(requireContext())
+
+        viewModel.games?.observe(viewLifecycleOwner) { games ->
+            if (games != null) {
+                allGames = games
+                // If there's already text in the search box (e.g., on rotation), filter immediately
+                val currentQuery = binding.searchEditText.text.toString()
+                filterGames(currentQuery)
+
+                // Restore preselected games only after data is loaded
+                if (selectedGames.isEmpty()) {
+                    restorePreselectedGames(games)
+                }
+            }
+        }
+    }
+
+    private fun restorePreselectedGames(loadedGames: List<Game>) {
+        val preselected = arguments?.getParcelableArrayList<SimplifiedGame>(ARG_PRESELECTED_GAMES)
+
+        preselected?.let { list ->
+            val matches = loadedGames.filter { game ->
+                list.any { it.name == game.name }
+            }
+            selectedGames.addAll(matches)
+            adapter.updateSelection(selectedGames)
+            updateSelectedCount()
+        }
     }
 
     private fun setupRecyclerView() {
         adapter = GamePickerAdapter(
-            onGameClick = { game ->
-                toggleGameSelection(game)
-            },
+            onGameClick = { game -> toggleGameSelection(game) },
             list = listOf()
         )
 
@@ -86,35 +98,38 @@ class GamePickerFragment : DialogFragment() {
         }
 
         binding.doneButton.setOnClickListener {
-            val simplifiedGames = selectedGames.map {  it.toSimplifiedGame() }
-            // Send the selected games back to the previous fragment
+            val simplifiedGames = selectedGames.map { it.toSimplifiedGame() }
             setFragmentResult(
                 REQUEST_KEY,
                 bundleOf(RESULT_SELECTED_GAMES to ArrayList(simplifiedGames))
             )
             dismiss()
         }
-    }
 
-    private fun loadGames() {
-        viewModel.getGames(requireContext())
-        viewModel.games?.observe(viewLifecycleOwner) { games ->
-            allGames = games
-            adapter.submitList(games)
-        }
-    }
+        // textWatcher for search
+        binding.searchEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
-    // Restore preselected games from arguments
-    private fun restorePreselectedGames() {
-        arguments?.getParcelableArrayList<SimplifiedGame>(ARG_PRESELECTED_GAMES)?.let { preselected ->
-            val preselectedGames = preselected.mapNotNull { simplified ->
-                allGames?.find { it.name == simplified.name }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                filterGames(s.toString())
             }
-            selectedGames.clear()
-            selectedGames.addAll(preselectedGames)
-            adapter.updateSelection(selectedGames)
-            updateSelectedCount()
+        })
+    }
+
+    // filterGames by the query on the edit text
+    private fun filterGames(query: String) {
+        val filteredList = if (query.isBlank()) {
+            allGames
+        } else {
+            allGames.filter { game ->
+                game.name.contains(query, ignoreCase = true)
+            }
         }
+
+        adapter.submitList(filteredList)
+        updateEmptyState(filteredList.isEmpty())
     }
 
     private fun toggleGameSelection(game: Game) {
@@ -123,7 +138,6 @@ class GamePickerFragment : DialogFragment() {
         } else {
             selectedGames.add(game)
         }
-
         adapter.updateSelection(selectedGames)
         updateSelectedCount()
     }
@@ -141,7 +155,6 @@ class GamePickerFragment : DialogFragment() {
         binding.gamesRecyclerView.visibility = if (isEmpty) View.GONE else View.VISIBLE
     }
 
-    //keys for fragment result
     companion object {
         const val REQUEST_KEY = "game_picker_request"
         const val RESULT_SELECTED_GAMES = "selected_games"

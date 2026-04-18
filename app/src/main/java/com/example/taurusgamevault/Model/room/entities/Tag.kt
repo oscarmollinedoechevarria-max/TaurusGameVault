@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "tag")
 data class Tag(
     @PrimaryKey(autoGenerate = true)
-    val tag_id: Long = 0L,
+    var tag_id: Long = 0L,
 
     @ColumnInfo(name = "name")
     val name: String,
@@ -16,5 +16,5 @@ data class Tag(
     val isPlataform: Boolean = false,
 
     @ColumnInfo(name = "image")
-    val image: String?
+    var image: String?
 )

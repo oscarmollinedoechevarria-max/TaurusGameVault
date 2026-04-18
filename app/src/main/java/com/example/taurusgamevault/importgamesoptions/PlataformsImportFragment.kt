@@ -25,9 +25,9 @@ class PlataformsImportFragment : Fragment() {
         binding = FragmentPlataformsImportBinding.inflate(inflater, container, false)
 
         val items = listOf(
-            ItemPlataformImport(R.drawable.circlereddarkened, "Import games"),
-            ItemPlataformImport(R.drawable.circlereddarkened, "Import games Steam"),
-            ItemPlataformImport(R.drawable.circlereddarkened, "Import games Gog"),
+            ItemPlataformImport(R.drawable.ic_import_contacts, "Import games"),
+            ItemPlataformImport(R.drawable.gogicon, "Import games Steam"),
+            ItemPlataformImport(R.drawable.store_steam, "Import games Gog"),
             )
 
         // Set up the RecyclerView(made like this for easy tests)

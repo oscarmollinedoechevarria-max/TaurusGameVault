@@ -9,15 +9,17 @@
     android:padding="16dp"
     tools:context=".importgamesigdb.ImportGamesNoAccountFragment">
 
-<EditText
-    android:id="@+id/etGameNames"
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_weight="1"
-    android:gravity="top"
-    android:hint="Hollow Knight&#10;Celeste&#10;Hades"
-    android:inputType="textMultiLine"
-    android:background="@android:drawable/edit_text" />
+    <EditText
+        android:id="@+id/etGameNames"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="top"
+        android:hint="Hollow Knight&#10;Celeste&#10;Hades"
+        android:inputType="textMultiLine"
+        android:textColor="@color/light_text_primary"
+        android:textColorHint="@color/light_text_secondary"
+        android:background="@android:drawable/edit_text" />
 
 <ProgressBar
     android:id="@+id/progressBar"

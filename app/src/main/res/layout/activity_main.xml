@@ -23,20 +23,6 @@
                 style="@style/Widget.TaurusGameVault.Toolbar"
                 app:theme="@style/ThemeOverlay.TaurusGameVault.Toolbar">
 
-                <!-- search games navigation button -->
-                <ImageButton
-                    android:id="@+id/btnSearchToolbar"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_gravity="end"
-                    android:layout_marginEnd="8dp"
-                    android:padding="12dp"
-                    android:scaleType="fitCenter"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="Search"
-                    android:src="@drawable/ic_search"
-                    app:tint="@android:color/white" />
-
             </com.google.android.material.appbar.MaterialToolbar>
 
             <androidx.fragment.app.FragmentContainerView
@@ -59,7 +45,8 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:fitsSystemWindows="true"
-            app:menu="@menu/drawer_menu" />
+            app:menu="@menu/drawer_menu"
+            android:background="?attr/colorPrimary"/>
 
     </androidx.drawerlayout.widget.DrawerLayout>
 

@@ -82,7 +82,7 @@
             android:src="@drawable/xmark"
             android:visibility="gone"
             android:background="?attr/selectableItemBackgroundBorderless"
-            app:tint="?attr/colorOnSurfaceVariant"
+            app:tint="#CCFF00"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
