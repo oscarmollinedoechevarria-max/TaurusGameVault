@@ -18,6 +18,9 @@ import com.example.taurusgamevault.Model.room.entities.GameList
 import com.example.taurusgamevault.R
 import coil.load
 import com.example.taurusgamevault.Model.Repository.Repository
+import com.example.taurusgamevault.databinding.ItemObjectiveBinding
+import com.example.taurusgamevault.databinding.ListCardBinding
+import com.example.taurusgamevault.databinding.PlataformimportcardBinding
 import com.example.taurusgamevault.list.gamelist.GameListFragmentDirections
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -27,23 +30,23 @@ class ListGameAdapter(
     private val context: Context,
     private val navigation: NavController,
     private val scope: CoroutineScope
-): RecyclerView.Adapter<ListGameAdapter.ViewHolder>() {
+): RecyclerView.Adapter<ListGameViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.list_card, parent, false)
-
-        return ViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListGameViewHolder {
+        val binding = ListCardBinding.inflate(
+            LayoutInflater.from(parent.context), parent, false
+        )
+        return ListGameViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ListGameViewHolder, position: Int) {
         val item = list[position]
 
-        holder.listNameTextView.text = item.name
+        holder.binding.listNameTextView.text = item.name
 
-        holder.listDescriptionTextView.text = item.description ?: ""
+        holder.binding.listDescriptionTextView.text = item.description ?: ""
 
-        holder.listBannerImageView.load(item.image) {
+        holder.binding.listBannerImageView.load(item.image) {
             crossfade(true)
             placeholder(R.drawable.ic_launcher_background)
             error(R.drawable.ic_launcher_background)
@@ -53,32 +56,32 @@ class ListGameAdapter(
 
             listener(
                 onSuccess = { _, result ->
-                    if (holder.listBannerImageView.width > 0 && holder.listBannerImageView.height > 0) {
-                        applyImageMatrix(holder.listBannerImageView, result.drawable)
+                    if (holder.binding.listBannerImageView.width > 0 && holder.binding.listBannerImageView.height > 0) {
+                        applyImageMatrix(holder.binding.listBannerImageView, result.drawable)
                     } else {
-                        holder.listBannerImageView.post {
-                            applyImageMatrix(holder.listBannerImageView, result.drawable)
+                        holder.binding.listBannerImageView.post {
+                            applyImageMatrix(holder.binding.listBannerImageView, result.drawable)
                         }
                     }
                 },
                 onError = { _, _ ->
-                    holder.listBannerImageView.scaleType = ImageView.ScaleType.FIT_XY
+                    holder.binding.listBannerImageView.scaleType = ImageView.ScaleType.FIT_XY
                 },
                 onStart = { _ ->
-                    holder.listBannerImageView.scaleType = ImageView.ScaleType.FIT_XY
+                    holder.binding.listBannerImageView.scaleType = ImageView.ScaleType.FIT_XY
                 }
             )
         }
 
         // navigation to list detail
-        holder.container.setOnClickListener {
+        holder.binding.backgroundView.setOnClickListener {
             navigation.navigate(
                 GameListFragmentDirections.actionGameListFragmentToGameListDetailFragment(item.list_id, item.name, false)
             )
         }
 
         // context menu
-        holder.container.setOnLongClickListener { view ->
+        holder.binding.backgroundView.setOnLongClickListener { view ->
             val popup = PopupMenu(view.context, view)
             popup.inflate(R.menu.game_menu_context)
 
@@ -124,14 +127,8 @@ class ListGameAdapter(
 
         imageView.imageMatrix = matrix
     }
-
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val listNameTextView: TextView = itemView.findViewById(R.id.listNameTextView)
-
-        val listDescriptionTextView: TextView = itemView.findViewById(R.id.listDescriptionTextView)
-
-        val listBannerImageView: ImageView = itemView.findViewById(R.id.listBannerImageView)
-
-        val container: ConstraintLayout = itemView.findViewById(R.id.backgroundView)
-    }
+    
 }
+
+class ListGameViewHolder(val binding: ListCardBinding) :
+    RecyclerView.ViewHolder(binding.root)

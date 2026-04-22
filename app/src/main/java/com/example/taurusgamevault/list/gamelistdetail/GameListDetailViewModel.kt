@@ -67,6 +67,7 @@ class GameListDetailViewModel : ViewModel() {
             }
 
             val list = GameList(
+                list_id = gameListId,
                 name = listTempData.name,
                 description = listTempData.description,
                 image = gameImage,

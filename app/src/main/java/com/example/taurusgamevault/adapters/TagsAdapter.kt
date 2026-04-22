@@ -92,7 +92,9 @@ class TagsAdapter(
         }
     }
 
-    override fun getItemCount(): Int = items.size
+    override fun getItemCount(): Int {
+        return items.size
+    }
 
     // Handle selection logic and trigger callbacks
     private fun handleSelection(item: Tag, position: Int) {
@@ -107,16 +109,13 @@ class TagsAdapter(
         onItemClick(item)
     }
 
-    fun getSelectedTags(): Set<Tag> = selectedTags.toSet()
+    fun getSelectedTags(): Set<Tag> {
+        return selectedTags.toSet()
+    }
 
     fun setSelectedTags(tags: Set<Tag>) {
         selectedTags.clear()
         selectedTags.addAll(tags)
-        notifyDataSetChanged()
-    }
-
-    fun submitList(newList: List<Tag>) {
-        items = newList
         notifyDataSetChanged()
     }
 

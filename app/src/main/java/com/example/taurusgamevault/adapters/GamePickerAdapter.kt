@@ -13,36 +13,39 @@ import coil.load
 import coil.request.CachePolicy
 import com.example.taurusgamevault.Model.room.entities.Game
 import com.example.taurusgamevault.R
+import com.example.taurusgamevault.databinding.ItemGamePickerBinding
+import com.example.taurusgamevault.databinding.PlataformimportcardBinding
 import com.google.android.material.card.MaterialCardView
 
 class GamePickerAdapter(
     private var list: List<Game>,
     private val onGameClick: (Game) -> Unit
-) : RecyclerView.Adapter<GamePickerAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<ItemGamePickerViewHolder>() {
 
     private val selectedGames = mutableSetOf<Game>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_game_picker, parent, false)
-        return ViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemGamePickerViewHolder {
+        val binding = ItemGamePickerBinding.inflate(
+            LayoutInflater.from(parent.context), parent, false
+        )
+        return ItemGamePickerViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ItemGamePickerViewHolder, position: Int) {
         val item = list[position]
         val isSelected = selectedGames.contains(item)
 
-        holder.gameNameTextView.text = item.name
-        holder.releaseDateTextView.text = item.release_date ?: "Unknown"
-        holder.descriptionTextView.text = item.description ?: "No description available"
+        holder.binding.gameNameTextView.text = item.name
+        holder.binding.releaseDateTextView.text = item.release_date ?: "Unknown"
+        holder.binding.descriptionTextView.text = item.description ?: "No description available"
 
         // overlay, stroke
-        holder.cardContainer.isChecked = isSelected
-        holder.cardContainer.isChecked = isSelected
-        holder.ivSelectionCheck.isVisible = isSelected
+        holder.binding.cardContainer.isChecked = isSelected
+        holder.binding.cardContainer.isChecked = isSelected
+        holder.binding.ivSelectionCheck.isVisible = isSelected
 
         // Image load
-        holder.productImageView.load(item.game_image) {
+        holder.binding.productImageView.load(item.game_image) {
             crossfade(true)
             placeholder(R.drawable.ic_launcher_background)
             error(R.drawable.ic_launcher_background)
@@ -51,14 +54,14 @@ class GamePickerAdapter(
             networkCachePolicy(CachePolicy.ENABLED)
 
             listener(onSuccess = { _, result ->
-                holder.productImageView.post {
-                    applyImageMatrix(holder.productImageView, result.drawable)
+                holder.binding.productImageView.post {
+                    applyImageMatrix(holder.binding.productImageView, result.drawable)
                 }
             })
         }
 
         // Handle clicks on the entire card
-        holder.cardContainer.setOnClickListener {
+        holder.binding.cardContainer.setOnClickListener {
             onGameClick(item)
         }
     }
@@ -99,19 +102,7 @@ class GamePickerAdapter(
         }
         imageView.imageMatrix = matrix
     }
-
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-
-        val cardContainer: MaterialCardView = itemView.findViewById(R.id.cardContainer)
-
-        val gameNameTextView: TextView = itemView.findViewById(R.id.gameNameTextView)
-
-        val releaseDateTextView: TextView = itemView.findViewById(R.id.releaseDateTextView)
-
-        val descriptionTextView: TextView = itemView.findViewById(R.id.descriptionTextView)
-
-        val productImageView: ImageView = itemView.findViewById(R.id.productImageView)
-
-        val ivSelectionCheck: ImageView = itemView.findViewById(R.id.ivSelectionCheck)
-    }
 }
+
+class ItemGamePickerViewHolder(val binding: ItemGamePickerBinding) :
+    RecyclerView.ViewHolder(binding.root)

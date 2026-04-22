@@ -179,9 +179,6 @@ class GameListDetailFragment : Fragment() {
                 return when (menuItem.itemId) {
                     R.id.action_edit -> {
                         editMode()
-                        menu?.findItem(R.id.action_edit)?.setIcon(
-                            if (editMode) R.drawable.outline_check_24 else R.drawable.ic_edit_image
-                        )
                         true
                     }
                     else -> false
@@ -210,6 +207,10 @@ class GameListDetailFragment : Fragment() {
         binding.buttonChangeBanner.isVisible = editMode
 
         selectedGamesRecyclerView?.toggleEditMode()
+
+        menu?.findItem(R.id.action_edit)?.setIcon(
+            if (editMode) R.drawable.outline_check_24 else R.drawable.ic_edit_image
+        )
     }
 
     // requirements and save the list

@@ -16,6 +16,8 @@ import coil.load
 import coil.request.CachePolicy
 import com.example.taurusgamevault.R
 import com.example.taurusgamevault.classes.SimplifiedGame
+import com.example.taurusgamevault.databinding.GameCardBinding
+import com.example.taurusgamevault.databinding.PlataformimportcardBinding
 import com.example.taurusgamevault.list.gamelistdetail.GameListDetailFragmentDirections
 
 class SimplifiedGameAdapter(
@@ -25,32 +27,32 @@ class SimplifiedGameAdapter(
     private val shouldBeClicable: Boolean,
     //block for remove button
     private val onRemove: ((SimplifiedGame) -> Unit)? = null
-): RecyclerView.Adapter<SimplifiedGameAdapter.ViewHolder>() {
+): RecyclerView.Adapter<SimplifiedGameViewHolder>() {
 
     private var isEditMode = false
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.game_card, parent, false)
-
-        return ViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SimplifiedGameViewHolder {
+        val binding = GameCardBinding.inflate(
+            LayoutInflater.from(parent.context), parent, false
+        )
+        return SimplifiedGameViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: SimplifiedGameViewHolder, position: Int) {
         val item = list[position]
 
-        holder.gameNameTextView.text = item.name
+        holder.binding.gameNameTextView.text = item.name
 
-        holder.releaseDateTextView.text = item.releaseDate
+        holder.binding.releaseDateTextView.text = item.releaseDate
 
-        holder.descriptionTextView.text = item.description
+        holder.binding.descriptionTextView.text = item.description
 
-        holder.removeButton.isVisible = isEditMode
-        holder.removeButton.setOnClickListener {
+        holder.binding.removeButton.isVisible = isEditMode
+        holder.binding.removeButton.setOnClickListener {
             onRemove?.invoke(item)
         }
 
-        holder.productImageView.load(item.image) {
+        holder.binding.productImageView.load(item.image) {
             crossfade(true)
             placeholder(R.drawable.ic_launcher_background)
             error(R.drawable.ic_launcher_background)
@@ -60,25 +62,25 @@ class SimplifiedGameAdapter(
 
             listener(
                 onSuccess = { _, result ->
-                    if (holder.productImageView.width > 0 && holder.productImageView.height > 0) {
-                        applyImageMatrix(holder.productImageView, result.drawable)
+                    if (holder.binding.productImageView.width > 0 && holder.binding.productImageView.height > 0) {
+                        applyImageMatrix(holder.binding.productImageView, result.drawable)
                     } else {
-                        holder.productImageView.post {
-                            applyImageMatrix(holder.productImageView, result.drawable)
+                        holder.binding.productImageView.post {
+                            applyImageMatrix(holder.binding.productImageView, result.drawable)
                         }
                     }
                 },
                 onError = { _, _ ->
-                    holder.productImageView.scaleType = ImageView.ScaleType.FIT_XY
+                    holder.binding.productImageView.scaleType = ImageView.ScaleType.FIT_XY
                 },
                 onStart = { _ ->
-                    holder.productImageView.scaleType = ImageView.ScaleType.FIT_XY
+                    holder.binding.productImageView.scaleType = ImageView.ScaleType.FIT_XY
                 }
             )
         }
 
         // navigation to game detail if should be clickable
-        holder.container.setOnClickListener {
+        holder.binding.backgroundView.setOnClickListener {
             if (shouldBeClicable && !isEditMode) {
                 navigation.navigate(
                     GameListDetailFragmentDirections
@@ -119,14 +121,7 @@ class SimplifiedGameAdapter(
 
         imageView.imageMatrix = matrix
     }
-
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val gameNameTextView: TextView = itemView.findViewById(R.id.gameNameTextView)
-        val releaseDateTextView: TextView = itemView.findViewById(R.id.releaseDateTextView)
-        val descriptionTextView: TextView = itemView.findViewById(R.id.descriptionTextView)
-        val productImageView: ImageView = itemView.findViewById(R.id.productImageView)
-        val removeButton: ImageView = itemView.findViewById(R.id.removeButton)
-
-        val container: ConstraintLayout = itemView.findViewById(R.id.backgroundView)
-    }
 }
+
+//view holder with biding, better and more secure than FindByID for simplified game
+class SimplifiedGameViewHolder(val binding: GameCardBinding) : RecyclerView.ViewHolder(binding.root)

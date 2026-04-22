@@ -148,9 +148,6 @@ class GameDetailFragment : Fragment() {
                 return when (menuItem.itemId) {
                     R.id.action_edit -> {
                         editMode()
-                        menu?.findItem(R.id.action_edit)?.setIcon(
-                            if (editMode) R.drawable.outline_check_24 else R.drawable.ic_edit_image
-                        )
                         true
                     }
                     else -> false
@@ -327,6 +324,11 @@ class GameDetailFragment : Fragment() {
         binding.btnEditPlatforms.isVisible = editMode
         binding.btnEditTags.isVisible = editMode
         binding.saveGameButton.isVisible = editMode
+
+        menu?.findItem(R.id.action_edit)?.setIcon(
+            if (editMode) R.drawable.outline_check_24 else R.drawable.ic_edit_image
+        )
+
     }
 
     private fun loadMainImage(imageUrl: String?) {

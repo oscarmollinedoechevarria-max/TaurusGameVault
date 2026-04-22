@@ -26,6 +26,8 @@ import coil.util.CoilUtils.result
 import com.example.taurusgamevault.Model.Repository.Repository
 import com.example.taurusgamevault.R
 import com.example.taurusgamevault.Model.room.entities.Game
+import com.example.taurusgamevault.databinding.GameCardBinding
+import com.example.taurusgamevault.databinding.ListCardBinding
 import com.example.taurusgamevault.mainscreen.MainFragmentDirections
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -44,29 +46,26 @@ class GameAdapter(
         )
     },
     private val showContextMenu: Boolean = true
-) : RecyclerView.Adapter<GameAdapter.ViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.game_card,parent,false)
-
-        return ViewHolder(view)
+) : RecyclerView.Adapter<GameViewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameViewHolder {
+        val binding = GameCardBinding.inflate(
+            LayoutInflater.from(parent.context), parent, false
+        )
+        return GameViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: GameViewHolder, position: Int) {
         val item = list[position]
 
-        //TODO: implement image cache locally
-        //TODO: fix editmode cache screenshots
+        holder.binding.gameNameTextView.text = item.name
 
-        holder.gameNameTextView.text = item.name
+        holder.binding.releaseDateTextView.text = item.release_date
 
-        holder.releaseDateTextView.text = item.release_date
-
-        holder.descriptionTextView.text = item.description
+        holder.binding.descriptionTextView.text = item.description
 
 
         // custom position for image in card
-        holder.productImageView.load(item.game_image) {
+        holder.binding.productImageView.load(item.game_image) {
             crossfade(true)
             placeholder(R.drawable.ic_launcher_background)
             error(R.drawable.ic_launcher_background)
@@ -77,31 +76,31 @@ class GameAdapter(
 
             listener(
                 onSuccess = { _, result ->
-                    if (holder.productImageView.width > 0 && holder.productImageView.height > 0) {
-                        applyImageMatrix(holder.productImageView, result.drawable)
+                    if (holder.binding.productImageView.width > 0 && holder.binding.productImageView.height > 0) {
+                        applyImageMatrix(holder.binding.productImageView, result.drawable)
                     } else {
-                        holder.productImageView.post {
-                            applyImageMatrix(holder.productImageView, result.drawable)
+                        holder.binding.productImageView.post {
+                            applyImageMatrix(holder.binding.productImageView, result.drawable)
                         }
                     }
                 },
                 onError = { _, _ ->
-                    holder.productImageView.scaleType = ImageView.ScaleType.FIT_XY
+                    holder.binding.productImageView.scaleType = ImageView.ScaleType.FIT_XY
                 },
                 onStart = { _ ->
-                    holder.productImageView.scaleType = ImageView.ScaleType.FIT_XY
+                    holder.binding.productImageView.scaleType = ImageView.ScaleType.FIT_XY
                 }
 
             )
         }
 
-        holder.container.setOnClickListener {
+        holder.binding.backgroundView.setOnClickListener {
             onItemClick(item)
         }
 
         //card context menu
         if (showContextMenu) {
-            holder.container.setOnLongClickListener { view ->
+            holder.binding.backgroundView.setOnLongClickListener { view ->
                 val popup = PopupMenu(view.context, view)
                 popup.inflate(R.menu.game_menu_context)
 
@@ -129,7 +128,7 @@ class GameAdapter(
                 true
             }
         } else {
-            holder.container.setOnLongClickListener(null)
+            holder.binding.backgroundView.setOnLongClickListener(null)
         }
     }
 
@@ -156,16 +155,6 @@ class GameAdapter(
 
         imageView.imageMatrix = matrix
     }
-
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val gameNameTextView: TextView = itemView.findViewById(R.id.gameNameTextView)
-
-        val releaseDateTextView: TextView = itemView.findViewById(R.id.releaseDateTextView)
-
-        val descriptionTextView: TextView = itemView.findViewById(R.id.descriptionTextView)
-
-        val productImageView: ImageView = itemView.findViewById(R.id.productImageView)
-
-        val container: ConstraintLayout = itemView.findViewById(R.id.backgroundView)
-    }
 }
+
+class GameViewHolder(val binding: GameCardBinding) : RecyclerView.ViewHolder(binding.root)

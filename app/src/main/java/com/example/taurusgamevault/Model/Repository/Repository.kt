@@ -335,24 +335,23 @@ class Repository {
             localFile: File,
             oldImageUrl: String?
         ): String? {
-
             val bucket = SupabaseClientManager.supabase.storage.from("filesdatabase")
             val byteArray = localFile.readBytes()
-
-            val pathInBucket = if (oldImageUrl != null && oldImageUrl.contains("filesdatabase/")) {
-                oldImageUrl.substringAfter("filesdatabase/")
-            } else {
-                "listImages/${localFile.name}"
-            }
+            val newPath = "listImages/${localFile.name}"
 
             return try {
-                if (oldImageUrl != null) {
-                    bucket.update(pathInBucket, byteArray)
-                } else {
-                    bucket.upload(pathInBucket, byteArray)
+                if (oldImageUrl != null && oldImageUrl.contains("filesdatabase/")) {
+                    val oldPath = oldImageUrl.substringAfter("filesdatabase/")
+                    try {
+                        bucket.delete(listOf(oldPath))
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
                 }
 
-                val newUrl = bucket.publicUrl(pathInBucket)
+                bucket.upload(newPath, byteArray)
+
+                val newUrl = bucket.publicUrl(newPath)
 
                 updateGameListImage(context, gameId, newUrl)
 
