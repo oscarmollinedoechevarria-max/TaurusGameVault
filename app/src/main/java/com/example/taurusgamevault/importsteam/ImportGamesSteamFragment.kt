@@ -66,6 +66,7 @@ class ImportGamesSteamFragment : Fragment() {
                     binding.progressBar.isVisible = false
                     binding.tvProgress.text = "Error: ${state.message}"
                 }
+                is ImportState.PickGame -> ""
             }
         }
     }

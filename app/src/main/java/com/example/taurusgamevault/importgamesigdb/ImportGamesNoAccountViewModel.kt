@@ -41,31 +41,65 @@ class ImportGamesNoAccountViewModel(
     private val igdbRetrofit: IgdbRetrofit
 ) : ViewModel() {
 
+    private var pendingNames = ArrayDeque<String>()
+
+    private var totalNames = 0
+
+    private var processedCount = 0
+
     private val _state = MutableLiveData<ImportState>(ImportState.Idle)
     val state: LiveData<ImportState> = _state
 
     // import games from igdb api
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     fun importGames(context: Context, rawNames: String) {
-        val names = rawNames.lines()
-            .map { it.trim() }
-            .filter { it.isNotEmpty() }
+        val names = rawNames.lines().map { it.trim() }.filter { it.isNotEmpty() }
+        pendingNames = ArrayDeque(names)
+        totalNames = names.size
+        processedCount = 0
+        isWaitingForPick = false
+        viewModelScope.launch {
+            processNext(context)
+        }
+    }
+
+    @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
+    private suspend fun processNext(context: Context) {
+        if (pendingNames.isEmpty()) {
+            _state.value = ImportState.Done
+            return
+        }
+        val name = pendingNames.removeFirst()
+        processedCount++
+        _state.value = ImportState.Loading(processedCount, totalNames, name)
+
+        val candidates = withContext(Dispatchers.IO) {
+            Repository.searchGameCandidates(igdbRetrofit.service, name)
+        }
+
+        if (candidates.isEmpty()) {
+            processNext(context)
+        } else {
+            isWaitingForPick = true
+            _state.value = ImportState.PickGame(name, candidates)
+        }
+    }
+
+    //let the user pick the correct game
+    private var isWaitingForPick = false
+
+    @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
+    fun onGamePicked(context: Context, game: IgdbGame?) {
+        if (!isWaitingForPick) return
+        isWaitingForPick = false
 
         viewModelScope.launch {
-            _state.value = ImportState.Loading(0, names.size, "")
-
-            val results = withContext(Dispatchers.IO) {
-                Repository.importGames(igdbRetrofit.service, names) { current, total, gameName ->
-                    _state.postValue(ImportState.Loading(current, total, gameName))
+            if (game != null) {
+                withContext(Dispatchers.IO) {
+                    saveGame(context, game.toTempGameData())
                 }
             }
-
-            results.filterNotNull()
-                .map { igdbGame ->
-                    async { saveGame(context, igdbGame.toTempGameData()) }
-                }.awaitAll()
-
-            _state.value = ImportState.Done
+            processNext(context)
         }
     }
 
@@ -111,7 +145,9 @@ class ImportGamesNoAccountViewModel(
             )
         }
 
-        Toast.makeText(context, "Game saved successfully!", Toast.LENGTH_SHORT).show()
+        withContext(Dispatchers.Main) {
+            Toast.makeText(context, "Game saved!", Toast.LENGTH_SHORT).show()
+        }
     }
 
     // http client for download images
@@ -156,8 +192,13 @@ class ImportGamesNoAccountViewModel(
 // sealed class for import state
 sealed class ImportState {
     object Idle : ImportState()
+
     data class Loading(val current: Int, val total: Int, val currentGame: String) : ImportState()
+
+    data class PickGame(val name: String, val candidates: List<IgdbGame>) : ImportState()
+
     object Done : ImportState()
+
     data class Error(val message: String) : ImportState()
 }
 

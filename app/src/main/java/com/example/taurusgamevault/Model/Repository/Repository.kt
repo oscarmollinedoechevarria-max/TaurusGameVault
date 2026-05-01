@@ -64,13 +64,13 @@ class Repository {
 
             return try {
                 // IGDB by relevance
-                val query = """
-                    search "${name.replace("\"", "")}";
-                    fields name, summary, rating, first_release_date, 
-                           cover.image_id, platforms.name, screenshots.image_id;
-                    where cover != null & category = (0,8,9);
-                    limit 20;
-                """.trimIndent()
+                val query = buildString {
+                    appendLine("search \"${name.replace("\"", "")}\";")
+                    appendLine("fields name, summary, rating, first_release_date,")
+		    appendLine("       cover.image_id, platforms.name, screenshots.image_id;")
+		    appendLine("where cover != null;")
+                    appendLine("limit 20;")
+                }
 
                 val body = query.toRequestBody("text/plain".toMediaType())
                 val resultsQuery = api.searchGames(body)
@@ -81,8 +81,7 @@ class Repository {
                 resultsQuery
                     .filter { it.cover != null }
                     .maxByOrNull { game ->
-                        val nameSimilarity = nameSimilarityScore(name, game.name.orEmpty())
-                        val hasDate = if (game.first_release_date != null) 0.2 else 0.0
+                        val nameSimilarity = nameSimilarityScore(name, game.name.orEmpty());                        val hasDate = if (game.first_release_date != null) 0.2 else 0.0
                         val ratingBonus = ((game.rating ?: 0.0) / 100.0) * 0.1
                         nameSimilarity + hasDate + ratingBonus
                     }
@@ -117,29 +116,24 @@ class Repository {
         }
 
         // queries the games in the api in batches and imports them to the database
-        @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
-        suspend fun importGames(
-            api: IgdbApiService,
-            names: List<String>,
-            onProgress: (current: Int, total: Int, gameName: String) -> Unit
-        ): List<IgdbGame?> {
-            val total = names.size
-            val counter = java.util.concurrent.atomic.AtomicInteger(0)
+        suspend fun searchGameCandidates(api: IgdbApiService, name: String): List<IgdbGame> {
+            return try {
+                val cleanName = name
+                    .replace(Regex("\\(\\d{4}\\)"), "")
+                    .replace(Regex("[^a-zA-Z0-9 ]"), " ")
+                    .trim()
 
-            return names.chunked(4).flatMap { batch ->
-                coroutineScope {
-                    batch.map { name ->
-                        async(Dispatchers.IO) {
-                            val current = counter.incrementAndGet()
-
-                            onProgress(current, total, name)
-
-                            val result = searchGame(api, name)
-
-                            result
-                        }
-                    }.awaitAll()
+                val query = buildString {
+                    appendLine("search \"${cleanName.replace("\"", "")}\";")
+                    appendLine("fields name, summary, rating, first_release_date,")
+                    appendLine("       cover.image_id, platforms.name, screenshots.image_id;")
+                    appendLine("where cover != null;")
+                    appendLine("limit 20;")
                 }
+                val body = query.toRequestBody("text/plain".toMediaType())
+                api.searchGames(body).filter { it.cover != null }
+            } catch (e: Exception) {
+                emptyList()
             }
         }
 

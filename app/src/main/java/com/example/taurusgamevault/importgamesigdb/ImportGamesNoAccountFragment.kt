@@ -1,5 +1,6 @@
 package com.example.taurusgamevault.importgamesigdb
 
+import android.app.AlertDialog
 import android.os.Build
 import androidx.fragment.app.viewModels
 import android.os.Bundle
@@ -12,7 +13,10 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModel
 import com.example.taurusgamevault.databinding.FragmentImportGamesNoAccountBinding
 import androidx.lifecycle.ViewModelProvider
+import com.example.taurusgamevault.Model.retrofit.igdb.IgdbGame
 import com.example.taurusgamevault.Model.retrofit.igdb.IgdbRetrofit
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class ImportGamesNoAccountFragment : Fragment() {
 
@@ -49,6 +53,9 @@ class ImportGamesNoAccountFragment : Fragment() {
 
         viewModel.state.observe(viewLifecycleOwner) { state ->
             when (state) {
+                is ImportState.PickGame -> {
+                    showPickerDialog(state.name, state.candidates)
+                }
                 is ImportState.Idle -> {
                     binding.btnImport.isEnabled = true
                     binding.progressBar.isVisible = false
@@ -73,5 +80,39 @@ class ImportGamesNoAccountFragment : Fragment() {
                 }
             }
         }
+    }
+
+    @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
+    private fun showPickerDialog(searchName: String, candidates: List<IgdbGame>) {
+        if (candidates.isEmpty()) {
+            AlertDialog.Builder(requireContext())
+                .setTitle("No results for \"$searchName\"")
+                .setMessage("Check the spelling and try again, or skip this game.")
+                .setPositiveButton("Skip") { _, _ ->
+                    viewModel.onGamePicked(requireContext(), null)
+                }
+                .setCancelable(false)
+                .show()
+            return
+        }
+
+        val labels = candidates.map { game ->
+            val year = game.first_release_date
+                ?.let { SimpleDateFormat("yyyy", Locale.getDefault()).format(java.sql.Date(it * 1000)) }
+                ?: "?"
+            val platforms = game.platforms?.joinToString(", ") { it.name ?: "" } ?: "?"
+            "${game.name.orEmpty()} ($year) — $platforms"
+        }.toTypedArray()
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("Searching: \"$searchName\"\nSelect the correct game")
+            .setItems(labels) { _, index ->
+                viewModel.onGamePicked(requireContext(), candidates[index])
+            }
+            .setNegativeButton("Skip") { _, _ ->
+                viewModel.onGamePicked(requireContext(), null)
+            }
+            .setCancelable(false)
+            .show()
     }
 }

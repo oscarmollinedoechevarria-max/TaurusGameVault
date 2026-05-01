@@ -23,9 +23,6 @@ object IgdbRetrofit {
                 OkHttpClient.Builder()
                     .connectTimeout(10, TimeUnit.SECONDS)
                     .readTimeout(10, TimeUnit.SECONDS)
-                    .addInterceptor(HttpLoggingInterceptor().apply {
-                        level = HttpLoggingInterceptor.Level.BODY
-                    })
                     .addInterceptor { chain ->
                         chain.proceed(
                             chain.request().newBuilder()
@@ -34,6 +31,9 @@ object IgdbRetrofit {
                                 .build()
                         )
                     }
+                    .addInterceptor(HttpLoggingInterceptor().apply {
+                        level = HttpLoggingInterceptor.Level.BODY
+                    })
                     .build()
             )
             .build()
