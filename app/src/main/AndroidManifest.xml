@@ -28,9 +28,9 @@
         <activity
             android:name=".splashScreen"
             android:exported="true"
-            android:icon="@drawable/appicon"
-            android:roundIcon="@drawable/appicon"
-            android:theme="@style/Theme.TaurusGameVault">
+            android:icon="@drawable/appiconcircle"
+            android:roundIcon="@drawable/appiconcircle"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

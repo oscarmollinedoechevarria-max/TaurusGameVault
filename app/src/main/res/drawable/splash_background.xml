@@ -5,6 +5,6 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/appicon"/>
+            android:src="@drawable/appiconcircle"/>
     </item>
 </layer-list>
