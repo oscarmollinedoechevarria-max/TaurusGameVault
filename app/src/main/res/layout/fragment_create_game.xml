@@ -127,117 +127,91 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
 
-                <!-- Screenshot Container -->
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <!-- Placeholder + Carousel -->
+                <FrameLayout
                     android:id="@+id/screenshotContainer"
                     android:layout_width="0dp"
                     android:layout_height="200dp"
                     android:layout_marginTop="12dp"
-                    android:visibility="gone"
                     app:layout_constraintTop_toBottomOf="@id/dividerScreenshot"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent">
 
-                    <ImageView
-                        android:id="@+id/selectedScreenshotView"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:scaleType="centerCrop"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        tools:srcCompat="@tools:sample/avatars" />
+                    <!-- Placeholder fondo -->
+                    <View
+                        android:id="@+id/screenshotPlaceholder"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="?attr/colorSurfaceVariant" />
 
+                    <!-- Image carousel -->
+                    <androidx.constraintlayout.motion.widget.MotionLayout
+                        android:id="@+id/motionLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="gone"
+                        app:layoutDescription="@xml/fragment_create_game_scene">
+
+                        <ImageView android:id="@+id/imageView0" android:layout_width="0dp" android:layout_height="0dp" android:scaleType="centerCrop" app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent" />
+
+                        <ImageView android:id="@+id/imageView1" android:layout_width="0dp" android:layout_height="0dp" android:scaleType="centerCrop" app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent" />
+
+                        <ImageView android:id="@+id/imageView2" android:layout_width="0dp" android:layout_height="0dp" android:scaleType="centerCrop" app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent" />
+
+                        <ImageView android:id="@+id/imageView3" android:layout_width="0dp" android:layout_height="0dp" android:scaleType="centerCrop" app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent" />
+
+                        <ImageView android:id="@+id/imageView4" android:layout_width="0dp" android:layout_height="0dp" android:scaleType="centerCrop" app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent" />
+
+                        <androidx.constraintlayout.helper.widget.Carousel
+                            android:id="@+id/carousel"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            app:carousel_infinite="true"
+                            app:carousel_firstView="@+id/imageView2"
+                            app:constraint_referenced_ids="imageView0,imageView1,imageView2,imageView3,imageView4"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent" />
+                    </androidx.constraintlayout.motion.widget.MotionLayout>
+
+                    <!-- Button prev -->
+                    <ImageButton
+                        android:id="@+id/btnPrev"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center_vertical|start"
+                        android:elevation="8dp"
+                        android:src="@android:drawable/ic_media_previous"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="Previous"
+                        android:visibility="gone" />
+
+                    <!-- Button next -->
+                    <ImageButton
+                        android:id="@+id/btnNext"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center_vertical|end"
+                        android:elevation="8dp"
+                        android:src="@android:drawable/ic_media_next"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="Next"
+                        android:visibility="gone" />
+
+                    <!-- Button add -->
                     <Button
                         android:id="@+id/selectScreenshotButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center"
+                        android:elevation="16dp"
                         android:text="+"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.motion.widget.MotionLayout
-                    android:id="@+id/motionLayout"
-                    android:layout_width="0dp"
-                    android:layout_height="200dp"
-                    android:visibility="gone"
-                    app:layout_constraintTop_toBottomOf="@id/dividerScreenshot"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layoutDescription="@xml/fragment_create_game_scene">
-
-                    <ImageView
-                        android:id="@+id/imageView0"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:scaleType="centerCrop"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
-
-                    <ImageView
-                        android:id="@+id/imageView1"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:scaleType="centerCrop"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
-
-                    <ImageView
-                        android:id="@+id/imageView2"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:scaleType="centerCrop"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
-
-                    <ImageView
-                        android:id="@+id/imageView3"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:scaleType="centerCrop"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
-
-                    <ImageView
-                        android:id="@+id/imageView4"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:scaleType="centerCrop"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
-
-                    <androidx.constraintlayout.helper.widget.Carousel
-                        android:id="@+id/carousel"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        app:carousel_infinite="true"
-                        app:carousel_firstView="@+id/imageView2"
-                        app:constraint_referenced_ids="imageView0,imageView1,imageView2,imageView3,imageView4"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
-                </androidx.constraintlayout.motion.widget.MotionLayout>
-
-
+                        android:textSize="20sp"
+                        android:padding="0dp" />
+                </FrameLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
 
             <!-- ========================================== -->
             <!-- SECTION: BASE INFO -->

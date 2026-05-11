@@ -72,6 +72,12 @@ class CreateGameFragment : Fragment() {
 
                 binding.motionLayout.visibility = View.VISIBLE
 
+                binding.screenshotPlaceholder.visibility = View.GONE
+
+                binding.btnPrev.visibility = View.VISIBLE
+
+                binding.btnNext.visibility = View.VISIBLE
+
             } else {
                 Log.d("PhotoPicker", "No media selected")
             }
@@ -313,6 +319,15 @@ class CreateGameFragment : Fragment() {
                     setText(selectedDate)
                 }
             }
+        }
+
+        // Swipe screenshot
+        binding.btnPrev.setOnClickListener {
+            binding.carousel.jumpToIndex(binding.carousel.currentIndex - 1)
+        }
+
+        binding.btnNext.setOnClickListener {
+            binding.carousel.jumpToIndex(binding.carousel.currentIndex + 1)
         }
     }
 
