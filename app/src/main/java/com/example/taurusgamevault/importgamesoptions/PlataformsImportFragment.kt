@@ -26,8 +26,8 @@ class PlataformsImportFragment : Fragment() {
 
         val items = listOf(
             ItemPlataformImport(R.drawable.ic_import_contacts, "Import games"),
-            ItemPlataformImport(R.drawable.gogicon, "Import games Steam"),
-            ItemPlataformImport(R.drawable.store_steam, "Import games Gog"),
+            ItemPlataformImport(R.drawable.store_steam, "Import games Steam"),
+            ItemPlataformImport(R.drawable.gogicon, "Import games Gog"),
             )
 
         // Set up the RecyclerView(made like this for easy tests)
